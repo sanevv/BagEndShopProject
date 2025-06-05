@@ -38,6 +38,9 @@ dependencies {
     //Mapstruct
     implementation "org.mapstruct:mapstruct:${mapStructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
+    //security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
 
     //env-hide 야믈에 쓴 비번 가져올수있음
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -70,6 +73,10 @@ dependencies {
 //    implementation 'org.hibernate.orm:hibernate-core:7.0.0.Beta5'
 //    implementation 'org.hibernate.orm:hibernate-community-dialects:7.0.0.Beta5'
 //    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+
+    //강사님버전에서 필요
+    implementation 'org.json:json:20240303'
+    implementation 'commons-codec:commons-codec:1.18.0'
 }
 
 tasks.named('test') {
