@@ -1,7 +1,6 @@
-package com.github.mymvcspring.web;
+package com.github.mymvcspring.web.cotroller;
 
 import com.github.mymvcspring.service.MemberService;
-import com.github.mymvcspring.web.dto.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

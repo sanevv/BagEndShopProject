@@ -244,6 +244,12 @@ $(function () {
     // To의 초기값을 3일후로 설정
     $('input#toDate').datepicker('setDate', '+3D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
 });
+//회원가입성공후 로그인처리시키기
+function loginProcess(id, pwd) {
+    LoginModule.login(id, pwd);
+}
+
+
 
 //유효성 검사
 function goRegister() {
@@ -302,7 +308,6 @@ function goRegister() {
         $('input#email').focus();
         return;
     }
-    alert('시작')
 
 
     // disabled 상태의 필드들을 임시로 활성화
@@ -330,12 +335,17 @@ function goRegister() {
     })
         .then(response => {
             if (response.ok) {
-                alert('회원가입이 완료되었습니다.');
-                window.location.href = '/index.up'; // 성공 시 리다이렉션
+                return response.text();
+                // window.location.href = '/index.up'; // 성공 시 리다이렉션
             } else {
                 alert('회원가입 중 오류가 발생했습니다.');
                 history.back(); // 오류 발생 시 이전 페이지로 돌아가기
             }
+        })
+        .then(name => {
+            alert(`${name}님 회원가입이 완료되었습니다.`);
+            // 로그인 처리
+            loginProcess(jsonData.userid, jsonData.pwd); // 회원가입 후 로그인 처리
         })
         .catch(error => {
             console.error('Error:', error);

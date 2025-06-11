@@ -1,17 +1,13 @@
 package com.github.mymvcspring.repository.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,13 +27,18 @@ public class MyUser {
     private String addressDetail;
     private String addressReference;
     private String gender;
-    private String birthDay;
+    private LocalDate birthDay;
     private long coin;
     private long point;
-    private LocalDate registerAt;
-    private LocalDate lastChangeAt;
+    private LocalDateTime registerAt;
+    private LocalDateTime lastChangeAt;
     private Boolean status;
     private Boolean dormancy;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    List<LoginHistory> loginHistories = new ArrayList<>();
 
+    public void dormantProcessing(){
+        this.dormancy = true;
+    }
 }

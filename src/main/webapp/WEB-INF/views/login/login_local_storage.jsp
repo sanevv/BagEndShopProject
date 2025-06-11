@@ -14,6 +14,7 @@
 <%--%>--%>
 <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/login/login.css"/>
 <script type="text/javascript" src="<%=ctxPath%>/js/login/login.js" defer></script>
+
 <%--로그인을 위한 폼태그<c:url value="/member/login.up"/>:은 자동으로 앞에 컨택스트 패스를 추가해줌--%>
 <%--<c:if test=" ${empty sessionScope.loginUser} "> 이렇게 test쌍따옴표안에 공백넣으면 조짐--%>
 <c:if test="${empty sessionScope.loginUser}">
@@ -26,22 +27,9 @@
             </thead>
 
             <tbody>
-            <%!// 선언부에 함수 정의
-                private String findCookieByName(Cookie[] cookies, String name) {
-                    for (Cookie cookie : cookies)
-                        if (cookie.getName().equals(name))
-                            return cookie.getValue();
-                    return "";
-                }
-            %>
-            <%
-                Cookie[] cookies = request.getCookies();
-                String savedId = cookies != null ?
-                  findCookieByName(cookies, "saveId") : "";
-            %>
             <tr>
                 <td>ID</td>
-                <td><input type="text"  name="userid" id="loginUserid" size="20" value="<%=savedId%>" autocomplete="off"/></td>
+                <td><input type="text" name="userid" id="loginUserid" size="20" autocomplete="off"/></td>
             </tr>
             <tr>
                 <td>암호</td>
@@ -60,7 +48,8 @@
 
             <tr>
                 <td colspan="2"><%-- 아이디 저장 체크박스 체크박스에 쿠키(cookie)를 사용할 경우 --%>
-<input type="checkbox" id="saveid" name="saveid" <%= !savedId.isBlank() ? "checked" : "" %>/>&nbsp;<label for="saveid">아이디저장</label>                    <button type="button" id="btnSubmit" class="btn btn-primary btn-sm ml-3">로그인</button>
+                    <input type="checkbox" id="saveid" name="saveid"/>&nbsp;<label for="saveid">아이디저장</label>
+                    <button type="button" id="btnSubmit" class="btn btn-primary btn-sm ml-3">로그인</button>
                 </td>
             </tr>
             </tbody>
@@ -80,8 +69,9 @@
                 <!-- Modal body -->
                 <div class="modal-body">
                     <div id="idFind">
-                            <%--                    <iframe id="iframe_idFind" style="border: none; width: 100%; height: 350px;" src="<%= ctxPath%>/login/idFind.up">--%>
-                            <%--                    </iframe>--%>
+                        <iframe id="iframe_idFind" style="border: none; width: 100%; height: 350px;"
+                                src="<%= ctxPath%>/login/idFind.up">
+                        </iframe>
                     </div>
                 </div>
 
@@ -108,8 +98,9 @@
                 <!-- Modal body -->
                 <div class="modal-body">
                     <div id="pwFind">
-                            <%--                    <iframe style="border: none; width: 100%; height: 350px;" src="<%= ctxPath%>/login/pwdFind.up">--%>
-                            <%--                    </iframe>--%>
+                        <iframe  id="iframe_pwdFind" style="border: none; width: 100%; height: 350px;" src="<%= ctxPath%>/login/pwdFind.up">
+
+                        </iframe>
                     </div>
                 </div>
 
@@ -140,7 +131,7 @@
                 </div>
                 <br>로그인 중...<br><br>
                 [<a href="javascript:goEditMyInfo('','')">나의정보</a>]&nbsp;&nbsp;
-                [<a href="javascript:goCoinPurchaseTypeChoice('${sessionScope.loginUser.userId}','<%=request.getContextPath()%>')">코인충전</a>]
+                [<a href="javascript:goCoinPurchaseTypeChoice('${sessionScope.loginUser.userId}','<%=ctxPath%>')">코인충전</a>]
                 <br><br>
                 <button type="button" class="btn btn-danger btn-sm" onclick="javascript:goLogout('')">로그아웃</button>
             </td>
