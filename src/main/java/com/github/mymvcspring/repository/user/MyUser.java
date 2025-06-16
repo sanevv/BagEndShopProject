@@ -1,5 +1,6 @@
 package com.github.mymvcspring.repository.user;
 
+import com.github.mymvcspring.web.dto.auth.UserInfoEditRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -40,5 +41,19 @@ public class MyUser {
 
     public void dormantProcessing(){
         this.dormancy = true;
+    }
+    public void updateCoinAndPoint(long coin, long point) {
+        this.coin += coin;
+        this.point += point;
+    }
+    public void updateUserInfo(UserInfoEditRequest request){
+        this.userName = request.getUserName();
+        this.email = request.getEmail();
+        this.phoneNumber = request.getPhoneNumber();
+        this.password = request.getPassword();
+        this.zipCode = request.getZipCode();
+        this.address = request.getAddress();
+        this.addressDetail = request.getAddressDetail();
+        this.addressReference = request.getAddressReference();
     }
 }

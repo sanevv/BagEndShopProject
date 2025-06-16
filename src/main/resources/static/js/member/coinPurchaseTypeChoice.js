@@ -7,7 +7,8 @@ $('td#purchase').hover((event) =>{
 
 goCoinPayment = (ctxPath, userId) => {
     const selectedAmount = $('input:radio[name="coinmoney"]:checked');
-    if (!selectedAmount) {
+
+    if (!selectedAmount.val()) {
         alert('충전할 금액을 선택해주세요.');
         errorMsg.show()
         return;
@@ -17,9 +18,25 @@ goCoinPayment = (ctxPath, userId) => {
     //결제 금액을 서버로 전송
     const chargingDataIndex = $('input:radio[name="coinmoney"]').index(selectedAmount);
     const point = $('td>span').eq(chargingDataIndex).text().trim();
-    alert('선택된 금액: ' + point + '금액 '+selectedAmount.val());
+    // alert('선택된 금액: ' + point + '금액 '+selectedAmount.val());
     //자기 자신 팝업창 닫기
+    /*
+    1-1. 일반적인 방법
+         opener.location.href = "javascript:부모창스크립트 함수명();";
+
+         1-2. 일반적인 방법
+         window.opener.부모창스크립트 함수명();
+
+         2. jQuery를 이용한 방법
+         $(opener.location).attr("href", "javascript:부모창스크립트 함수명();");
+ */
+
+
+     opener.location.href = `javascript:goPaymentStart('${ctxPath}', '${userId}', '${selectedAmount.val()}', '${point}')`;
+    // const pointValue = point.replace(/,/g, ''); //콤마 제거
+
     self.close();
+
 }
 
 $('input:radio[name="coinmoney"]').on('click', (e)=>{

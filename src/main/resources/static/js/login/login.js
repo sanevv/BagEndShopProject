@@ -239,6 +239,67 @@ goCoinPurchaseTypeChoice = (userId, ctxPath)=> {
 
 }
 
+//코인충전 코인충전 결제금액 선택하기(실제로 카드 결제)
+goPaymentStart = (ctxPath, userId, coin, point)=> {
+
+    // alert('확인 ' + ctxPath + ' ' + userId + ' ' + coin + ' ' + point);
+    const url = ctxPath + '/member/coinPayment.up?userId=' + userId + '&coin=' + coin + '&point=' + point;
+    const width = 1000;
+    const height = 600;
+    const left = Math.ceil( (window.screen.width - width) / 2 ); //화면의 너비
+    const top = Math.ceil((window.screen.height - height) / 2); //화면의 높이
+    window.open(url, 'coinPayment', `left=${left}, top=${top}, width=${width}, height=${height}`);
+
+
+    // console.log(userId);
+    // console.log(ctxPath);
+    // //충전 금액 선택하기 팝업창 띄우기
+    // //팝업창 크기 정해노코 가운데 위치시키기
+    // const width = 650;
+    // const height = 570;
+    //
+    // const left = Math.ceil( (window.screen.width - width) / 2 ); //화면의 너비
+    // const top = Math.ceil((window.screen.height - height) / 2); //화면의 높이
+    //
+    // const url = ctxPath + '/member/coinPurchaseTypeChoice.up?userId=' + userId;
+    // window.open(url, 'coinPurchaseTypeChoice', `left=${left}, top=${top}, width=${width}, height=${height}`);
+
+}
+
+goCoinUpdate = (ctxPath, userId, coin, point) => {
+
+    //코인충전 업데이트
+    alert('성공후 진행창  ' + coin + ' ' + point);
+    axios.put('/api/member/coin', {
+        userId: userId,
+        coinAmount: coin,
+        pointAmount: point
+    }).then((response) => {
+        if(response.data.success){
+            alert('코인 충전이 완료되었습니다. 충전된 코인: ' + response.data.success.responseData.coinAmount + ', 포인트: ' + response.data.success.responseData.pointAmount);
+            alert('현재 코인: ' + response.data.success.responseData.currentCoin + ', 현재 포인트: ' + response.data.success.responseData.currentPoint);
+            window.location.href = ctxPath + '/index.up';
+        } else {
+            alert('코인 충전 실패: ' + response.data.message);
+            //TODO:결제 취소 로직 써야됨 우린 없음
+            javaScript:history.back();
+        }
+    }).catch((error) => {
+        console.error('코인 충전 중 오류 발생:', error);
+        // 200번대가 아닌 응답(에러) 처리
+        if (error.response) {
+            alert('서버 오류: ' + error.response.status + '\n' + (error.response.data.message || '잠시 후 다시 시도해주세요.'));
+        } else {
+            alert('요청 실패: ' + error.message);
+        }
+        //TODO: 결제 취소 로직 써야됨 우린 없음
+
+        history.back();
+    });
+
+
+}
+
 
 
 
@@ -256,3 +317,28 @@ const passwdFindClose = $('.passwdFindClose');
 passwdFindClose.click(()=>{
     document.getElementById("iframe_pwdFind").contentWindow.pwdFindCloseEvent();
 })
+
+//회원정보수정
+goEditMyInfo = (userId,ctxPath) => {
+    // 나의정보 수정하기 팝업창 띄우기
+    const url = `${ctxPath}/member/memberEdit.up?userid=${userId}`;
+//  또는
+//  const url = ctx_Path+"/member/memberEdit.up?userid="+userid;
+
+    // 너비 800, 높이 680 인 팝업창을 화면 가운데 위치시키기
+    const width = 800;
+    const height = 680;
+    /*
+       console.log("모니터의 넓이 : ",window.screen.width);
+       // 모니터의 넓이 :  1440
+
+       console.log("모니터의 높이 : ",window.screen.height);
+       // 모니터의 높이 :  900
+    */
+    const left = Math.ceil((window.screen.width - width)/2);  // 정수로 만듬
+    const top = Math.ceil((window.screen.height - height)/2); // 정수로 만듬
+    window.open(url, "myInfoEdit",
+        `left=${left}, top=${top}, width=${width}, height=${height}`);
+
+
+}

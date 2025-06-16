@@ -13,7 +13,7 @@
 <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/member/member_register.css"/>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="../login/login_cookie.jsp" ></script>
-<script type="text/javascript" src="<%=ctxPath%>/static/js/member/memberRegister.js" defer></script>
+<script type="text/javascript" src="<%=ctxPath%>/js/member/memberRegister.js" defer></script>
 
 <div class="row" id="divRegisterFrm">
     <div class="col-md-12">

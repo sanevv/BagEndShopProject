@@ -36,4 +36,13 @@ public class BeanProperties {
     public AES256 aes256() throws UnsupportedEncodingException {
         return new AES256(SecretMyKey.KEY);
     }
+    public static String decryptNotException(String encrypted){
+        try {
+            AES256 aes256 = new AES256(SecretMyKey.KEY);
+            return aes256.decrypt(encrypted);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("AES256 객체 생성 실패: " + e.getMessage());
+        }
+    }
 }

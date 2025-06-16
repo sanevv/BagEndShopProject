@@ -323,7 +323,6 @@ function goRegister() {
         jsonData[key] = value;
     });
 // 필드들을 다시 disabled 상태로 되돌림
-    disabledFields.prop('disabled', true);
     console.log(jsonData)
     // fetch API로 JSON 형식으로 전송
     fetch('/api/member/register', {

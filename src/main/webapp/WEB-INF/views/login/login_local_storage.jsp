@@ -13,6 +13,7 @@
 <%--    String ctxPath = request.getContextPath();--%>
 <%--%>--%>
 <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/login/login.css"/>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="<%=ctxPath%>/js/login/login.js" defer></script>
 
 <%--로그인을 위한 폼태그<c:url value="/member/login.up"/>:은 자동으로 앞에 컨택스트 패스를 추가해줌--%>
@@ -130,7 +131,7 @@
                         value="${sessionScope.loginUser.point}" pattern="###,###"/> POINT
                 </div>
                 <br>로그인 중...<br><br>
-                [<a href="javascript:goEditMyInfo('','')">나의정보</a>]&nbsp;&nbsp;
+                [<a href="javascript:goEditMyInfo('${sessionScope.loginUser.userId}','<%=ctxPath%>')">내정보수정하기</a>]&nbsp;&nbsp;
                 [<a href="javascript:goCoinPurchaseTypeChoice('${sessionScope.loginUser.userId}','<%=ctxPath%>')">코인충전</a>]
                 <br><br>
                 <button type="button" class="btn btn-danger btn-sm" onclick="javascript:goLogout('')">로그아웃</button>

@@ -1,14 +1,15 @@
 package com.github.mymvcspring.service;
 
 import com.github.mymvcspring.config.encryption.AES256;
-import com.github.mymvcspring.config.encryption.SecretMyKey;
 import com.github.mymvcspring.config.encryption.Sha256;
 import com.github.mymvcspring.repository.user.LoginHistory;
 import com.github.mymvcspring.repository.user.LoginHistoryRepository;
 import com.github.mymvcspring.repository.user.MyUser;
 import com.github.mymvcspring.repository.user.MyUserRepository;
 import com.github.mymvcspring.service.exceptions.CustomMyException;
-import com.github.mymvcspring.web.dto.*;
+import com.github.mymvcspring.web.dto.auth.*;
+import com.github.mymvcspring.web.dto.member.CoinUpdateRequest;
+import com.github.mymvcspring.web.dto.member.CoinUpdateResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -190,5 +189,47 @@ public class MemberService {
         );
         if(result == 1) return;
         throw CustomMyException.fromMessage("비밀번호 변경에 실패했습니다. 아이디와 비밀번호를 확인해주세요. 관리자에게 문의해주세요.");
+    }
+
+    @Transactional
+    public CoinUpdateResponse updateCoinProcess(CoinUpdateRequest coinUpdateRequest, HttpSession session) {
+        MyUser myUser = myUserRepository.findById(coinUpdateRequest.getUserId())
+                .orElseThrow(() -> CustomMyException.fromMessage("존재하지 않는 사용자입니다."));
+
+        if (coinUpdateRequest.getCoinAmount() < 0) {
+            throw CustomMyException.fromMessage("결제할 코인은 음수로 변경할 수 없습니다.");
+        }
+        myUser.updateCoinAndPoint(coinUpdateRequest.getCoinAmount(), coinUpdateRequest.getPointAmount());
+        session.setAttribute("loginUser", myUser);
+
+        return CoinUpdateResponse.of(coinUpdateRequest.getCoinAmount(), coinUpdateRequest.getPointAmount(), myUser.getCoin(), myUser.getPoint());
+    }
+    @Transactional
+    public void updateUserInfo(UserInfoEditRequest editRequest, MyUser loginUser) {
+        if (loginUser == null || !loginUser.getUserId().equals(editRequest.getUserId())) {
+            throw CustomMyException.fromMessage("로그인된 사용자만 정보 수정이 가능합니다.");
+        }
+        editRequest.setPassword(shaEncrypt(editRequest.getPassword()));
+        editRequest.setEmail(aesEncrypt(editRequest.getEmail()));
+        editRequest.setPhoneNumberValue(aesEncrypt(editRequest.getPhoneNumber()));
+        long result= myUserRepository.updateUserInfo(editRequest);
+
+        if(result == 1) {
+            loginUser.updateUserInfo(editRequest);
+            return;
+        }
+        throw CustomMyException.fromMessage("회원 정보 수정에 실패했습니다. 아이디와 비밀번호를 확인해주세요. 관리자에게 문의해주세요.");
+
+    }
+
+    private String shaEncrypt(String value){
+        return Sha256.encrypt(value);
+    }
+    private String aesEncrypt(String value) {
+        try {
+            return aes256.encrypt(value);
+        } catch (GeneralSecurityException | UnsupportedEncodingException e) {
+            throw new RuntimeException("AES256 인코딩 실패", e);
+        }
     }
 }

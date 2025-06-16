@@ -1,11 +1,9 @@
-package com.github.mymvcspring.web.dto;
+package com.github.mymvcspring.web.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 

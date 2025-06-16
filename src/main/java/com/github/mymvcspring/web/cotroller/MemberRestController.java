@@ -4,6 +4,10 @@ import com.github.mymvcspring.repository.user.MyUser;
 import com.github.mymvcspring.service.MemberService;
 import com.github.mymvcspring.service.exceptions.CustomMyException;
 import com.github.mymvcspring.web.dto.*;
+import com.github.mymvcspring.web.dto.auth.*;
+import com.github.mymvcspring.web.dto.member.CoinUpdateRequest;
+import com.github.mymvcspring.web.dto.member.CoinUpdateResponse;
+import com.github.mymvcspring.web.viewcontroller.ViewController;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,12 +22,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MemberService memberService;
+    private final ViewController viewController;
     @GetMapping("/check-id")
     public boolean duplicateCheckId(@RequestParam String userId){
         return memberService.duplicateCheckId(userId);
     }
     @GetMapping("/check-email")
-    public boolean duplicateCheckEmail(@RequestParam String email){
+    public boolean duplicateCheckEmail(@RequestParam String email, HttpServletRequest request){
+        MyUser loginUser = (MyUser) request.getSession().getAttribute("loginUser");
+
+        if (loginUser != null) {
+            // 로그인된 사용자의 이메일과 중복 체크하려는 이메일이 같으면 중복 체크를 하지 않음
+            String decodedEmail = viewController.decryption(loginUser.getEmail());
+            if (decodedEmail.equals(email)) {
+                return false;
+            }
+        }
         return memberService.duplicateCheckEmail(email);
     }
     @PostMapping("/register")
@@ -32,6 +46,7 @@ public class MemberRestController {
         memberService.registerLogic(signUpRequest);
         return signUpRequest.getName();
     }
+
 
     //쿠키 생성방식 메서드
     private Cookie createOrDeleteCookie(String userId, boolean rememberMe) {
@@ -120,6 +135,26 @@ public class MemberRestController {
         memberService.changePassword(pwChangeRequest);
         return CustomResponse.emptyDataOk("비밀번호 변경 성공");
     }
+    @PutMapping("/coin")
+    public CustomResponse<CoinUpdateResponse>  updateCoin(@RequestBody CoinUpdateRequest coinUpdateRequest, HttpServletRequest request) {
+        return CustomResponse.ofOk("코인 업데이트 성공",memberService.updateCoinProcess(coinUpdateRequest, request.getSession()));
+    }
+    @PutMapping
+    public CustomResponse<Void> updateUser(@RequestBody UserInfoEditRequest editRequest, HttpServletRequest request) {
+
+        String referer = request.getHeader("referer");
+        if (referer == null || !referer.contains("/member/memberEdit.up")) {
+            throw CustomMyException.fromMessage("잘못된 접근입니다.");
+        }
+
+        MyUser loginUser = (MyUser) request.getSession().getAttribute("loginUser");
+
+        memberService.updateUserInfo(editRequest, loginUser);
+
+        return CustomResponse.emptyDataOk("회원 정보 수정 성공");
+
+    }
+
 
 
 }

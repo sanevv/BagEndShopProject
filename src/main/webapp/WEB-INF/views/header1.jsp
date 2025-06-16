@@ -22,7 +22,7 @@
     <!-- Font Awesome 6 Icons -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- 직접 만든 CSS -->
     <link rel="stylesheet" type="text/css"
           href="<%= ctxPath%>/css/template/template.css"/>
@@ -31,7 +31,7 @@
 
     <!-- Optional JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <%-- jQueryUI CSS 및 JS --%>
     <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/jquery-ui-1.13.1.custom/jquery-ui.min.css"/>
@@ -62,9 +62,7 @@
                                            href="<%= ctxPath %>/index.up">Home</a></li>
             <li class="nav-item active"><a class="nav-link menufont_size"
                                            href="<%= ctxPath %>/member/memberRegister.up">회원가입</a></li>
-            <li class="nav-item"><a class="nav-link menufont_size"
-                                    href="<%= ctxPath %>/member/memberList.up">회원목록</a></li>
-            <c:if test="${not empty sessionScope.loginUser}">
+            <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.userId != 'admin'}">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle menufont_size text-info"
                     href="#" id="navbarDropdown" data-toggle="dropdown"> 장바구니/주문 <%-- .text-primary 는 글자색으로 파랑색임 --%>
@@ -74,6 +72,19 @@
                     <a class="dropdown-item text-info" href="#">나의 주문 내역</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-info" href="#">주문 통계 차트</a>
+                </div>
+            </li>
+            </c:if>
+            <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.userId == 'admin'}">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle menufont_size text-primary"
+                    href="#" id="navbarDropdown" data-toggle="dropdown"> 관리자전용 <%-- .text-primary 는 글자색으로 파랑색임 --%>
+            </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item text-primary" href="<%=ctxPath%>/admin/memberList.up">회원목록</a>
+                    <a class="dropdown-item text-primary" href="#">제품등록</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-primary" href="#">전체주문내역</a>
                 </div>
             </li>
             </c:if>

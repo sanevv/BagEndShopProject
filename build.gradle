@@ -78,8 +78,6 @@ dependencies {
     implementation 'org.json:json:20240303'
     implementation 'commons-codec:commons-codec:1.18.0'
 
-    //이메일인증
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
