@@ -142,5 +142,11 @@
         </tbody>
     </table>
 
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center" id="paginationBar" style="margin-top: 30px;">
+            <!-- 페이지 버튼이 여기에 동적으로 추가됩니다 -->
+        </ul>
+    </nav>
+
 </div>
 <jsp:include page="../../footer2.jsp"/>

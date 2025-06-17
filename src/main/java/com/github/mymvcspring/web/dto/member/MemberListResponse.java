@@ -13,7 +13,9 @@ public class MemberListResponse {
     private String encryptedEmail;
     private String email;
     private String gender;
-    private Integer searchCount;
+
+    @Setter
+    private long searchCount;
 
     public void emailDecryption() {
         if(this.encryptedEmail == null)  return;

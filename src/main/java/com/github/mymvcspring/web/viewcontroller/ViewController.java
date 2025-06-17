@@ -97,7 +97,6 @@ public class ViewController {
     }
 
 
-
     public String decryption(String encryptedData) {
         try {
             return aes256.decrypt(encryptedData);
@@ -158,56 +157,83 @@ public class ViewController {
         request.setAttribute("user", loginUser);
         return "member/member_edit";
     }
+
     //관리자전용 회원전용
     @GetMapping("/admin/memberList.up")
     public String showMemberListByAdmin(HttpServletRequest request) {
         MyUser admin = (MyUser) request.getSession().getAttribute("loginUser");
         if (admin == null || !admin.getUserId().equals("admin")) {
             request.setAttribute("message", "관리자만 접근할 수 있습니다.");
-            return "simple_error";
+            return "error";
         }
         return "member/admin/member_list";
     }
 
-
-    //강사님 버전
-//    @GetMapping("/admin/memberList.up")
-    public void searchMemberList(
-
-            @ModelAttribute SearchConditions searchConditions,
-            @RequestParam(defaultValue = "1") long page,
-            @RequestParam(defaultValue = "10") long size,
-            HttpServletRequest request, HttpServletResponse response
-
-    ) {
-        // 관리자가 아니면 에러 페이지로 날려버림
+    @PostMapping("/admin/memberDetail.up")
+    public String showMemberDetail(@RequestParam String userId,
+                                   @RequestParam String prevPage,
+                                   @RequestParam String prevSize,
+                                   @RequestParam String prevSearchType,
+                                   @RequestParam String prevSearchValue,
+                                   HttpServletRequest request) {
         MyUser admin = (MyUser) request.getSession().getAttribute("loginUser");
+        String referer = request.getHeader("Referer");
+        if (referer == null || !referer.contains("/admin/memberList.up")) {
+            request.setAttribute("message", "잘못된 접근입니다.");
+            return "error";
+        }
         if (admin == null || !admin.getUserId().equals("admin")) {
             request.setAttribute("message", "관리자만 접근할 수 있습니다.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/simple_error.jsp");
-            try {
-                dispatcher.forward(request, response);
-                return;
-            } catch (ServletException | IOException e) {
-                throw new RuntimeException(e);
-            }
-
+            return "error";
         }
-        if(searchConditions.getSearchValue()!=null)
-            searchConditions.covertSearchType();
-
-
-        List<MemberListResponse> memberList =  adminService.searchMemberList(searchConditions, page, size)
-                .orElseThrow(()-> new RuntimeException("빈 목록이 아닌 null 반환"));
-        request.setAttribute("memberList", memberList);
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/member/admin/member_list.jsp");
-        try {
-            dispatcher.forward(request, response);
-        } catch (ServletException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        request.setAttribute("userId", userId);
+        request.setAttribute("prevPage", prevPage);
+        request.setAttribute("prevSize", prevSize);
+        request.setAttribute("prevSearchType", prevSearchType);
+        request.setAttribute("prevSearchValue", prevSearchValue);
+        return "member/admin/member_detail";
 
     }
+
+
+    //강사님 버전
+////    @GetMapping("/admin/memberList.up")
+//    public void searchMemberList(
+//
+//            @ModelAttribute SearchConditions searchConditions,
+//            @RequestParam(defaultValue = "1") long page,
+//            @RequestParam(defaultValue = "10") long size,
+//            HttpServletRequest request, HttpServletResponse response
+//
+//    ) {
+//        // 관리자가 아니면 에러 페이지로 날려버림
+//        MyUser admin = (MyUser) request.getSession().getAttribute("loginUser");
+//        if (admin == null || !admin.getUserId().equals("admin")) {
+//            request.setAttribute("message", "관리자만 접근할 수 있습니다.");
+//            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/simple_error.jsp");
+//            try {
+//                dispatcher.forward(request, response);
+//                return;
+//            } catch (ServletException | IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//        }
+//        if(searchConditions.getSearchValue()!=null)
+//            searchConditions.covertSearchType();
+//
+//
+//        PaginationDto<MemberListResponse> memberList =  adminService.searchMemberList(searchConditions, page, size)
+//                .orElseThrow(()-> new RuntimeException("빈 목록이 아닌 null 반환"));
+//        request.setAttribute("memberList", memberList);
+//
+//        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/member/admin/member_list.jsp");
+//        try {
+//            dispatcher.forward(request, response);
+//        } catch (ServletException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
 
 }
