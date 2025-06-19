@@ -22,11 +22,7 @@
     // 페이지가 로드되면 자동으로 실행되는 함수
     document.addEventListener("DOMContentLoaded", function () {
 
-        if (message) {
-            alert(message);
-        } else {
-            alert("알 수 없는 오류가 발생했습니다.");
-        }
+
 
 
     });

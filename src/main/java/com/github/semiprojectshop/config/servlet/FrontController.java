@@ -24,7 +24,7 @@ import java.util.Properties;
         description = "사용자가 웹에서 *.up 을 했을 경우 이 서블릿이 응답을 해주도록 한다.",
         urlPatterns = { "*.do" },
         initParams = {
-                @WebInitParam(name = "propertyConfig", value = "C:/NCS/workspace_jsp/my-mvc-spring/src/main/java/com/github/mymvcspring/config/servlet/Command.properties", description = "*.up 에 대한 클래스의 매핑파일")
+                @WebInitParam(name = "propertyConfig", value = "C:/NCS/workspace_jsp/semi-project-shop/src/main/java/com/github/semiprojectshop/config/servlet/Command.properties", description = "*.up 에 대한 클래스의 매핑파일")
         })
 public class FrontController extends HttpServlet {
 
