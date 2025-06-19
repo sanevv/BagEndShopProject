@@ -2,7 +2,13 @@ jasypt:
   encryptor:
     password: ${JASYPT_PASSWORD}
 jwtpassword:
-  source: ENC(foTHOXMs3+XPmFWjU982ZSZl/HmV971ViWri+mqf/+s/EQ8cCb/0uNoIMOnIv52H/BI8X4+EIQojuAeuXCXB/7gzCKMj8Z6dOpR9asKKEOY=)
+  source: ENC(Z+m7jtTf9w1/6yd2NAibo0CSCb89JvkPf96SUKdqxQflQwIAGvr781dHGdToS0XvTUCrRADcGTHCVyF1VaF9nh4j8yql3Z1Ubef+BI0d+gQ=)
+
+coolsms:
+  api-key: ENC(/dfc/hVOB+ZrZLxajUlpwrhRCUcpBXxkLMUJqf5zaAo=)
+  api-secret: ENC(81triyc/kAD+hm1xonupRz65Dunttouv40tfyVk/2zFj8J6ws4jwaf6y/rJN4zYt)
+  domain : https://api.solapi.com
+
 spring:
   server-url:
     base: http://localhost:8080
@@ -17,15 +23,15 @@ spring:
     open-in-view: false
     show-sql: true
   datasource:
-    username: mymvc_user
-    password: seven
+    username: ENC(tBOBH7aOREOgndD7L9SZOB311JqKHImI)
+    password: ENC(N1H6zRdGq5YiEpqkTKXG5g==)
     driver-class-name: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@localhost:1521:xe
+    url: ENC(Q8RI4B/WgDTy3GxENPg1/jPBuPqEdLOFs7KPV4pL87j5cu2r4tR8bJF757DaEjla)
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ENC(tZCNtUD39C1X4xxr3+oP0HZ0q95nukRsjUP0oqK3jOw=)
-    password: ENC(yymAj4wB0P5Hy3w4p5kBeV7dImkHJWaYqBtHPX2C3EI=)
+    username: ENC(IZt11MAiQJTiwic1gfLsKTV1TwEKpdcSrpQ3WJRwKKg=)
+    password: ENC(JkAzeYbpCVdkVmdci9Rba0AgeyULSgyNFRMNsL/OCpZ0nqkdJeICh7Q1kEuEA8K/LdfAtgrfVWk=)
     properties:
       mail:
         smtp:
