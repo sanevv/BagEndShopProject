@@ -8,7 +8,23 @@
 <!-- main contents -->
 <main id="main">
     <div class="inner">
-        <h2 class=""></h2>
+        <div class="product-top">
+            <div class="product-category">
+                <ul class="category-list">
+                    <li><a href="javascript:;" class="active">MESSENGER</a></li>
+                    <li><a href="javascript:;">BACKPACK</a></li>
+                    <li><a href="javascript:;">CROSS</a></li>
+                </ul>
+            </div>
+            <div class="product-sort">
+                <select name="" id="" class="select-option">
+                    <option value="">입맛대로 골라보셔요</option>
+                    <option value="">신상품</option>
+                    <option value="">낮은가격</option>
+                    <option value="">높은가격</option>
+                </select>
+            </div>
+        </div>
         <ul class="product-list type-4">
             <li>
                 <div class="product-img">
@@ -25,7 +41,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -42,7 +58,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -59,7 +75,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -76,7 +92,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -93,7 +109,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -110,7 +126,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -127,7 +143,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
         </ul>
     </div>
