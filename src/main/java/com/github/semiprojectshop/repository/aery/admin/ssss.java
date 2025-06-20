@@ -2,6 +2,8 @@ package com.github.semiprojectshop.repository.aery.admin;
 
 public class ssss {
 
-    private String ddd; // 세미콜론(;)으로 끝나는 변수 선언
+    public static void main(String[] args) {
+        System.out.println("연습용~~~~~~");
+    }
 
 }
