@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="logo">
-                    <a href="index.html">BAGEND</a>
+                    <a href="/">BAGEND</a>
                 </div>
                 <div class="side-navi navi-list">
                     <div class="navi-item search-item">
@@ -59,11 +59,12 @@
             <div id="allMenu">
                 <div class="inner">
                     <ul>
-                        <li><a href="javascript:;">BAG</a></li>
-                        <li><a href="javascript:;">ACC</a></li>
-                        <li><a href="javascript:;">시후바보</a></li>
-                        <li><a href="javascript:;">승호바보</a></li>
-                        <li><a href="javascript:;">경수바보</a></li>
+                        <li><a href="productList.one">BAG</a></li>
+                        <li><a href="productList.one">ACC</a></li>
+                        <li><a href="productList.one">시후바보</a></li>
+                        <li><a href="productList.one">승호바보</a></li>
+                        <li><a href="productList.one">경수바보</a></li>
+                        <li><a href="productList.one">애리천재</a></li>
                     </ul>
                 </div>
             </div>

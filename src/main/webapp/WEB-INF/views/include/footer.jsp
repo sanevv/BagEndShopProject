@@ -15,7 +15,7 @@
 <%-- 여기서 root 경로는 static 입니다.  --%>
 <script src="${pageContext.request.contextPath}/lib/jquery-3.7.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/lib/bootstrap-4.6.2-dist/js/bootstrap.bundle.js"></script>
-<script src="${pageContext.request.contextPath}/js/common/common.js"></script>
+<script src="${pageContext.request.contextPath}/js/common/common.js" defer></script>
 
 </div>
 </body>
