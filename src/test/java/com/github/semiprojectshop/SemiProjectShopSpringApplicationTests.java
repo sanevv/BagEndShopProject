@@ -1,4 +1,4 @@
-package com.github.mymvcspring;
+package com.github.semiprojectshop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
