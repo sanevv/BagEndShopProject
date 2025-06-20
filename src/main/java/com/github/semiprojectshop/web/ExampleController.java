@@ -15,7 +15,7 @@ public class ExampleController {
     @GetMapping("/sanhae.one") // 아래의 request와 response는 사용하면 쓰고 필요없으면 생략가능.
     public String sanhae(HttpServletRequest request, HttpServletResponse response) {
         request.getContextPath();
-        return "/sanhae/sanhae";//views 폴더가 루트고 그안의 jsp파일  jsp빼고 작성
+        return "sanhae/sanhae";//views 폴더가 루트고 그안의 jsp파일  jsp빼고 작성
     }
     @PostMapping("/sanhae.one")
     public String sanhaePost(HttpServletRequest request, HttpServletResponse response) {
