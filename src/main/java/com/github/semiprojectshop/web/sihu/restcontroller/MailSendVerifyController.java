@@ -1,6 +1,6 @@
 package com.github.semiprojectshop.web.sihu.restcontroller;
 
-import com.github.semiprojectshop.service.EmailVerifyService;
+import com.github.semiprojectshop.service.sihu.EmailVerifyService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;

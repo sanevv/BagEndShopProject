@@ -1,4 +1,4 @@
-package com.github.semiprojectshop.service.product;
+package com.github.semiprojectshop.service.sihu.product;
 
 import com.github.semiprojectshop.repository.sihu.product.ProductJpa;
 import com.github.semiprojectshop.web.sihu.dto.product.MainProductResponse;

@@ -1,6 +1,6 @@
 package com.github.semiprojectshop.web.sihu.advice;
 
-import com.github.semiprojectshop.service.exceptions.CustomMyException;
+import com.github.semiprojectshop.service.sihu.exceptions.CustomMyException;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
