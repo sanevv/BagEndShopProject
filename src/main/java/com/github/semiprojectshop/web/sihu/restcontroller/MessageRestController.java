@@ -1,6 +1,6 @@
 package com.github.semiprojectshop.web.sihu.restcontroller;
 
-import com.github.semiprojectshop.service.MessageService;
+import com.github.semiprojectshop.service.sihu.MessageService;
 import com.github.semiprojectshop.web.sihu.dto.sms.MessageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
