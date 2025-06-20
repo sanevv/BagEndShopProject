@@ -2,7 +2,7 @@ package com.github.semiprojectshop.repository.aery.admin;
 
 public class ssss {
 
-	private String name() {
+	private String d {
 		
 	}
 }
