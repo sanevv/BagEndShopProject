@@ -13,6 +13,7 @@ public class SearchConditions {
     @Setter(AccessLevel.NONE)
     private SearchType searchType;
 
+
     public void covertSearchType(){
         if(searchColumn == null){
             this.searchType = SearchType.USER_ID;
