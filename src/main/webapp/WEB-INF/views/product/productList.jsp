@@ -8,7 +8,7 @@
 <!-- main contents -->
 <main id="main">
     <div class="inner">
-        <h2 class=""></h2>
+        <h2 class="">zz</h2>
         <ul class="product-list type-4">
             <li>
                 <div class="product-img">
@@ -25,7 +25,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -42,7 +42,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -59,7 +59,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -76,7 +76,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -93,7 +93,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -110,7 +110,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
             <li>
                 <div class="product-img">
@@ -127,7 +127,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="javascropt:;" class="product-link"></a>
+                <a href="javascript:;" class="product-link"></a>
             </li>
         </ul>
     </div>
