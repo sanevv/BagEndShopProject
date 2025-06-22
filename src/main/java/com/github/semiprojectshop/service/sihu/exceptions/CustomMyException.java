@@ -1,4 +1,4 @@
-package com.github.semiprojectshop.service.exceptions;
+package com.github.semiprojectshop.service.sihu.exceptions;
 
 public class CustomMyException extends  RuntimeException{
 

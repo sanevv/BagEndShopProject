@@ -1,5 +1,6 @@
 package com.github.semiprojectshop.repository.sihu.product;
 
+import com.github.semiprojectshop.repository.sihu.user.MyUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -12,6 +13,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private MyUser myUser;
 
     private String productName;
     private String productInfo;

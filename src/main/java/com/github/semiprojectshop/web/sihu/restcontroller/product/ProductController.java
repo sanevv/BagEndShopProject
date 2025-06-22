@@ -1,7 +1,6 @@
 package com.github.semiprojectshop.web.sihu.restcontroller.product;
 
-import com.github.semiprojectshop.config.cool.CoolSmsProperties;
-import com.github.semiprojectshop.service.product.ProductService;
+import com.github.semiprojectshop.service.sihu.product.ProductService;
 import com.github.semiprojectshop.web.sihu.dto.CustomResponse;
 import com.github.semiprojectshop.web.sihu.dto.product.MainProductResponse;
 import lombok.RequiredArgsConstructor;
