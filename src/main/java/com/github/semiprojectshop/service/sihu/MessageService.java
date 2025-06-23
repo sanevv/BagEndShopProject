@@ -1,8 +1,7 @@
-package com.github.semiprojectshop.service;
+package com.github.semiprojectshop.service.sihu;
 
 import com.github.semiprojectshop.config.cool.CoolSmsProperties;
 import com.github.semiprojectshop.web.sihu.dto.sms.MessageRequest;
-import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import net.nurigo.sdk.message.model.Message;
