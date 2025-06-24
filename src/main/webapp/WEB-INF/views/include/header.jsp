@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/reset.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/common.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <%-- jQueryUI CSS 및 JS --%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery-3.7.1.min.js"></script>
 
     <div id="wrap">
         <!-- header -->
