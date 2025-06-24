@@ -18,14 +18,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/*
+
 @WebServlet(
         description = "사용자가 웹에서 *.team1 을 했을 경우 이 서블릿이 응답을 해주도록 한다.",
         urlPatterns = { "*.team1" },
         initParams = {
                 @WebInitParam(name = "propertyConfig", value = "/WEB-INF/views/aery/CommandAery.properties", description = "*.team1 에 대한 클래스의 매핑파일")
         })
-*/        
+
 public class FrontControllerAery extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
