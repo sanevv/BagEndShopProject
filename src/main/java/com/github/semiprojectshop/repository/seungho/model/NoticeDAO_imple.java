@@ -34,7 +34,7 @@ public class NoticeDAO_imple implements NoticeDAO {
 		conn = ds.getConnection();
 		
 		try {
-			String sql =
+//			String sql =
 			
 		}finally {
 			close();

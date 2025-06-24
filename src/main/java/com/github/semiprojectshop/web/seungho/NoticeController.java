@@ -18,10 +18,10 @@ public class NoticeController {
 	public String notice(HttpServletRequest request) {
 		String notice_id = request.getParameter("notice_id");
 		
-		NoticeVO nvo = ndao.getNoticeID(notice_id);
+//		NoticeVO nvo = ndao.getNoticeID(notice_id);
 		
 		
-		return ;
+		return null;
 	}
 	
 	
