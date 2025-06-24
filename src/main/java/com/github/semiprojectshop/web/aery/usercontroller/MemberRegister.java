@@ -9,7 +9,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
 import com.github.semiprojectshop.repository.aery.user.model.MemberDAO;
-import com.github.semiprojectshop.repository.aery.user.model.MemberDAO_imple;
 import com.github.semiprojectshop.web.aery.commoncontroller.AbstractController;
 
 import jakarta.servlet.ServletContext;

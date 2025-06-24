@@ -6,9 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
@@ -18,11 +15,11 @@ import com.github.semiprojectshop.repository.aery.util.security.Sha256;
 
 import lombok.RequiredArgsConstructor;
 
-@Repository//자동생성객체선언
-@RequiredArgsConstructor //final 객체생성자 만들기
+@Repository // 자동생성객체선언
+@RequiredArgsConstructor // final 객체생성자 만들기
 public class MemberDAO_imple implements MemberDAO {
 	
-	//DataSource 자동생성
+	// DataSource 자동생성
 	private final DataSource ds;  // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다. 
 	private Connection conn;
 	private PreparedStatement pstmt;
@@ -122,46 +119,50 @@ public class MemberDAO_imple implements MemberDAO {
 	
 	// 로그인 처리 
 	@Override
-	public MemberVO login(Map<String, String> paraMap) throws SQLException {
-		
-		MemberVO member = null;
-		
-		try {
-			 conn = ds.getConnection();
-			 
-			 String sql = " select email, password, name, phone_number, "
-				 		+ "        zip_code, address, address_details, register_at, role_id "
-				 		+ " from my_user "
-				 		+ " where email = ? and password = ? ";
-			 
-			 pstmt = conn.prepareStatement(sql);
-			 
-			 pstmt.setString(1, paraMap.get("email"));
-			 pstmt.setString(2, Sha256.encrypt(paraMap.get("password"))); // 비밀번호 SHA256 단방향 암호화
-			 
-			 rs = pstmt.executeQuery();
-			 
-			 if(rs.next()) {
-				 
-				 member = new MemberVO();
-				 
-				 member.setUserId(rs.getInt("user_id"));
-		         member.setEmail(rs.getString("email"));
-		         member.setName(rs.getString("name"));
-		         member.setPhoneNumber(rs.getString("phone_number"));
-		         member.setZipCode(rs.getInt("zip_code"));
-		         member.setAddress(rs.getString("address"));
-		         member.setDetailAddress(rs.getString("address_details"));
-		         member.setRegisterAt(rs.getString("register_at"));
-		         member.setRoleId(rs.getInt("role_id"));;
-					 
-				 }
-				 
-		} finally {
-			close();
-		}
-		
-		return member;
+    public MemberVO login(Map<String, String> paramap) throws SQLException {
+
+        MemberVO member = null;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " select user_id, email, password, name, phone_number, zip_code, " 
+                       + "      address, address_details, to_char(register_at, 'yyyy-mm-dd') as register_at, role_id  " 
+                       + " from my_user " 
+                       + " where email = ? and password = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, paramap.get("email"));
+            pstmt.setString(2, paramap.get("password"));
+
+            rs = pstmt.executeQuery();
+
+            if(rs.next()){
+
+                member = new MemberVO();
+
+                member.setUserId(rs.getInt("user_id"));
+                member.setEmail(rs.getString("email"));
+                member.setPassword(rs.getString("password"));
+                member.setName(rs.getString("name"));
+                member.setPhoneNumber(rs.getString("phone_number"));
+                member.setZipCode(rs.getInt("zip_code"));
+                member.setAddress(rs.getString("address"));
+                member.setDetailAddress(rs.getString("address_details"));
+                member.setRegisterAt(rs.getString("register_at"));
+                member.setRoleId(rs.getInt("role_id"));
+
+                return member;
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return member;
 	}// end of public MemberVO login(Map<String, String> paraMap) throws SQLException-----
 
 
