@@ -1,5 +1,7 @@
 package com.github.semiprojectshop.web.seungho;
 
+import java.sql.SQLException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,11 @@ public class NoticeController {
 	public String notice(HttpServletRequest request) {
 		String notice_id = request.getParameter("notice_id");
 		
-//		NoticeVO nvo = ndao.getNoticeID(notice_id);
+	try {
+		NoticeVO nvo = ndao.getNoticeID(notice_id);
+	} catch (SQLException e) {
+
+	}
 		
 		
 		return null;
