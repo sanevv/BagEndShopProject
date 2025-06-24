@@ -10,7 +10,6 @@
 
 
 <jsp:include page="../include/header.jsp"/>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/login/myuserLogin.css">
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/login/myUserLogin.js" defer></script>
 <script type="text/javascript" defer>
 

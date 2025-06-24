@@ -112,12 +112,16 @@ public class FirstController {
         return "member/findEmail";
     }
 
-    @PostMapping("/findEmail.up")
-    public String findEmailPost (HttpServletRequest request){
+    @GetMapping("/findEmailSuccess.up")
+    public String findEmailSuccess (HttpServletRequest request, HttpServletResponse response){
+
+        String name = request.getParameter("userName");
+        String phoneNum = request.getParameter("phoneNumber");
+        int cnt = 0;
 
 
 
-        return "member/findEmail";
+        return "member/findEmailSuccess";
     }
 
 

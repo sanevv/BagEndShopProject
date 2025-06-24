@@ -69,6 +69,40 @@ public class MemberDAOImple implements MemberDAO{
 
         return member;
     }
+
+    // 이메일 찾기를 위한 것
+    @Override
+    public boolean findPhoneNum(Map<String, String> paramap) throws SQLException {
+
+        boolean result = false;
+
+        String phoneNum = paramap.get("phoneNum");
+        System.out.println("변환 전 전화번호: " + phoneNum);
+
+        phoneNum = phoneNum.substring(0, 3) + "-" + phoneNum.substring(3,7) + "-" + phoneNum.substring(7);
+        System.out.println("변환 후 전화번호: " + phoneNum);
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " select phone_number from my_user where name=? and phone_number=? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, paramap.get("name"));
+            pstmt.setString(2, phoneNum);
+
+            rs = pstmt.executeQuery();
+
+            result = rs.next();
+
+            System.out.println("조회 결과: " + result);
+
+        } finally {
+
+        }
+
+        return result;
+    }
 }
 
 
