@@ -23,6 +23,15 @@ public class ProductCart {
     private int quantity;
     private LocalDateTime createdAt;
 
+    public static ProductCart fromProductMyUserQuantity(Product product, MyUser myUser, int quantity) {
+        ProductCart productCart = new ProductCart();
+        productCart.product = product;
+        productCart.myUser = myUser;
+        productCart.quantity = quantity;
+        productCart.createdAt = LocalDateTime.now();
+        return productCart;
+    }
+
 
 
 }
