@@ -11,28 +11,35 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.springframework.stereotype.Repository;
+
 import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
 import com.github.semiprojectshop.repository.aery.util.security.Sha256;
 
-public class MemberDAO_imple implements MemberDAO {
+import lombok.RequiredArgsConstructor;
 
-	private DataSource ds;  // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다. 
+@Repository//자동생성객체선언
+@RequiredArgsConstructor //final 객체생성자 만들기
+public class MemberDAO_imple implements MemberDAO {
+	
+	//DataSource 자동생성
+	private final DataSource ds;  // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다. 
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	
-	// 생성자
-	public MemberDAO_imple() {
-		
-		try {
-			Context initContext = new InitialContext();
-		    Context envContext  = (Context)initContext.lookup("java:/comp/env");
-		    ds = (DataSource)envContext.lookup("jdbc/myoracle");
-		    
-		} catch(NamingException e) {
-			e.printStackTrace();
-		}
-	}
+//	// 생성자
+//	public MemberDAO_imple() {
+//		
+//		try {
+//			Context initContext = new InitialContext();
+//		    Context envContext  = (Context)initContext.lookup("java:/comp/env");
+//		    ds = (DataSource)envContext.lookup("jdbc/myoracle");
+//		    
+//		} catch(NamingException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	
 	// 사용한 자원을 반납하는 close() 메소드 생성하기 // 스프링에서 관리 중으로 close() 사용 x
@@ -80,7 +87,7 @@ public class MemberDAO_imple implements MemberDAO {
 	// 회원가입을 해주는 메소드 (my_user 테이블에 insert)
 	@Override
 	public int registerMember(MemberVO member) throws SQLException {
-		
+		System.out.println("dao생성 완료 registerMember 메서드 실행");
 		int result = 0;
 		
 		try {
@@ -88,7 +95,7 @@ public class MemberDAO_imple implements MemberDAO {
 			 
 			  String sql = " insert into my_user(email, password, name, phone_number,"
 			  		     + " zip_code, address, address_details, register_at, role_id)"
-			  		     + " values (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+			  		     + " values (?, ?, ?, ?, ?, ?, ?, sysdate, ?) ";
 			  
 			  pstmt = conn.prepareStatement(sql);
 			  
@@ -99,8 +106,7 @@ public class MemberDAO_imple implements MemberDAO {
 			  pstmt.setInt(5, member.getZipCode());
 			  pstmt.setString(6, member.getAddress());
 			  pstmt.setString(7, member.getDetailAddress());
-			  pstmt.setString(8, member.getRegisterAt());
-			  pstmt.setInt(9, 1);
+			  pstmt.setInt(8, member.getRoleId());
 			  
 			  result = pstmt.executeUpdate();
 			  

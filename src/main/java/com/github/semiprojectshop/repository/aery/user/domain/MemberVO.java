@@ -1,27 +1,17 @@
 package com.github.semiprojectshop.repository.aery.user.domain;
 
 
-
-
 public class MemberVO {
 
-	
 	private int userId;                // 회원아이디
-	
 	private String email;              // 이메일
 	private String password;           // 비밀번호 (SHA-256 암호화 대상)
 	private String name;               // 회원명
-	
 	private String phoneNumber ;      // 연락처
-	
 	private int zipCode ;              // 우편번호
-	
 	private String address;            // 주소
-	
 	private String detailAddress;      // 상세주소
-	
 	private String registerAt ;        // 가입일자 
-	
 	private int roleId = 1;            // roleId 기본값 1(일반사용자)
 
 	
