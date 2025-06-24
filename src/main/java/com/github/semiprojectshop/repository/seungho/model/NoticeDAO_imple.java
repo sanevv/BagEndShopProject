@@ -34,7 +34,24 @@ public class NoticeDAO_imple implements NoticeDAO {
 		conn = ds.getConnection();
 		
 		try {
-//			String sql =
+			String sql = " select notice_id, user_id, title, contents, thumbnail, created_at "
+						+ " from notice "
+						+ " where notice_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, notice_id);
+			pstmt.executeQuery();
+			
+			if(rs.next()) {
+				NoticeVO nvo = new NoticeVO();
+				nvo.setNotice_id(rs.getString(1));
+				nvo.setUserid(rs.getString(2));
+				nvo.setTitle(rs.getString(3));
+				nvo.setContents(rs.getString(4));
+				nvo.setThumbnail(rs.getString(5));
+				nvo.setCreated_at(rs.getString(6));
+				
+			}
 			
 		}finally {
 			close();
