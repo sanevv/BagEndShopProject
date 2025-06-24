@@ -28,6 +28,10 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductImage> productImageList;
 
