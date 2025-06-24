@@ -1,17 +1,16 @@
-package com.github.semiprojectshop.web.sihu.viewcontroller;
+package com.github.semiprojectshop.web.sanhae.viewcontroller;
 
-import ch.qos.logback.core.model.Model;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/product")
-public class ProductController {
-
-    @GetMapping("/list")
+public class ProductDetailController {
+    // GET으로 들어올 때
+    @GetMapping("/detail")
     public String list() {
-        return "product/productList";
+        return "product/productDetail";
     }
-
 }
