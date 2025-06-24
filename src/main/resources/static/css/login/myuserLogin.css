@@ -1,0 +1,73 @@
+/* 로그인 전체 wrapper */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 0;
+}
+
+/* 테이블 정렬 유지 */
+#memberLoginFrm table.type-full {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* label 영역 */
+#memberLoginFrm th {
+    text-align: left;
+    padding-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    width: 80px;
+}
+
+/* input 셀 */
+#memberLoginFrm td {
+    padding-bottom: 20px;
+}
+
+/* input 필드 */
+#memberLoginFrm input[type="text"],
+#memberLoginFrm input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+}
+
+/* 로그인 버튼 */
+#btnSubmit {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* 아이디저장 및 찾기 */
+.checkbox {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    align-items: center;
+}
+
+/* 회원가입 링크 */
+.find {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.find a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}

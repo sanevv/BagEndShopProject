@@ -1,16 +1,11 @@
 package com.github.semiprojectshop.repository.kyeongsoo.model;
 
 import com.github.semiprojectshop.config.encryption.AES256;
-import com.github.semiprojectshop.config.encryption.SecretMyKey;
-import com.github.semiprojectshop.repository.kyeongsoo.domain.ProductVO;
+import com.github.semiprojectshop.repository.kyeongsoo.productDomain.ProductVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
