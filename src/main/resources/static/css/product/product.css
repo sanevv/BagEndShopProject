@@ -14,12 +14,15 @@
     position: relative;
     width: 25%;
 }
-
-
 .product-list .product-img {
     position: relative;
     width: 100%;
 }
+
+.product-list li:not(:last-child) .product-img{
+    border-right: 1px solid #ddd;
+}
+
 .product-list .product-img img {
     background: #f8f8f8;
     object-fit: cover;
@@ -75,6 +78,50 @@
 }
 .product-list .btn-wish.active {
     background-image: url(../../images/common/icon/icon_wish_active.png);
+}
+
+/***** 상품리스트 상단 *****/
+.product-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2.5rem 0 1.5rem;
+}
+.product-top .category-list {
+    display: inline-flex;
+    gap: 0 1rem;
+}
+.product-top .category-list li {
+    position: relative;
+}
+
+.product-top .category-list li:not(:last-child) {
+    margin-right: 10px;
+}
+.product-top .category-list li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -14px;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 20px;
+    background-color: #ddd;
+}
+.product-top .category-list li a {
+    font-size: 1.6rem;
+    color: #000;
+}
+.product-top .category-list li a.active {
+    font-weight: bold;
+}
+
+.product-sort {
+    margin-left: auto;
+}
+.product-sort .select-option {
+    height: 40px;
+    padding: 0 0.5rem;
 }
 
 
