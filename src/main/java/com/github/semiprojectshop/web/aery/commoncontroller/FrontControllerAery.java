@@ -1,14 +1,4 @@
-package com.github.semiprojectshop.config.servlet;
-
-import com.github.semiprojectshop.web.sihu.viewcontroller.AbstractController;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebInitParam;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+package com.github.semiprojectshop.web.aery.commoncontroller;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,14 +9,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
+/*
 @WebServlet(
         description = "사용자가 웹에서 *.team1 을 했을 경우 이 서블릿이 응답을 해주도록 한다.",
-        urlPatterns = { "*.do" },
+        urlPatterns = { "*.team1" },
         initParams = {
-                @WebInitParam(name = "propertyConfig", value = "C:/git/semi-project-shop/src/main/java/com/github/semiprojectshop/config/servlet/Command.properties", description = "*.team1 에 대한 클래스의 매핑파일")
+                @WebInitParam(name = "propertyConfig", value = "/WEB-INF/views/aery/CommandAery.properties", description = "*.team1 에 대한 클래스의 매핑파일")
         })
-public class FrontController extends HttpServlet {
+*/        
+public class FrontControllerAery extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class FrontController extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
 
      /*
-         웹브라우저 주소창에서 *.up 을 하면 FrontController 서블릿이 응대를 해오는데
+         웹브라우저 주소창에서 *.team1 을 하면 FrontController 서블릿이 응대를 해오는데
          맨 처음에 자동적으로 실행되어지는 메소드가 init(ServletConfig config) 이다.
          여기서 중요한 것은 init(ServletConfig config) 메소드는 WAS(톰캣)가 구동되어진 후
          딱 1번만 init(ServletConfig config) 메소드가 실행되어지고, 그 이후에는 실행이 되지 않는다.
@@ -43,19 +43,19 @@ public class FrontController extends HttpServlet {
      */
 
         // *** 확인용 *** //
-        // System.out.println("~~~~ 확인용 => 서블릿 FrontController 의 init(ServletConfig config) 메소드가 실행됨.");
+         System.out.println("~~~~ 확인용 => 서블릿 FrontController 의 init(ServletConfig config) 메소드가 실행됨.");
         // ~~~~ 확인용 => 서블릿 FrontController 의 init(ServletConfig config) 메소드가 실행됨.
 
         FileInputStream fis = null;
         // 특정 파일에 있는 내용을 읽어오기 위한 용도로 쓰이는 객체
 
-        String props = config.getInitParameter("propertyConfig");
+        String props = config.getServletContext().getRealPath(config.getInitParameter("propertyConfig"));
         // System.out.println("~~~~ 확인용 props => " + props);
-        // ~~~~ 확인용 props => C:/NCS/workspace_jsp/MyMVC/src/main/webapp/WEB-INF/Command.properties
+        // ~~~~ 확인용 props => C:/git/semi-project-shop/src/main/webapp/WEB-INF/views/aery/Command.properties
 
         try {
             fis = new FileInputStream(props);
-            // fis 는 C:/NCS/workspace_jsp/MyMVC/src/main/webapp/WEB-INF/Command.properties 파일의 내용을 읽어오기 위한 용도로 쓰이는 객체이다.
+            // fis 는 C:/git/semi-project-shop/src/main/webapp/WEB-INF/views/aery/Command.properties 파일의 내용을 읽어오기 위한 용도로 쓰이는 객체이다.
 
             Properties pr = new Properties();
             // Properties 는 Collection 중 HashMap 계열중의 하나로써
@@ -65,7 +65,7 @@ public class FrontController extends HttpServlet {
 
             pr.load(fis);
       /*
-           pr.load(fis); 은 fis 객체를 사용하여 C:/NCS/workspace_jsp/MyMVC/src/main/webapp/WEB-INF/Command.properties 파일의 내용을 읽어다가
+           pr.load(fis); 은 fis 객체를 사용하여 C:/git/semi-project-shop/src/main/webapp/WEB-INF/views/aery/Command.properties 파일의 내용을 읽어다가
          Properties 클래스의 객체인 pr 에 로드시킨다.
          그러면 pr 은 읽어온 파일(Command.properties)의 내용에서
          = 을 기준으로 왼쪽은 key로 보고, 오른쪽은 value 로 인식한다.
@@ -73,7 +73,7 @@ public class FrontController extends HttpServlet {
             Enumeration<Object> en = pr.keys();
        /*
           pr.keys(); 은
-          C:/NCS/workspace_jsp/MyMVC/src/main/webapp/WEB-INF/Command.properties 파일의 내용물에서
+          C:/git/semi-project-shop/src/main/webapp/WEB-INF/views/aery/Command.properties 파일의 내용물에서
           = 을 기준으로 왼쪽에 있는 모든 key 들만 가져오는 것이다.
         */
 
@@ -83,16 +83,6 @@ public class FrontController extends HttpServlet {
 
                 //   System.out.println("~~~~ 확인용 key => " + key);
                 //   System.out.println("#### 확인용 value => " + pr.getProperty(key) + "\n");
-         /*
-            ~~~~ 확인용 key => /test/test2.up
-            #### 확인용 value => test.controller.Test2Controller
-
-            ~~~~ 확인용 key => /test3.up
-            #### 확인용 value => test.controller.Test3Controller
-
-            ~~~~ 확인용 key => /test1.up
-            #### 확인용 value => test.controller.Test1Controller
-          */
 
                 String className = pr.getProperty(key);
 
@@ -110,11 +100,6 @@ public class FrontController extends HttpServlet {
 
                     Object obj = constrt.newInstance();
                     // 생성자로 부터 실제 객체(인스턴스)를 생성해주는 것이다.
-               /*
-                   @@@ 확인용 Test2Controller 클래스의 기본생성자 호출함 @@@
-                       $$$ 확인용 Test3Controller 클래스의 기본생성자 호출함 $$$
-                       ### 확인용 Test1Controller 클래스의 기본생성자 호출함 ###
-               */
 
                     cmdMap.put(key, obj);
 
@@ -132,9 +117,9 @@ public class FrontController extends HttpServlet {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (fis != null) try { fis.close(); } catch (IOException e) { e.printStackTrace(); }
         }
-
-
 
     }// end of public void init(ServletConfig config) throws ServletException--------
 
@@ -143,29 +128,16 @@ public class FrontController extends HttpServlet {
 
         //  System.out.println("#### 확인용 => 서블릿 FrontController 의 doGet 메소드가 실행됨.");
 
-        //    웹브라우저의 주소 입력창에서
-        //   http://localhost:9090/MyMVC/member/idDuplicateCheck.up?userid=leess 와 같이 입력되었더라면
-        //   String url = request.getRequestURL().toString();
         //   System.out.println("~~~~ 확인용 url => " + url);
-        //   ~~~~ 확인용 url => http://localhost:9090/MyMVC/member/idDuplicateCheck.up
 
 
         //    웹브라우저의 주소 입력창에서
-        //   http://localhost:9090/MyMVC/member/idDuplicateCheck.up?userid=leess 와 같이 입력되었더라면
+        //   http://localhost:8080//views/aery/user/memberRegister.team1?userid=1 와 같이 입력되었더라면
         String uri = request.getRequestURI();
         //   System.out.println("~~~~ 확인용 uri => " + uri);
-        // ~~~~ 확인용 uri => /MyMVC/member/idDuplicateCheck.up
-        // ~~~~ 확인용 uri => /MyMVC/test1.up
-        // ~~~~ 확인용 uri => /MyMVC/test/test2.up
-        // ~~~~ 확인용 uri => /MyMVC/test3.up
+
 
         String key = uri.substring( request.getContextPath().length() );
-      /*
-            /member/idDuplicateCheck.up
-            /test1.up
-            /test/test2.up
-            /test3.up
-      */
 
         AbstractController action = (AbstractController) cmdMap.get(key);
 
