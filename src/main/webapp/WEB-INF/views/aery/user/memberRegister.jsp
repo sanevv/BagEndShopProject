@@ -5,7 +5,7 @@
    String ctxPath = request.getContextPath();
 %>    
 
-<jsp:include page="<%= ctxPath %>/WEB-INF/views/include/header.jsp" />
+<jsp:include page="../../include/header.jsp" />
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/user/memberRegister.css" />
 
@@ -14,7 +14,7 @@
 
 <div class="row" id="divRegisterFrm">
    <div class="col-md-12">
-      <form name="registerFrm" method="post" action="<%= ctxPath %>/memberRegister.team1">s
+      <form name="registerFrm" method="post" action="<%= ctxPath %>/memberRegister.team1">
           <table id="tblMemberRegister">
              <thead>
                 <tr>
@@ -27,16 +27,14 @@
                     <td colspan="2" style="line-height: 50%;">&nbsp;</td>
                 </tr>
                 
-                 <tr>
+                  <tr>
                     <td>이메일&nbsp;<span class="star">*</span></td>
                     <td>
                        <input type="text" name="email" id="email" maxlength="60" class="requiredInfo" />
                        <span class="error">이메일 형식에 맞지 않습니다.</span>
                        <%-- 이메일중복체크 --%>
                        <span id="emailcheck">이메일중복확인</span>
-                       <p class="help">(영문소문자/숫자, 4~16자)</p>
                        <span id="emailCheckResult"></span>
-                       <span class="error">이메일은 필수입력 사항입니다.</span>
                     </td>
                 </tr>
                 
@@ -138,4 +136,4 @@
    </div>
 </div>
 
-<jsp:include page="<%= ctxPath%>/WEB-INF/views/include/footer.jsp" />
+<jsp:include page="../../include/footer.jsp" />
