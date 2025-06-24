@@ -16,5 +16,6 @@ public interface MemberDAO {
 
 	// 로그인 처리
 	MemberVO login(Map<String, String> paraMap) throws SQLException;
+	
 }
 

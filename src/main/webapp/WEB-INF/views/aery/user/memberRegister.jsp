@@ -5,16 +5,16 @@
    String ctxPath = request.getContextPath();
 %>    
 
-<jsp:include page="<%= ctxPath%>/WEB-INF/views/include/header.jsp" />
+<jsp:include page="../../include/header.jsp" />
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/user/userRegister.css" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/user/memberRegister.css" />
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/js/user/userRegister.js"></script>
 
 <div class="row" id="divRegisterFrm">
    <div class="col-md-12">
-      <form name="registerFrm" method="post" action="<%= ctxPath %>/memberRegister.team1">s
+      <form name="registerFrm" method="post" action="<%= ctxPath %>/memberRegister.team1">
           <table id="tblMemberRegister">
              <thead>
                 <tr>
@@ -27,7 +27,7 @@
                     <td colspan="2" style="line-height: 50%;">&nbsp;</td>
                 </tr>
                 
-                 <tr>
+                  <tr>
                     <td>이메일&nbsp;<span class="star">*</span></td>
                     <td>
                        <input type="text" name="email" id="email" maxlength="60" class="requiredInfo" />
@@ -35,7 +35,6 @@
                        <%-- 이메일중복체크 --%>
                        <span id="emailcheck">이메일중복확인</span>
                        <span id="emailCheckResult"></span>
-                       <span class="error">이메일은 필수입력 사항입니다.</span>
                     </td>
                 </tr>
                 
@@ -43,6 +42,7 @@
                     <td>비밀번호&nbsp;<span class="star">*</span></td>
                     <td>
                        <input type="password" name="password" id="password" maxlength="15" class="requiredInfo" />
+                       <p class="help">(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~16</p>
                        <span class="error">암호는 영문자,숫자,특수기호가 혼합된 8~15 글자로 입력하세요.</span>
                     </td>
                 </tr>
@@ -105,7 +105,7 @@
                 
                 <tr>
                     <td colspan="2">
-                       <label for="agree">이용약관에 동의합니다</label>&nbsp;&nbsp;<input type="checkbox" id="agree" />
+                       <label for="agree">이용약관에 동의하십니까?</label>&nbsp;&nbsp;<input type="checkbox" id="agree" />&nbsp;<label for="agree">동의함</label>
                     </td>
                 </tr>
                 
@@ -136,4 +136,4 @@
    </div>
 </div>
 
-<jsp:include page="<%= ctxPath%>/WEB-INF/views/include/footer.jsp" />
+<jsp:include page="../../include/footer.jsp" />
