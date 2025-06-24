@@ -1,4 +1,4 @@
-package com.github.semiprojectshop.repository.kyeongsoo.domain;
+package com.github.semiprojectshop.repository.kyeongsoo.productDomain;
 
 import lombok.*;
 
