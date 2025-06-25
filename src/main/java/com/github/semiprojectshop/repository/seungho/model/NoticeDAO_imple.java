@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
-import com.github.semiprojectshop.config.SwaggerProperties;
 import com.github.semiprojectshop.repository.seungho.domain.NoticeVO;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NoticeDAO_imple implements NoticeDAO {
 
-	private final SwaggerProperties swaggerProperties;
+
 	private final DataSource ds;
 	private Connection conn;
 	private PreparedStatement pstmt;
