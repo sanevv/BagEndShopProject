@@ -47,11 +47,9 @@ public class MemberRegister extends AbstractController {
 			String hp1 = request.getParameter("hp1");
 			String hp2 = request.getParameter("hp2");
 			String hp3 = request.getParameter("hp3");
-			int zipCode = Integer.parseInt(request.getParameter("zipCode"));
+			String zipCode = request.getParameter("zipCode");
 			String address = request.getParameter("address");
 			String addressDetails = request.getParameter("addressDetails");
-			String registerAt = request.getParameter("addressDetails");
-			
 			String phoneNumber  = hp1 + hp2 + hp3;
 			
 			MemberVO member = new MemberVO();
@@ -62,8 +60,6 @@ public class MemberRegister extends AbstractController {
 			member.setZipCode(zipCode);
 			member.setAddress(address);
 			member.setDetailAddress(addressDetails);
-			member.setRegisterAt(registerAt);
-
 			
 			
 			// #### 회원가입이 성공되어지면 자동으로 로그인 되도록 하겠다. #### //
