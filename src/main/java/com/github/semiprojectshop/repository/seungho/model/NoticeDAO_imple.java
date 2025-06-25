@@ -1,7 +1,6 @@
 package com.github.semiprojectshop.repository.seungho.model;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +11,8 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
-import com.github.semiprojectshop.config.SwaggerProperties;
+
+import com.github.semiprojectshop.config.web.SwaggerProperties;
 import com.github.semiprojectshop.repository.seungho.domain.NoticeVO;
 
 import lombok.RequiredArgsConstructor;
