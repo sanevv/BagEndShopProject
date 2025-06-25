@@ -3,13 +3,19 @@ package com.github.semiprojectshop.service.sihu;
 import com.github.semiprojectshop.repository.sihu.product.Product;
 import com.github.semiprojectshop.repository.sihu.product.cart.ProductCart;
 import com.github.semiprojectshop.repository.sihu.product.cart.ProductCartJpa;
+import com.github.semiprojectshop.repository.sihu.product.cart.ProductCartJpaCustom;
+import com.github.semiprojectshop.repository.sihu.product.cart.ProductCartJpaCustomImpl;
 import com.github.semiprojectshop.repository.sihu.user.MyUser;
 import com.github.semiprojectshop.service.sihu.exceptions.CustomMyException;
 import com.github.semiprojectshop.web.sihu.dto.product.cart.AddToCartRequest;
 import com.github.semiprojectshop.web.sihu.dto.product.cart.AddToCartResponse;
+import com.github.semiprojectshop.web.sihu.dto.product.cart.CartListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,4 +56,10 @@ public class CartService {
         throw CustomMyException.fromMessage("장바구니에서 삭제하는데 실패했습니다. 다시 시도해주세요.");
     }
 
+    @Transactional(readOnly = true)
+    public List<CartListResponse> getAllCartListByUserId(long loginUserId) {
+
+        return productCartJpa.findAllByUserId(loginUserId);
+
+    }
 }

@@ -1,4 +1,4 @@
-package com.github.semiprojectshop.config;
+package com.github.semiprojectshop.config.web;
 
 
 import com.github.semiprojectshop.config.server.ServerUrlProperties;
