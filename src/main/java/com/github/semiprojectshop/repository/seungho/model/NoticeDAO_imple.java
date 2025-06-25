@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NoticeDAO_imple implements NoticeDAO {
 
+
 	private final DataSource ds;
 	private Connection conn;
 	private PreparedStatement pstmt;
