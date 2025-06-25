@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
-
 import com.github.semiprojectshop.repository.seungho.domain.NoticeVO;
 
 import lombok.RequiredArgsConstructor;
