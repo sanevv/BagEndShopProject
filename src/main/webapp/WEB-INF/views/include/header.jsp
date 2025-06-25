@@ -8,12 +8,14 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/bootstrap-4.6.2-dist/css/bootstrap.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/reset.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/common.css">
+
+    <script src="${pageContext.request.contextPath}/lib/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <%-- jQueryUI CSS 및 JS --%>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <div id="wrap">
         <!-- header -->
@@ -64,7 +66,7 @@
                         <ul>
                             <li><a href="productList.one">BAG</a></li>
                             <li><a href="productList.one">ACC</a></li>
-                            <li><a href="productList.one">시후바보</a></li>
+                            <li><a href="productList.one">시후냉동바보</a></li>
                             <li><a href="productList.one">승호바보</a></li>
                             <li><a href="productList.one">경수바보</a></li>
                             <li><a href="productList.one">애리천재</a></li>

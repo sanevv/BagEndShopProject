@@ -69,21 +69,21 @@
     <div class="result-title">아이디 찾기</div>
     <div class="result-desc">
         아이디 찾기가 완료되었습니다.<br>
-        가입된 아이디가 총 <strong>${idCount}</strong>개 있습니다.
+        가입된 아이디가 총 <strong>${requestScope.cnt}</strong>개 있습니다.
     </div>
 
     <div class="id-box">
         <div style="font-size:14px; color:#888;">아이디 찾기 결과</div>
         <label>
             <input type="radio" name="foundId" checked>
-            <strong>${maskedId}</strong>
-            <span style="color: #555;"> ( ${regDate} 가입 )</span>
+            <strong>${requestScope.email}</strong>
+            <span style="color: #555;"> ( ${requestScope.registerAt} 가입 )</span>
         </label>
     </div>
 
     <div class="btn-group">
-        <a href="/test/login.up" class="btn-black">로그인</a>
-        <a href="" class="btn-black">비밀번호 찾기</a>
+        <a href="<%= request.getContextPath()%>/test/login.up" class="btn-black">로그인</a>
+        <a href="<%= request.getContextPath()%>/test/findPassword.up" class="btn-black">비밀번호 찾기</a>
     </div>
 </div>
 

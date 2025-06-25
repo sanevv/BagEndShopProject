@@ -1,4 +1,4 @@
-package com.github.semiprojectshop.repository.seungho.domail;
+package com.github.semiprojectshop.repository.seungho.domain;
 
 public class NoticeVO {
 	private String notice_id;

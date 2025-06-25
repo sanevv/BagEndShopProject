@@ -1,17 +1,15 @@
 package com.github.semiprojectshop.web.aery.usercontroller;
 
-
-import jakarta.servlet.ServletContext;
 import org.json.JSONObject;
-
-import com.github.semiprojectshop.repository.aery.user.model.MemberDAO;
-import com.github.semiprojectshop.repository.aery.user.model.MemberDAO_imple;
-import com.github.semiprojectshop.web.aery.commoncontroller.AbstractController;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.github.semiprojectshop.repository.aery.user.model.MemberDAO;
+import com.github.semiprojectshop.web.aery.commoncontroller.AbstractController;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class EmailDuplicateCheck extends AbstractController {
 
@@ -32,10 +30,10 @@ public class EmailDuplicateCheck extends AbstractController {
 			
 			String email = request.getParameter("email");
 			
-//			boolean isExists = mdao.emailDuplicateCheck(email);
+			boolean isExists = mdao.emailDuplicateCheck(email);
 			
 			JSONObject jsonObj = new JSONObject(); 
-//			jsonObj.put("isExists", isExists);
+			jsonObj.put("isExists", isExists);
 			
 			String json = jsonObj.toString();
 			

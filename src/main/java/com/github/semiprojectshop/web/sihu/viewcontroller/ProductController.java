@@ -13,4 +13,5 @@ public class ProductController {
     public String list() {
         return "product/productList";
     }
+
 }

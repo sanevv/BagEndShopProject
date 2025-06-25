@@ -38,7 +38,8 @@ public class ProductJpaCustomImpl implements ProductJpaCustom {
                 )
                 ))
                 .from(QProduct.product)
-                .orderBy(QProduct.product.createdAt.desc())
+                .orderBy(QProduct.product.createdAt.desc(),
+                        QProduct.product.productId.asc()) //최신순 정렬 값이 같을경우 //productId로 오름차순 정렬
                 .limit(10)
                 .fetch();
     }
@@ -80,7 +81,7 @@ public class ProductJpaCustomImpl implements ProductJpaCustom {
                 ))
                 .from(QProduct.product)
                 .where(categoryCondition)
-                .orderBy(orderSpecifier)
+                .orderBy(orderSpecifier, QProduct.product.productId.asc())
                 .offset(productListRequest.getPage() * productListRequest.getSize())
                 .limit(productListRequest.getSize())
                 .fetch();
