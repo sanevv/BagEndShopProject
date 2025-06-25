@@ -15,7 +15,7 @@
 <script type="text/javascript" src="/aery/js/user/memberRegister.js"></script>
 
 <div class="row" id="registerRow">
-   <div class="container mt-5" id="divRegisterFrm" style="max-width: 600px; width: 100%; margin: 0 auto;">
+   <div class="container mt-5" id="divRegisterFrm" style="max-width: 600px; width: 100%;">
       <form name="registerFrm">
           <table id="tblMemberRegister">  
         	<colgroup>

@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class NoticeListController {
 	private final NoticeDAO ndao;
 	NoticeVO nvo = new NoticeVO();
-	@GetMapping("/list")
+	@GetMapping("/list.one")
 	public String noticeList(HttpServletRequest request) throws SQLException {
 		
 
@@ -72,11 +72,11 @@ public class NoticeListController {
 
 		// **** [맨처음][이전] 만들기 **** //
 		// pageNo ==> 11
-		pageBar += "<li class='page-item'><a class='page-link' href='list?sizePerPage=" + sizePerPage
+		pageBar += "<li class='page-item'><a class='page-link' href='list.one?sizePerPage=" + sizePerPage
 				+ "&currentShowPageNo=1'>[맨처음]</a></li>";
 
 		if (pageNo != 1) {
-			pageBar += "<li class='page-item'><a class='page-link' href='list?sizePerPage=" + sizePerPage
+			pageBar += "<li class='page-item'><a class='page-link' href='list.one?sizePerPage=" + sizePerPage
 					+ "&currentShowPageNo=" + (pageNo - 1) + "'>[이전]</a></li>";
 		}
 
@@ -85,7 +85,7 @@ public class NoticeListController {
 			if (pageNo == Integer.parseInt(currentShowPageNo)) {
 				pageBar += "<li class='page-item active'><a class='page-link' href='#'>" + pageNo + "</a></li>";
 			} else {
-				pageBar += "<li class='page-item'><a class='page-link' href='list?sizePerPage="
+				pageBar += "<li class='page-item'><a class='page-link' href='list.one?sizePerPage="
 						+ sizePerPage + "&currentShowPageNo=" + pageNo + "'>" + pageNo + "</a></li>";
 			}
 
@@ -103,10 +103,10 @@ public class NoticeListController {
 		// pageNo ==> 11
 
 		if (pageNo <= totalPage) {
-			pageBar += "<li class='page-item'><a class='page-link' href='list?sizePerPage=" + sizePerPage
+			pageBar += "<li class='page-item'><a class='page-link' href='list.one?sizePerPage=" + sizePerPage
 					+ "&currentShowPageNo=" + pageNo + "'>[다음]</a></li>";
 		}
-		pageBar += "<li class='page-item'><a class='page-link' href='list?sizePerPage=" + sizePerPage
+		pageBar += "<li class='page-item'><a class='page-link' href='list.one?sizePerPage=" + sizePerPage
 				+ "&currentShowPageNo=" + totalPage + "'>[마지막]</a></li>";
 
 		request.setAttribute("pageBar", pageBar);
