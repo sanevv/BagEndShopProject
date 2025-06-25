@@ -113,16 +113,70 @@ public class FirstController {
     }
 
     @GetMapping("/findEmailSuccess.up")
-    public String findEmailSuccess (HttpServletRequest request, HttpServletResponse response){
+    public String findEmailSuccess (HttpServletRequest request, HttpServletResponse response) throws SQLException {
 
-        String name = request.getParameter("userName");
-        String phoneNum = request.getParameter("phoneNumber");
+        MemberVO mvo = new MemberVO();
+
+        String name = request.getParameter("name");
+        String phoneNum = request.getParameter("phoneNum");
         int cnt = 0;
+
+        Map<String, String> paramap = new HashMap<>();
+        paramap.put("name", name);
+        paramap.put("phoneNum", phoneNum);
+
+        MemberVO findEmailAndDate = memberDAO.knowTheEmailAndTheDate(paramap);
+
+        String email_1 = findEmailAndDate.getEmail();
+
+        String[] emailParts = email_1.split("@");
+        String emailPrefix = emailParts[0];
+        String emailDomain = emailParts[1];
+
+        StringBuilder sb = new StringBuilder();
+
+        if (emailPrefix.length() <= 3) {
+            // 앞자리 1개만 마스킹, 나머지는 그대로
+            sb.append("*");
+            if (emailPrefix.length() > 1) {
+                sb.append(emailPrefix.substring(1));
+            }
+        } else {
+            // 앞 3자리 유지, 나머지 마스킹
+            sb.append(emailPrefix.substring(0, 3));
+            for (int i = 3; i < emailPrefix.length(); i++) {
+                sb.append("*");
+            }
+        }
+
+        sb.append("@").append(emailDomain);
+        String maskedEmail = sb.toString();
+
+        if(findEmailAndDate != null){
+            mvo.setEmail(maskedEmail);
+            mvo.setRegisterAt(findEmailAndDate.getRegisterAt());
+            cnt++;
+        }
+        String email = mvo.getEmail();
+        String registerAt = mvo.getRegisterAt();
+
+        request.setAttribute("email", email);
+        request.setAttribute("registerAt", registerAt);
+        request.setAttribute("cnt", cnt);
 
 
 
         return "member/findEmailSuccess";
     }
+
+    @GetMapping("findPassword.up")
+    public String findPassword (HttpServletRequest request, HttpServletResponse response){
+
+
+
+        return "member/findPassword";
+    }
+
 
 
 }

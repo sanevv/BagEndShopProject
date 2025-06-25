@@ -22,6 +22,17 @@ public class MemberDAOImple implements MemberDAO{
     private PreparedStatement pstmt;
     private ResultSet rs;
 
+    // 사용한 자원을 반납하는 close() 메소드 생성하기
+    private void close() {
+        try {
+            if(rs    != null) {rs.close();     rs=null;}
+            if(pstmt != null) {pstmt.close(); pstmt=null;}
+            if(conn  != null) {conn.close();  conn=null;}
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }// end of private void close()---------------
+
 
     @Override
     public MemberVO login(Map<String, String> paramap) throws SQLException {
@@ -62,8 +73,8 @@ public class MemberDAOImple implements MemberDAO{
             }
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } finally {
+            close();
         }
 
 
@@ -98,10 +109,50 @@ public class MemberDAOImple implements MemberDAO{
             System.out.println("조회 결과: " + result);
 
         } finally {
-
+            close();
         }
 
         return result;
+    }
+
+    // 아이디찾기에서 이메일과 날짜를 알려주는 것
+    @Override
+    public MemberVO knowTheEmailAndTheDate(Map<String, String> paramap) throws SQLException {
+        MemberVO member = null;
+
+        String phoneNum = paramap.get("phoneNum");
+        // System.out.println("변환 전 전화번호: " + phoneNum);
+
+        phoneNum = phoneNum.substring(0, 3) + "-" + phoneNum.substring(3,7) + "-" + phoneNum.substring(7);
+        // System.out.println("변환 후 전화번호: " + phoneNum);
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " select email, to_char(register_at, 'yyyy-mm-dd') as register_at  from my_user where phone_number=? and name=? ";
+
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, phoneNum);
+            pstmt.setString(2, paramap.get("name"));
+
+            rs = pstmt.executeQuery();
+
+
+            if(rs.next()) {
+                member = new MemberVO();
+
+                member.setEmail(rs.getString("email"));
+                member.setRegisterAt(rs.getString("register_at"));
+
+                return member;
+            }
+
+        } finally {
+            close();
+        }
+
+        return member;
     }
 }
 

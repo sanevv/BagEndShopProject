@@ -41,10 +41,15 @@
                     console.log(data.userName);
                     console.log(data.phoneNumber);
                     console.log(data.existUser);
+                    alert(data.phoneNumber);
+                    const phoneNum = data.phoneNumber;
                     if(data.existUser)
-                        window.location.href = `/test/findEmailSuccess.up?name=${data.userName}&phoneNum=${data.phoneNumber}`;
-                    else
-                        window.location.href = `/test/findEmail.up`
+                        window.location.href = "/test/findEmailSuccess.up?name="+data.userName+"&phoneNum="+phoneNum;
+                    else{
+                        alert("해당 정보로 가입된 회원이 없습니다.");
+                        window.location.href = `/test/findEmail.up`;
+                    }
+
                 },
                 error: function(xhr, status, error) {
                     alert("오류가 발생했습니다: " + error);
