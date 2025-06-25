@@ -27,7 +27,6 @@
 
             <%-- admin 로그인하면 노출할 예정입니다. --%>
             <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
-
                 <div class="admin-login">ADMIN 로그인 중</div>
             </c:if>
             <%-- //admin 로그인하면 노출할 예정입니다. --%>
