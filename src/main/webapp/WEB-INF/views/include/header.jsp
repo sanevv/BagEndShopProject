@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +26,10 @@
             --%>
 
             <%-- admin 로그인하면 노출할 예정입니다. --%>
-            <div class="admin-login">ADMIN 로그인 중</div>
+            <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
+
+                <div class="admin-login">ADMIN 로그인 중</div>
+            </c:if>
             <%-- //admin 로그인하면 노출할 예정입니다. --%>
             <div class="header-container">
                 <div class="inner">
@@ -37,9 +40,16 @@
                             <span></span>
                         </button>
                         <div class="navi-item">
-                            <a href="javascript:;" id="login-status">
-                                <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg" alt="마이페이지 아이콘" />
-                            </a>
+                            <c:if test="${empty sessionScope.loginUser}">
+                                <a href="/test/login.up" id="login-status">
+                                    <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg" alt="마이페이지 아이콘" />
+                                </a>
+                            </c:if>
+                            <c:if test="${not empty sessionScope.loginUser}">
+                                <a href="javascript:;" id="login-status">
+                                    <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg" alt="마이페이지 아이콘" />
+                                </a>
+                            </c:if>
                         </div>
                     </div>
                     <div class="logo">
