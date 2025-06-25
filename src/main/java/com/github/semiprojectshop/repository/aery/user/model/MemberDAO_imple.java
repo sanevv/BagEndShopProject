@@ -38,8 +38,7 @@ public class MemberDAO_imple implements MemberDAO {
 //		}
 //	}
 	
-	
-	// 사용한 자원을 반납하는 close() 메소드 생성하기 // 스프링에서 관리 중으로 close() 사용 x
+	// 사용한 자원을 반납하는 close() 메소드 생성하기
 	private void close() {
 		try {
 			if(rs    != null) {rs.close();	  rs=null;}
@@ -51,13 +50,12 @@ public class MemberDAO_imple implements MemberDAO {
 	}// end of private void close()---------------
 	
 	
-
-	// 이메일 중복검사 (tbl_member 테이블에서 email 이 존재하면 true 를 리턴해주고, email 이 존재하지 않으면 false 를 리턴한다) 
+	
+	// 이메일 중복검사 (my_user 테이블에서 email 이 존재하면 true 를 리턴해주고, email 이 존재하지 않으면 false 를 리턴한다) 
 	@Override
 	public boolean emailDuplicateCheck(String email) throws SQLException {
 
 		boolean isExists = false;
-		
 		try {
 			  conn = ds.getConnection();
 			  
@@ -69,16 +67,16 @@ public class MemberDAO_imple implements MemberDAO {
 			  pstmt.setString(1, email);
 			  
 			  rs = pstmt.executeQuery();
+			  
 			  isExists = rs.next(); // 행이 있으면 true  (중복된 email) 
 			                        // 행이 없으면 false (사용가능한 email) 
-			
 		} finally {
 			  close();
 		}
-		
+				
 		return isExists;		
 	}// end of public boolean emailDuplicateCheck(String email) throws SQLException-------
-	
+
 	
 
 	// 회원가입을 해주는 메소드 (my_user 테이블에 insert)
@@ -116,7 +114,7 @@ public class MemberDAO_imple implements MemberDAO {
 	}// end of public int registerMember(MemberVO member) throws SQLException-----------
 
 
-	
+
 	// 로그인 처리 
 	@Override
     public MemberVO login(Map<String, String> paramap) throws SQLException {
@@ -156,15 +154,12 @@ public class MemberDAO_imple implements MemberDAO {
 
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
         return member;
 	}// end of public MemberVO login(Map<String, String> paraMap) throws SQLException-----
-
 
 }
 
