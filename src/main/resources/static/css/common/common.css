@@ -28,9 +28,12 @@
    Layout / Area Utilities
    ========================== */
 
+/*
 #main .inner {
     min-height: calc(100vh - 10rem);
 }
+*/
+
 
 .inner {
     padding: 0 1.5rem;

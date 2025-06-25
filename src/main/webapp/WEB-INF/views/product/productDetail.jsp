@@ -1,26 +1,103 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-String ctxPath = request.getContextPath();
-%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/product/product.css">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/product/productDetail.css">
+
+
+<jsp:include page="../include/header.jsp"></jsp:include>
+
+<main id="main">
+	<div class="product-container">
+		<div class="product-banner-top">
+			<c:if test="${not empty prdVO.productImagePath}">
+				<div class="product-banner-container">
+					<div class="thumbnails-img">
+						<span class="thumb active"><img src="${prdVO.productImagePath}" alt="${prdVO.productName} 이미지"/></span>
+						<span class="thumb"><img src="${pageContext.request.contextPath}/images/product/5/5-1.png" alt=""></span>
+						<span class="thumb"><img src="${pageContext.request.contextPath}/images/product/5/5-2.png" alt=""></span>
+						<span class="thumb"><img src="${pageContext.request.contextPath}/images/product/5/5-3.png" alt=""></span>
+					</div>
+					<div class="representative-img">
+						<button class="slide-btn prev" onclick="backimg()">&#10094;</button>
+						<img id="mainImage" src="${prdVO.productImagePath}" alt="${prdVO.productName} 이미지"/>
+						<button class="slide-btn next" onclick="nextimg()">&#10095;</button>
+					</div>
+				</div>
+			</c:if>
+			<c:if test="${empty prdVO.productImagePath}">
+				<img src="${pageContext.request.contextPath}/images/error/zz.png" alt="메렁~" style="margin: 0 auto;" />
+			</c:if>
+		</div>
+		<div class="product-info-container">
+			<div class="inner">
+
+				<div class="product-detail-info">
+					소재 : ${prdVO.matter} <br>
+					사이즈 : ${prdVO.productSize} (mm) <br>
+					<p>${prdVO.productInfo}</p>
+				</div>
+
+				<div class="product-sticky-info">
+					<div class="product-info">
+						<p class="product-name">${prdVO.productName}</p>
+						<div class="product-price">
+							<p class="before_price"><fmt:formatNumber value="${prdVO.price}" type="number" maxFractionDigits="0" />원</p>
+							<p class="discount">
+								<span class="discount-rate">${prdVO.discountRate}%</span>
+								<span class="price"><fmt:formatNumber value="${prdVO.discountedPrice}" type="number" maxFractionDigits="0" />원</span>
+							</p>
+						</div>
+						<div class="total-price">
+							<span>총 상품금액</span>
+							<span class="total-amount">0 (0개)</span>
+						</div>
+						<div class="product-buttons">
+							<button type="button" class="btn btn-cart">장바구니 담기</button>
+							<button type="button" class="btn btn-buy">바로 구매하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="product-contents">
+				<!-- 상품 이미지 둥록 시 부활 예정 -->
+<%--				<img src="${pageContext.request.contextPath}${prdVO.productContents}" alt="상세설명 이미지" /> --%>
+				<img src="${pageContext.request.contextPath}/images/product/5/content5.png" alt="" >
+				<img src="${pageContext.request.contextPath}/images/product/5/content5-1.png" alt="" >
+				<img src="${pageContext.request.contextPath}/images/product/5/content5-2.png" alt="" >
+			</div>
+		</div>
+	</div>
+</main>
+
+<script src="${pageContext.request.contextPath}/js/product/productDetail.js"></script>
 <script>
-const imgList = [
-	  "${pageContext.request.contextPath}/images/product/5/5.png",
-	  "${pageContext.request.contextPath}/images/product/5/5-1.png",
-	  "${pageContext.request.contextPath}/images/product/5/5-2.png",
-	  "${pageContext.request.contextPath}/images/product/5/5-3.png"
+	const imgList = [
+		"${prdVO.productImagePath}",
+		"${pageContext.request.contextPath}/images/product/5/5-1.png",
+		"${pageContext.request.contextPath}/images/product/5/5-2.png",
+		"${pageContext.request.contextPath}/images/product/5/5-3.png"
 	];
 
 	let currentIndex = 0;
 
 	function showImg(index) {
-	  const img = document.getElementById("mainImage");
-	  img.src = imgList[index];
-	  currentIndex = index;
+		const img = document.getElementById("mainImage");
+		img.src = imgList[index];
+		currentIndex = index;
+
+		// 썸네일에 active 클래스 관리
+		const thumbnails = document.querySelectorAll(".thumb");
+		thumbnails.forEach((thumb, i) => {
+			if (i === index) {
+				thumb.classList.add("active");
+			} else {
+				thumb.classList.remove("active");
+			}
+		});
 	}
 
 	function backimg() {
@@ -36,95 +113,13 @@ const imgList = [
 
 	function nextimg() {
 		if(currentIndex+1 < imgList.length) {
-		currentIndex += 1;
-		showImg(currentIndex);
+			currentIndex += 1;
+			showImg(currentIndex);
 		}
 		else{
-		currentIndex = 0;
-		showImg(currentIndex);
+			currentIndex = 0;
+			showImg(currentIndex);
 		}
 	}
-
-
-
 </script>
-
-<jsp:include page="../include/header.jsp"></jsp:include>
-
-<div class="product_container" id="detail">
-
-	<div class="mainimg row">
-		<div class="mainimg-slider">
-			<button class="slide-btn prev" onclick="backimg()">&#10094;</button>
-
-			<img id="mainImage"
-				src="${pageContext.request.contextPath}/images/product/5/5.png"
-				alt="상품 이미지" />
-
-			<button class="slide-btn next" onclick="nextimg()">&#10095;</button>
-		</div>
-
-	</div>
-	<div class="detailimg mt-5">
-		<span><img alt=""
-			src="${pageContext.request.contextPath}/images/product/5/5-1.png"></span>
-		<span><img alt=""
-			src="${pageContext.request.contextPath}/images/product/5/5-2.png"></span>
-		<span><img alt=""
-			src="${pageContext.request.contextPath}/images/product/5/5-3.png"></span>
-	</div>
-	<br>
-	<hr style="border: solid 2px black;">
-	<br>
-	<div class="content row">
-
-		<div class="col-md-8 mt-5" style="line-height: 25px; font-size: 14pt;">
-			소재 PVC 현수막 사이즈 330 X 260 X 80 (mm) 무게 740 (g)<br> 1. 가방은 폐기된 광고
-			현수막을 업사이클링하였고, 가방 스트랩은 안전벨트를 업사이클링하여 제작되었습니다. 모든 소재는 100% 방수 가능합니다.<br>
-			2. 노트북 13인치까지 수납 가능한 사이즈로 데일리 백으로 특히 잘 어울립니다.<br> 3. 전면 지퍼 포켓,
-			내부 지퍼 포켓&벨크로 포켓이 있습니다. 가방 안쪽에는 태블릿 또는 노트를 담기 위한 별도 수납 공간이 있습니다. <br>4.
-			자전거를 타신다면? 라이더를 위해 가방이 흘러내리지 않도록 잡아주는 추가 스트랩과 가방 양쪽 3M 반사판이 있어 안전한
-			라이딩을 할 수 있습니다.
-		</div>
-
-		<div class="col-md-4 product-box" style="line-height: 30px">
-			<div class="product-name mb-2">가방</div>
-
-			<div class="product-info">
-				<div class="label-original-price">원가</div>
-				<div class="discount-section">
-					<span class="discount-rate">70%</span> <span class="discount-price">45,600원</span>
-				</div>
-			</div>
-
-			<hr class="divider" />
-
-			<div class="total-price">
-				<span style="font-size: 14pt">총 상품금액</span> <span
-					class="total-amount">0 (0개)</span>
-			</div>
-
-			<div class="action-buttons">
-				<button class="btn btn-cart">장바구니 담기</button>
-				<button class="btn btn-buy">바로 구매하기</button>
-			</div>
-		</div>
-
-
-
-
-		<div style="margin: auto;">
-			<div class="contentimg"
-				style="margin-top: 30px; border: solid 0px red;">
-				<img alt=""
-					src="${pageContext.request.contextPath}/images/product/5/content5.png">
-				<img alt=""
-					src="${pageContext.request.contextPath}/images/product/5/content5-1.png">
-				<img alt=""
-					src="${pageContext.request.contextPath}/images/product/5/content5-2.png">
-			</div>
-		</div>
-
-	</div>
-
-	<jsp:include page="../include/footer.jsp"></jsp:include>
+<jsp:include page="../include/footer.jsp"></jsp:include>

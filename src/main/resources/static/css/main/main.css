@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+/* 메인페이지 : 메인배너 */
+.main-banner {
+    background-color: #f8f8f8;
+}
+#mainBanner {
+    max-height: 500px;
+    background-color: #f8f8f8;
+}
+.main-banner .banner-img {
+    max-height: 400px;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.main-banner .product-name {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 2rem;
+}
+
+.main-banner .product-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+}
