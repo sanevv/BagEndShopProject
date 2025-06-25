@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="small">
                                     <a href="<%= request.getContextPath()%>/test/findEmail.up" class="me-1">아이디</a> /
-                                    <a href="#" class="ms-1">비밀번호</a> 찾기
+                                    <a href="<%= request.getContextPath()%>/test/findPassword.up" class="ms-1">비밀번호</a> 찾기
                                 </div>
                             </div>
                         </td>

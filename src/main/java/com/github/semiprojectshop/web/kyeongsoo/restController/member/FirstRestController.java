@@ -1,12 +1,10 @@
-package com.github.semiprojectshop.web.kyeongsoo;
+package com.github.semiprojectshop.web.kyeongsoo.restController.member;
 
 import com.github.semiprojectshop.config.encryption.AES256;
 import com.github.semiprojectshop.repository.kyeongsoo.memberModel.MemberDAO;
 import com.github.semiprojectshop.repository.kyeongsoo.model.DaoCustom;
 import com.github.semiprojectshop.web.kyeongsoo.dto.FindEmailResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +24,7 @@ public class FirstRestController {
 
     @PostMapping("/find")
     public FindEmailResponse requestFindUser(@RequestParam String check,
-                                            @RequestParam String name,
+                                             @RequestParam String name,
                                              @RequestParam String phoneNum) throws SQLException {
 
         Map<String, String> paramap = new HashMap<>();
