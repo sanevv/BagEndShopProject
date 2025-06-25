@@ -66,7 +66,7 @@
                         <ul>
                             <li><a href="productList.one">BAG</a></li>
                             <li><a href="productList.one">ACC</a></li>
-                            <li><a href="productList.one">시후바보</a></li>
+                            <li><a href="productList.one">시후냉동바보</a></li>
                             <li><a href="productList.one">승호바보</a></li>
                             <li><a href="productList.one">경수바보</a></li>
                             <li><a href="productList.one">애리천재</a></li>
