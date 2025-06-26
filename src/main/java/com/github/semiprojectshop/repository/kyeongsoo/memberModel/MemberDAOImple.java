@@ -1,6 +1,7 @@
 package com.github.semiprojectshop.repository.kyeongsoo.memberModel;
 
 import com.github.semiprojectshop.config.encryption.AES256;
+import com.github.semiprojectshop.repository.aery.util.security.Sha256;
 import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -52,7 +53,7 @@ public class MemberDAOImple implements MemberDAO{
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, paramap.get("userEmail"));
-            pstmt.setString(2, paramap.get("pwd"));
+            pstmt.setString(2, Sha256.encrypt(paramap.get("pwd")));
 
             rs = pstmt.executeQuery();
 
@@ -62,7 +63,6 @@ public class MemberDAOImple implements MemberDAO{
 
                 member.setUserId(rs.getInt("user_id"));
                 member.setEmail(rs.getString("email"));
-                member.setPassword(aes.decrypt(rs.getString("password")));
                 member.setName(rs.getString("name"));
                 member.setPhoneNumber(rs.getString("phone_number"));
                 member.setZipCode(rs.getInt("zip_code"));
@@ -71,15 +71,9 @@ public class MemberDAOImple implements MemberDAO{
                 member.setRegisterAt(rs.getString("register_at"));
                 member.setRoleId(rs.getInt("role_id"));
 
-                return member;
-
             }
 
 
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
         } finally {
             close();
         }

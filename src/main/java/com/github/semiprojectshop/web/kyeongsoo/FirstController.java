@@ -77,11 +77,13 @@ public class FirstController {
 
         String userEmail = request.getParameter("userEmail");
         String pwd = request.getParameter("pwd");
+        String test = request.getParameter("test");
         
         // 클라이언트 IP 가져오기
         String clientip = request.getRemoteAddr();
 
         String checkSaveId = request.getParameter("checkSaveId");
+        request.setAttribute("checkSaveId", checkSaveId);
 
         Map<String, String> paramap = new HashMap<>();
         paramap.put("userEmail", userEmail);
@@ -91,8 +93,9 @@ public class FirstController {
         try {
             MemberVO loginUser = memberDAO.login(paramap);
 
+            String id = loginUser.getEmail();
 
-
+            request.setAttribute("id", id);
             HttpSession session = request.getSession();
             session.setAttribute("loginUser", loginUser);
 
