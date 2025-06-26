@@ -140,4 +140,24 @@ public class NoticeDAO_imple implements NoticeDAO {
 		return result;
 	}
 
+	@Override
+	public int delete_notice(String deleteId) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "delete from notice where notice_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, deleteId);
+			result = pstmt.executeUpdate();
+			
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
 }
