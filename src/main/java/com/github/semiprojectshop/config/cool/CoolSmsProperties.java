@@ -13,5 +13,6 @@ public class CoolSmsProperties {
     private final String apiKey;
     private final String apiSecret;
     private final String domain;
+    private final String phoneNumber;
 
 }
