@@ -74,59 +74,68 @@
 
             let radio = $('input:radio[name="authMethod"]');
 
-            $.ajax({
-                url: "/api/find/email",
-                type: 'GET',
-                data: {
-                    userid: userid,
-                    username: username,
-                    email: email
-                },
-                success: function(data) {
-                    console.log("data", data);
-                    console.log("들어오냐", data.existEmail)
-                    console.log("이메일", data.email);
-                    console.log("아이디", data.userid);
-                    console.log("이름", data.username);
-                    if (data.existEmail) {
-                        window.location.href = "/test/receiveAuthenticationNumberByEmail?email="+data.email;
-                    } else {
-                        alert("해당 정보로 가입된 회원이 없습니다.");
+            if(radio.filter(':checked').val() === 'email'){
+
+                $.ajax({
+                    url: "/api/find/email",
+                    type: 'GET',
+                    data: {
+                        userid: userid,
+                        username: username,
+                        email: email
+                    },
+                    success: function(data) {
+                        console.log("data", data);
+                        console.log("들어오냐", data.existEmail)
+                        console.log("이메일", data.email);
+                        console.log("아이디", data.userid);
+                        console.log("이름", data.username);
+                        if (data.existEmail) {
+                            window.location.href = "/test/receiveAuthenticationNumberByEmail?email="+data.email;
+                        } else {
+                            alert("해당 정보로 가입된 회원이 없습니다.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("오류 발생:", error);
+                        alert("오류가 발생했습니다: " + error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("오류 발생:", error);
-                    alert("오류가 발생했습니다: " + error);
-                }
 
-            })
+                })
 
-            $.ajax({
-                url: "/api/find/phone",
-                type: 'GET',
-                data: {
-                    userid: userid,
-                    username: username,
-                    phoneNumber: phoneNumber
-                },
-                success: function(data) {
-                    console.log("data", data);
-                    console.log("들어오냐번호", data.existPhoneNum)
-                    console.log("전화번호", data.phoneNumber);
-                    console.log("아이디", data.userid);
-                    console.log("이름", data.username);
-                    if (data.existPhoneNum) {
-                        window.location.href = "/test/receiveAuthenticationNumberByPhonenum?phoneNumber="+data.phoneNumber;
-                    } else {
-                        alert("해당 정보로 가입된 회원이 없습니다.");
+            }
+            else if(radio.filter(':checked').val() === 'phone'){
+                $.ajax({
+                    url: "/api/find/phone",
+                    type: 'GET',
+                    data: {
+                        userid: userid,
+                        username: username,
+                        phoneNumber: phoneNumber
+                    },
+                    success: function(data) {
+                        console.log("data", data);
+                        console.log("들어오냐번호", data.existPhoneNum)
+                        console.log("전화번호", data.phoneNumber);
+                        console.log("아이디", data.userid);
+                        console.log("이름", data.username);
+                        if (data.existPhoneNum) {
+                            window.location.href = "/test/receiveAuthenticationNumberByPhonenum?phoneNumber="+data.phoneNumber;
+                        } else {
+                            alert("해당 정보로 가입된 회원이 없습니다.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("오류 발생:", error);
+                        alert("오류가 발생했습니다: " + error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("오류 발생:", error);
-                    alert("오류가 발생했습니다: " + error);
-                }
 
-            })
+                })
+            }
+
+
+
+
 
         })
 
