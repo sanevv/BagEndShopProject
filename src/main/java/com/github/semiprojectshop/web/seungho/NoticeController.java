@@ -24,7 +24,7 @@ public class NoticeController {
 	private final NoticeDAO ndao;
 	NoticeVO nvo = new NoticeVO();
 
-	@PostMapping("/list.one")
+	@PostMapping("/asd")
 	public String noticeDelete(HttpServletRequest request) throws SQLException{
 		String msg = "";
 		String deleteId = request.getParameter("noticeID");
