@@ -72,6 +72,8 @@
             const email = $('#email').val();
             const phoneNumber = $('#phoneNumber').val();
 
+            let radio = $('input:radio[name="authMethod"]');
+
             $.ajax({
                 url: "/api/find/email",
                 type: 'GET',
