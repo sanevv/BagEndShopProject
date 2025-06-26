@@ -160,4 +160,22 @@ public class NoticeDAO_imple implements NoticeDAO {
 		return result;
 	}
 
+	@Override
+	public int insertNotice(Map<String, String> paramap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "insert into notice(userid, title, contents, thumbnail) values()";
+			
+			
+		}
+		finally {
+			close();
+		}
+		
+		return result;
+	}
+
 }
