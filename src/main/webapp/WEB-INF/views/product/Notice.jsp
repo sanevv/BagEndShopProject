@@ -9,13 +9,13 @@ function goDelete() {
         const noticeID = $('button#delete').val();
 
         $.ajax({
-            url: "${pageContext.request.contextPath}/notice/list.one", // ❗Controller 경로는 실제 매핑된 URL로 바꾸세요
+            url: "${pageContext.request.contextPath}/notice/asd", // ❗Controller 경로는 실제 매핑된 URL로 바꾸세요
             type: "post",
             data: { noticeID: noticeID },
             success: function(response) {
                 alert("삭제 완료!");
-                // location.reload(); 또는 페이지 이동 등 추가 가능
-            },
+                location.href="${pageContext.request.contextPath}/notice/list.one"
+            }, 
             error: function(request, status, error) {
                 alert("code: " + request.status + "\n" +
                       "message: " + request.responseText + "\n" +
