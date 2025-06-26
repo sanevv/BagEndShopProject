@@ -50,7 +50,7 @@ public class EmailVerifyService {
             //수신자, 제목 , 본문
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
             helper.setTo(to);
-            helper.setSubject("쌍용 7강의실 시후의 Email 인증코드");
+            helper.setSubject("BagEnd Email 인증코드");
             helper.setText(htmlContent, true);
             //메일 보내기
             mailSender.send(mimeMessage);
@@ -77,13 +77,13 @@ public class EmailVerifyService {
     private String generateRandomCode() {
         StringBuilder code = new StringBuilder();
         Random random = new Random();
-        //영문자 5자리
-        for (int i = 0; i < 5; i++) {
-            char ch = (char) ('A' + random.nextInt(26)); // A-Z
-            code.append(ch);
-        }
+//        //영문자 5자리
+//        for (int i = 0; i < 5; i++) {
+//            char ch = (char) ('A' + random.nextInt(26)); // A-Z
+//            code.append(ch);
+//        }
         //숫자 6자리
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 6; i++) {
             int digit = random.nextInt(10); // 0-9
             code.append(digit);
         }
