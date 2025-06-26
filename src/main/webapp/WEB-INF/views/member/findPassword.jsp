@@ -63,30 +63,66 @@
             }
         });
 
-        const userid = $('#userId').val().trim();
-        const username = $('#userName').val();
-        const email = $('#email').val();
-        const phoneNumber = $('#phoneNumber').val();
+
 
         $('button:button').on('click', function(){
 
+            const userid = $('#userId').val().trim();
+            const username = $('#userName').val();
+            const email = $('#email').val();
+            const phoneNumber = $('#phoneNumber').val();
+
             $.ajax({
-                //url: /api/findPasswordByEmail/,
-                type: 'POST',
+                url: "/api/find/email",
+                type: 'GET',
                 data: {
                     userid: userid,
                     username: username,
                     email: email
                 },
                 success: function(data) {
-                    if (data.existUser) {
-                        alert("해당 정보로 가입된 회원이 있습니다.");
-                        // 이메일 인증 페이지로 이동
-                        window.location.href = "/test/findPasswordEmailCertification.up?userid=" + userid;
+                    console.log("data", data);
+                    console.log("들어오냐", data.existEmail)
+                    console.log("이메일", data.email);
+                    console.log("아이디", data.userid);
+                    console.log("이름", data.username);
+                    if (data.existEmail) {
+                        window.location.href = "/test/receiveAuthenticationNumberByEmail?email="+data.email;
                     } else {
                         alert("해당 정보로 가입된 회원이 없습니다.");
                     }
                 },
+                error: function(xhr, status, error) {
+                    console.error("오류 발생:", error);
+                    alert("오류가 발생했습니다: " + error);
+                }
+
+            })
+
+            $.ajax({
+                url: "/api/find/phone",
+                type: 'GET',
+                data: {
+                    userid: userid,
+                    username: username,
+                    phoneNumber: phoneNumber
+                },
+                success: function(data) {
+                    console.log("data", data);
+                    console.log("들어오냐번호", data.existPhoneNum)
+                    console.log("전화번호", data.phoneNumber);
+                    console.log("아이디", data.userid);
+                    console.log("이름", data.username);
+                    if (data.existPhoneNum) {
+                        window.location.href = "/test/receiveAuthenticationNumberByPhonenum?phoneNumber="+data.phoneNumber;
+                    } else {
+                        alert("해당 정보로 가입된 회원이 없습니다.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("오류 발생:", error);
+                    alert("오류가 발생했습니다: " + error);
+                }
 
             })
 

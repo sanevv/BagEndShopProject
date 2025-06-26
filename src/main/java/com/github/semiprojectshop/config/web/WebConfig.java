@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 외부 업로드 폴더 매핑
         registry.addResourceHandler("/uploads/**")//예 /uploads/image.jpg 즉 /uploads/로 시작하는 URL 요청을 처리
-                .addResourceLocations("file:///"+uploadPath) // file:///로 시작하는 외부 파일 시스템 경로를 지정
+                .addResourceLocations("file:///"+uploadPath) // file:///은 시스템의 루트 경로를 뜻함 그이후 C:/upload/ 등등을 작성
                 .setCachePeriod(3600);
 
         // 기존 static 리소스 매핑

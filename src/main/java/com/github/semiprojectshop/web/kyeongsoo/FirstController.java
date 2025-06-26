@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/test")
@@ -177,6 +178,47 @@ public class FirstController {
         return "member/findPassword";
     }
 
+    @GetMapping("receiveAuthenticationNumberByEmail")
+    public String receiveAuthenticationNumberByEmail(HttpServletRequest request) throws SQLException {
+
+        MemberVO mvo = new MemberVO();
+        String email = request.getParameter("email");
+
+        MemberVO passwordImportEmail = memberDAO.knowTheEmail(email);
+
+        email = passwordImportEmail.getEmail();
+
+        request.setAttribute("email", email);
+
+        Random rnd = new Random();
+
+        String certification_code = "";
+
+        char randchar = ' ';
+        for(int i=0; i<5; i++) {
+            randchar = (char)(rnd.nextInt('z' - 'a' + 1) + 'a');
+            certification_code += randchar;
+        };
+
+        int randnum = 0;
+        for(int i=0; i<7; i++) {
+            randnum = (char)(rnd.nextInt(9 - 0 + 1) + 0);
+            certification_code += randnum;
+        };
+        System.out.println("인증번호: " + certification_code);
+
+
+
+
+
+        return "member/receiveAuthenticationNumberByEmail";
+    }
+
+    @GetMapping("receiveAuthenticationNumberByPhone")
+    public String receiveAuthenticationNumberByPhone(HttpServletRequest request) throws SQLException {
+
+        return "member/receiveAuthenticationNumberByPhone";
+    }
 
 
 }

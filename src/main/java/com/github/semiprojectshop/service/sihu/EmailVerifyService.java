@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class EmailVerifyService {
 
 
     private final JavaMailSender mailSender;
+    @Value("${spring.mail.username}")
+    private String senderEmail; // 메일 발송자 이메일 주소
+
     //메일 발송
     public boolean sendVerifyCodeToEmail(String to, HttpSession session){
         String verifyCode = generateRandomCode();
@@ -37,7 +41,7 @@ public class EmailVerifyService {
             String htmlContent = Files.readString(Paths.get("src/main/resources/static/email/email_verify.html"));
             // 플레이스홀더 {{verifyCode}}를 실제 인증 코드로 치환
             htmlContent = htmlContent.replace("{{verifyCode}}", verifyCode);
-            htmlContent = htmlContent.replace("{{email}}", "이거뭐임");
+            htmlContent = htmlContent.replace("{{email}}", senderEmail);
 
 
             MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -46,7 +50,7 @@ public class EmailVerifyService {
             //수신자, 제목 , 본문
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
             helper.setTo(to);
-            helper.setSubject("쌍용 7강의실 시후의 Email 인증코드");
+            helper.setSubject("BagEnd Email 인증코드");
             helper.setText(htmlContent, true);
             //메일 보내기
             mailSender.send(mimeMessage);
@@ -73,13 +77,13 @@ public class EmailVerifyService {
     private String generateRandomCode() {
         StringBuilder code = new StringBuilder();
         Random random = new Random();
-        //영문자 5자리
-        for (int i = 0; i < 5; i++) {
-            char ch = (char) ('A' + random.nextInt(26)); // A-Z
-            code.append(ch);
-        }
+//        //영문자 5자리
+//        for (int i = 0; i < 5; i++) {
+//            char ch = (char) ('A' + random.nextInt(26)); // A-Z
+//            code.append(ch);
+//        }
         //숫자 6자리
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 6; i++) {
             int digit = random.nextInt(10); // 0-9
             code.append(digit);
         }

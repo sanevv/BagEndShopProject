@@ -43,7 +43,7 @@ public class FrontControllerAery extends HttpServlet {
      */
 
         // *** 확인용 *** //
-         System.out.println("~~~~ 확인용 => 서블릿 FrontController 의 init(ServletConfig config) 메소드가 실행됨.");
+     // System.out.println("~~~~ 확인용 => 서블릿 FrontController 의 init(ServletConfig config) 메소드가 실행됨.");
         // ~~~~ 확인용 => 서블릿 FrontController 의 init(ServletConfig config) 메소드가 실행됨.
 
         FileInputStream fis = null;

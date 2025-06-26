@@ -20,6 +20,9 @@ public class ProductDetailVO {
     private String matter;      // 상품재질
     private String createdAt;   // 상품등록일
 
+    // my_user 테이블 조인해서 사용할거임
+    private String userName;    // 사용자 이름
+
     // product_image 테이블 조인해서 사용할거임
     private String productImagePath; // 대표이미지 경로
 
@@ -37,4 +40,26 @@ public class ProductDetailVO {
     @Getter(AccessLevel.NONE)
     private int categoryId;       // 카테고리 번호
     private String productStatus; // 상품 상태 : 판매중, 품절, 숨김
+
+    // 사용자 이름 마스킹처리하기
+    public static String getMaskName(String userName) {
+        if (userName == null || userName.isEmpty() )  {
+            return "";
+        }
+
+        int len = userName.length();
+
+        if (len == 1) {
+            return userName; // 한 글자는 그대로
+        } else if (len == 2) {
+            return userName.charAt(0) + "*"; // 두 글자는 앞 글자만 남김
+        } else {
+            // 가운데 글자만 *로 대체
+            StringBuilder sb = new StringBuilder();
+            sb.append(userName.charAt(0));
+            sb.append("*".repeat(len - 2));
+            sb.append(userName.charAt(len - 1));
+            return sb.toString();
+        }
+    }
 }

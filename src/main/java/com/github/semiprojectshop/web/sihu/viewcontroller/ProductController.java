@@ -14,4 +14,9 @@ public class ProductController {
         return "product/productList";
     }
 
+    @GetMapping("/test")
+    public String redirectToNoticeList() {
+        return "redirect:/notice/list.one";
+    }
+
 }

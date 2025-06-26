@@ -1,16 +1,18 @@
 package com.github.semiprojectshop.web.seungho;
 
-import java.sql.Date;
+
+
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.github.semiprojectshop.repository.seungho.domain.NoticeVO;
 import com.github.semiprojectshop.repository.seungho.model.NoticeDAO;
-import com.github.semiprojectshop.repository.seungho.model.NoticeDAO_imple;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +24,30 @@ public class NoticeController {
 	private final NoticeDAO ndao;
 	NoticeVO nvo = new NoticeVO();
 
+	@PostMapping("/asd")
+	public String noticeDelete(HttpServletRequest request) throws SQLException{
+		String msg = "";
+		String deleteId = request.getParameter("noticeID");
+		
+		int deleteOK = ndao.delete_notice(deleteId); 
+		
+		if(deleteOK == 1) {
+			msg = "삭제성공";
+			
+		}
+	
+		
+		return "redirect:/notice/list.one";
+	}
+	
+	
+	
 	@GetMapping("/detail.one")
 	public String notice(HttpServletRequest request) {
 		String notice_id = request.getParameter("notice_id");
 
 		try {
-			nvo = ndao.getNoticeInfo("1");
+			nvo = ndao.getNoticeInfo(notice_id);
 
 		} catch (SQLException e) {
 
@@ -35,7 +55,7 @@ public class NoticeController {
 
 		request.setAttribute("nvo", nvo);
 
-		return "seungho/Notice";
+		return "product/Notice";
 	}
 
 }
