@@ -8,6 +8,7 @@ coolsms:
   api-key: ENC(/dfc/hVOB+ZrZLxajUlpwrhRCUcpBXxkLMUJqf5zaAo=)
   api-secret: ENC(81triyc/kAD+hm1xonupRz65Dunttouv40tfyVk/2zFj8J6ws4jwaf6y/rJN4zYt)
   domain : https://api.solapi.com
+  phone-number: ENC(z/wRpfredxFKff/lsjozmL+EeOPpcJS0) # 발신번호
 
 spring:
   server-url:
