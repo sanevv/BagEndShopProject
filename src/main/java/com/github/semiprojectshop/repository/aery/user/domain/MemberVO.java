@@ -12,7 +12,7 @@ public class MemberVO {
 	private String address;            // 주소
 	private String detailAddress;      // 상세주소
 	private String registerAt ;        // 가입일자 
-	private int roleId = 1;            // roleId 기본값 1(일반사용자)
+	private int roleId = 2;            // roleId 기본값 2(일반사용자)
 
 	
 	public int getUserId() {
