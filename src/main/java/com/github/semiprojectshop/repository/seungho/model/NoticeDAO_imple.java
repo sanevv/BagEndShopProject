@@ -167,7 +167,12 @@ public class NoticeDAO_imple implements NoticeDAO {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = "insert into notice(userid, title, contents, thumbnail) values()";
+			String sql = "insert into notice(user_id, title, contents, thumbnail) values(3, ?, ?, ?)";
+			pstmt = conn.prepareCall(sql);
+			pstmt.setString(1, paramap.get("title"));
+			pstmt.setString(2, paramap.get("contents"));
+			pstmt.setString(3, paramap.get("thumbnail"));
+			result = pstmt.executeUpdate();
 			
 			
 		}

@@ -27,16 +27,19 @@ public class NoticeWriteController {
 		//System.out.println("나왔어!");
 		String title = nvo.getTitle();
 		String contents = nvo.getContents();
+		String thumbnail = nvo.getThumbnail();
 		int result = 0;
 		if(title != null && contents != null) {
 		Map<String, String> paramap = new HashMap<>();
 		paramap.put("title", title);
 		paramap.put("contents", contents);
+		paramap.put("thumbnail", thumbnail);
 		result = ndao.insertNotice(paramap);
 		}
-		
-		
-		return "redirect:/notice/list.one";
+		if(result == 1) {
+			return "redirect:/notice/list.one";
+		}
+		return "/";
 	}
 
 	@PostMapping("/write")

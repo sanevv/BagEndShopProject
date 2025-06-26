@@ -91,6 +91,7 @@ $(function(){
     <h1>공지사항 쓰기</h1>
 
     <form name="writeFrm" method="post" action="${pageContext.request.contextPath}/notice/abc">
+    	<input name="thumbnail" type="file">
         <input name="title" id="title" type="text" placeholder="제목을 입력하세요">
         <textarea name="contents" id="contents" placeholder="내용을 입력하세요"></textarea>
 
