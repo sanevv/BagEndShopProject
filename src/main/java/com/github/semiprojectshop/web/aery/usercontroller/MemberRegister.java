@@ -77,13 +77,13 @@ public class MemberRegister extends AbstractController {
 					session.setAttribute("loginuser", loginuser);
 					
 					String message = name + "님 회원가입에 감사드립니다.";
-				    String loc = request.getContextPath()+"/index.team1";  
+				    String loc = request.getContextPath()+"/";  
 				    
 				    request.setAttribute("message", message);
 					request.setAttribute("loc", loc);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/msg.jsp");
+					super.setViewPage("/WEB-INF/views/aery/msg.jsp");
 				}
 				
 				
@@ -97,7 +97,7 @@ public class MemberRegister extends AbstractController {
 					request.setAttribute("loc", loc);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/msg.jsp");
+					super.setViewPage("/WEB-INF/views/aery/msg.jsp");
 			}
 			
 			
