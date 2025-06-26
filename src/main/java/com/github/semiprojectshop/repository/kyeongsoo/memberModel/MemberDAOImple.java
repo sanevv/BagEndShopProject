@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,7 +62,7 @@ public class MemberDAOImple implements MemberDAO{
 
                 member.setUserId(rs.getInt("user_id"));
                 member.setEmail(rs.getString("email"));
-                member.setPassword(rs.getString("password"));
+                member.setPassword(aes.decrypt(rs.getString("password")));
                 member.setName(rs.getString("name"));
                 member.setPhoneNumber(rs.getString("phone_number"));
                 member.setZipCode(rs.getInt("zip_code"));
@@ -73,6 +76,10 @@ public class MemberDAOImple implements MemberDAO{
             }
 
 
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         } finally {
             close();
         }
@@ -154,6 +161,91 @@ public class MemberDAOImple implements MemberDAO{
 
         return member;
     }
+
+    // 비밀번호 찾기에서 이메일로 비밀번호를 찾는 것
+    @Override
+    public boolean findAPasswordByEmail(String email, String username, String userid) throws SQLException {
+
+        boolean result = false;
+
+        try {
+
+            conn = ds.getConnection();
+
+            String sql = " select email from my_user where email=? and name=? and email =? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, email);
+            pstmt.setString(2, username);
+            pstmt.setString(3, userid);
+            rs = pstmt.executeQuery();
+
+            result = rs.next();
+
+        } finally {
+            close();
+        }
+
+        return result;
+    }
+
+    // 이메일로 인증받기페이지에서 이메일을 가져오려고 하는 것
+    @Override
+    public MemberVO knowTheEmail(String email) throws SQLException {
+
+        MemberVO member = null;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " select email from my_user where email=? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, email);
+
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                member = new MemberVO();
+                member.setEmail(rs.getString("email"));
+
+                return member;
+            }
+
+        } finally {
+            close();
+        }
+
+
+        return member;
+    }
+
+    // 휴대폰 번호로 비밀번호 찾기 여부를 판단하는 메서드
+    @Override
+    public boolean judgmentCalledMobilePhoneNumber(String phoneNumber) throws SQLException {
+
+        boolean result = false;
+
+        try {
+
+            conn = ds.getConnection();
+
+            String sql = " select phone_number from my_user where phone_number=? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, phoneNumber);
+            rs = pstmt.executeQuery();
+
+            result = rs.next();
+
+
+        } finally {
+            close();
+        }
+
+        return result;
+    }
+
+
 }
 
 
