@@ -8,11 +8,11 @@ public class MemberVO {
 	private String password;           // 비밀번호 (SHA-256 암호화 대상)
 	private String name;               // 회원명
 	private String phoneNumber ;       // 연락처
-	private int zipCode ;              // 우편번호
+	private String zipCode ;              // 우편번호
 	private String address;            // 주소
 	private String detailAddress;      // 상세주소
 	private String registerAt ;        // 가입일자 
-	private int roleId = 1;            // roleId 기본값 1(일반사용자)
+	private int roleId = 2;            // roleId 기본값 2(일반사용자)
 
 	
 	public int getUserId() {
@@ -55,11 +55,11 @@ public class MemberVO {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public int getZipCode() {
+	public String getZipCode() {
 		return zipCode;
 	}
 
-	public void setZipCode(int zipCode) {
+	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
 

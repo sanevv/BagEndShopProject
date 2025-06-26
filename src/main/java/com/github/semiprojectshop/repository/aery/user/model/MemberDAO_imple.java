@@ -98,7 +98,7 @@ public class MemberDAO_imple implements MemberDAO {
 			  pstmt.setString(2, Sha256.encrypt(member.getPassword()) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.  
 			  pstmt.setString(3, member.getName());
 			  pstmt.setString(4, member.getPhoneNumber());
-			  pstmt.setInt(5, member.getZipCode());
+			  pstmt.setString(5, member.getZipCode());
 			  pstmt.setString(6, member.getAddress());
 			  pstmt.setString(7, member.getDetailAddress());
 			  pstmt.setInt(8, member.getRoleId());
@@ -115,9 +115,9 @@ public class MemberDAO_imple implements MemberDAO {
 
 
 
-	// 로그인 처리 
+	// 로그인 처리 // 추후 로그인 파트와 충돌 있을 수 있음 취합 필요
 	@Override
-    public MemberVO login(Map<String, String> paramap) throws SQLException {
+    public MemberVO login(Map<String, String> paraMap) throws SQLException {
 
         MemberVO member = null;
 
@@ -130,8 +130,8 @@ public class MemberDAO_imple implements MemberDAO {
                        + " where email = ? and password = ? ";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, paramap.get("email"));
-            pstmt.setString(2, paramap.get("password"));
+            pstmt.setString(1, paraMap.get("email"));
+            pstmt.setString(2, Sha256.encrypt(paraMap.get("password")));
 
             rs = pstmt.executeQuery();
 
@@ -144,7 +144,7 @@ public class MemberDAO_imple implements MemberDAO {
                 member.setPassword(rs.getString("password"));
                 member.setName(rs.getString("name"));
                 member.setPhoneNumber(rs.getString("phone_number"));
-                member.setZipCode(rs.getInt("zip_code"));
+                member.setZipCode(rs.getString("zip_code"));
                 member.setAddress(rs.getString("address"));
                 member.setDetailAddress(rs.getString("address_details"));
                 member.setRegisterAt(rs.getString("register_at"));
