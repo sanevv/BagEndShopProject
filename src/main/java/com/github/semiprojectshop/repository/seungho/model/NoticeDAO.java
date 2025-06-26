@@ -15,4 +15,6 @@ public interface NoticeDAO {
 	// 페이징 처리를 위한 페이지 수 구하기
 	int totalPage(Map<String, String> paraMap) throws SQLException;
 
+	int delete_notice(String deleteId) throws SQLException;
+
 }

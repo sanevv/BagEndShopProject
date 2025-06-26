@@ -17,17 +17,28 @@ div#pageBar > nav {
 
 </style>
 
+<script>
+
+	function goWrite(){
+	const frm = document.noticeFrm;
+	frm.method = "post"
+	frm.action = "${pageContext.request.contextPath}/notice/write"
+	frm.submit();
+	}
+</script>
+
 <jsp:include page="../include/header.jsp" />
 
-<div class="container"">
+<div class="container">
 	<div></div>
 	<div class="text-center"
 		style="font-size: 20pt; font-weight: bold; margin: 50px 0;">NOTICE
-		<span style="float: right;">
-		<a href="/notice/write" class="btn btn-common" style="border: solid 1px black;">ㅈㅅㅎㄱ</a>
-		</span>
-	</div>
 
+		<form name="noticeFrm">
+			<input class= "btn btn-common" style="float: right; font-size: 12pt;" type="button" value="ㅈㅅㅎㄱ" onclick="goWrite();">
+		</form>
+	</div>
+	
 	<div class="row">
 		<fmt:parseNumber var="currentShowPageNo" value="${currentShowPageNo}"></fmt:parseNumber>
 		<c:forEach var="notice" items="${noticeList}">
@@ -62,4 +73,5 @@ div#pageBar > nav {
 	</nav>
 </div>
 
+<input type="text" value="${msg}">
 <jsp:include page="../include/footer.jsp" />
