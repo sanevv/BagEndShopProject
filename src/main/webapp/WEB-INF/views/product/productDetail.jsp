@@ -33,7 +33,6 @@
 		</div>
 		<div class="product-info-container">
 			<div class="inner">
-
 				<div class="product-detail-info">
 					소재 : ${prdVO.matter} <br>
 					사이즈 : ${prdVO.productSize} (mm) <br>
@@ -61,6 +60,45 @@
 					</div>
 				</div>
 			</div>
+			<!-- 리뷰 -->
+			<div class="review-container">
+				<div class="review-header">
+					<h2>REVIEW</h2>
+					<button type="button" class="btn btn-write-review">리뷰쓰기</button>
+				</div>
+				<div class="review-body">
+					<ul id="reviewList" class="review-list">
+<%--						<li class="review-item">--%>
+<%--							<div class="box">--%>
+<%--								<p class="title">만족</p>--%>
+<%--								<div class="info">--%>
+<%--									<span class="name">이순신</span>--%>
+<%--									<span class="date">2025-06-25</span>--%>
+<%--									<span class="rating">별점</span>--%>
+<%--								</div>--%>
+<%--							</div>--%>
+<%--							<div class="image">--%>
+<%--								<img src="//nukak.kr/web/product/tiny/202401/e6e3ba5e0a1d9ae819f6c6f7793f19aa.png" alt="">--%>
+<%--							</div>--%>
+<%--						</li>--%>
+<%--						<li class="review-item">--%>
+<%--							<div class="box">--%>
+<%--								<p class="title">만족</p>--%>
+<%--								<div class="info">--%>
+<%--									<span class="name">이순신</span>--%>
+<%--									<span class="date">2025-06-25</span>--%>
+<%--									<span class="rating">별점</span>--%>
+<%--								</div>--%>
+<%--							</div>--%>
+<%--							<div class="image">--%>
+<%--								<img src="//nukak.kr/web/product/tiny/202401/e6e3ba5e0a1d9ae819f6c6f7793f19aa.png" alt="">--%>
+<%--							</div>--%>
+<%--						</li>--%>
+					</ul>
+				</div>
+			</div>
+			<!-- //리뷰 -->
+
 
 			<div class="product-contents">
 				<!-- 상품 이미지 둥록 시 부활 예정 -->
@@ -71,6 +109,9 @@
 			</div>
 		</div>
 	</div>
+
+	<input type="hidden" name="userName" value="${maskedName}">
+	<input type="hidden" name="productId" value="${prdVO.productId}">
 </main>
 
 <script src="${pageContext.request.contextPath}/js/product/productDetail.js"></script>

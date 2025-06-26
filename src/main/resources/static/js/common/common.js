@@ -26,6 +26,7 @@ window.onload = function() {
         }
     });
 
+
     // 검색 버튼 클릭 이벤트
     const btnSearch = document.querySelector('.btn-search');
     const searchForm = document.querySelector('.search-form');
