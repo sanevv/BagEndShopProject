@@ -32,6 +32,4 @@ public class ProductCart {
         return productCart;
     }
 
-
-
 }
