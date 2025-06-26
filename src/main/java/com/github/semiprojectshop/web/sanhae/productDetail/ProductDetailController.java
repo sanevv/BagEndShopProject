@@ -25,11 +25,14 @@ public class ProductDetailController {
     // Model model은 Spring 에서 제공하는 View(jsp)페이지로 데이터를 전달에 필요한 인터페이스 객체이다.
     public String detail(@PathVariable int productId, Model model) throws SQLException {
 
+
         ProductDetailVO prdVO = productDetailDAO.ProductDetail(productId);
         //System.out.println("확인용 : " + product.getProductName());
 
         // JSP + Servlet 에서 사용하는 Request.setAttribute와 같은 듯?
+        model.addAttribute("maskedName", ProductDetailVO.getMaskName(prdVO.getUserName()) );
         model.addAttribute("prdVO", prdVO);
+
 
         return "product/productDetail";
     }
