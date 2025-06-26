@@ -48,9 +48,9 @@ public class FindPasswordByEmailOrPhonenum {
         boolean existPhoneNum = memberDAO.judgmentCalledMobilePhoneNumber(phoneNumber);
 
 
-        FindPasswordByPhonenumResponse response = new FindPasswordByPhonenumResponse(username, userid, phoneNumber, existPhoneNum);
+        FindPasswordByPhonenumResponse response = new FindPasswordByPhonenumResponse(phoneNumber, username, userid, existPhoneNum);
         //TODO: 핸드폰 인중이 완료된후 유저에게
-        return null;
+        return response;
 
     }
 
