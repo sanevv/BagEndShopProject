@@ -58,9 +58,7 @@ public class EmailVerifyService {
 //            redisRepository.save(to, verifyCode, Duration.ofMinutes(10)); 레디스말고 세션저장
 
             //세션에 저장 유효기간 10분 같이저장
-            long expireAt = System.currentTimeMillis() + 10 * 60 * 1000;
-            session.setAttribute(to + "_code", verifyCode);
-            session.setAttribute(to + "_expireAt", expireAt);
+            saveSessionCode(session, to, verifyCode);
             System.out.println("인증 코드가 이메일로 전송되었습니다: " + verifyCode);
             return true;
 
@@ -73,8 +71,15 @@ public class EmailVerifyService {
         }
 
     }
+    public void saveSessionCode(HttpSession session, String to, String verifyCode){
+        long expireAt = System.currentTimeMillis() + 10 * 60 * 1000;
+        session.setAttribute(to + "_code", verifyCode);
+        session.setAttribute(to + "_expireAt", expireAt);
+    }
+
     //영문자 랜덤 5자리 + 숫자 7자리 조합
-    private String generateRandomCode() {
+    //지금은 숫자 6자리로 변경
+    public String generateRandomCode() {
         StringBuilder code = new StringBuilder();
         Random random = new Random();
 //        //영문자 5자리
@@ -97,7 +102,7 @@ public class EmailVerifyService {
     }
 
 
-    public boolean verifyEmail(@Email(message = "이메일 타입이 아닙니다.") String email, String code, HttpSession session) {
+    public boolean verifyEmail(String email, String code, HttpSession session) {
     //세션에서 인증 코드 가져오기
         String sessionCode = (String) session.getAttribute(email+ "_code");
         Long sessionExpireAt = (Long) session.getAttribute(email + "_expireAt");
@@ -111,7 +116,9 @@ public class EmailVerifyService {
     //세션에 인증 코드가 없거나, 입력한 코드와 세션의 코드가 일치하지 않으면 false 반환
         if (sessionCode == null || !sessionCode.equals(code)) return false;
     //인증 코드가 일치하면 세션에서 인증 코드 제거
-        session.removeAttribute(email);
+
+        session.removeAttribute(email + "_code");
+        session.removeAttribute(email + "_expireAt");
         return true; //인증 성공
     }
 }
