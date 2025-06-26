@@ -116,7 +116,7 @@
 			           </tr> 
 			           
 			           
-			           <%-- 추후 회원가입시 휴대전화 인증 필요할 시
+			           <%-- 추후 회원가입시 휴대전화 인증 필요할 시, js 구현 필요
 			           <tr>
 			        		<td>
 			                  <button type="button" class="btn btn-dark" id="phonecheck" style="display: block; margin: 5px auto 15px;">인증번호 받기</button>
@@ -202,7 +202,7 @@
 			               <td>
 		        		      <div style="display: flex; justify-content: center; margin-top: 20px;">
 		              	         <input type="button" class="btn btn-success btn-lg" style="background-color: black;" value="회원가입" onclick="goRegister()"/>
-		            		     <input type="reset" class="btn btn-danger btn-lg" style="background-color: #f05650; font-size: 14px;" value="취소하기" onclick="goReset()"/>
+		            		     <input type="button" class="btn btn-danger btn-lg" id="cancel" style="background-color: #f05650; font-size: 14px;" value="취소하기" onclick="goReset()"/>
 		        		      </div>
 		    			   </td>
 			           </tr>

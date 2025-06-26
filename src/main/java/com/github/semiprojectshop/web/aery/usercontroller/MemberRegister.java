@@ -77,7 +77,7 @@ public class MemberRegister extends AbstractController {
 					session.setAttribute("loginuser", loginuser);
 					
 					String message = name + "님 회원가입에 감사드립니다.";
-				    String loc = request.getContextPath()+"/index.up";  
+				    String loc = request.getContextPath()+"/index.team1";  
 				    
 				    request.setAttribute("message", message);
 					request.setAttribute("loc", loc);

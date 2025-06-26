@@ -1,7 +1,4 @@
 
-let b_idcheck_click = false;
-// "아이디중복확인" 을 클릭했는지, 클릭을 안했는지 여부를 알아오기 위한 용도
-
 let b_emailcheck_click = false;
 // "이메일중복확인" 을 클릭했는지, 클릭을 안했는지 여부를 알아오기 위한 용도
 
@@ -275,7 +272,7 @@ $(function(){
 		        // 우편번호와 주소 정보를 해당 필드에 넣는다.
 		        document.getElementById("zipCode").value = data.zonecode;
 		        document.getElementById("address").value = addr;
-		        document.getElementById("addressDetails").value = "";
+		     //   document.getElementById("addressDetails").value = "";
 				
 		        // 커서를 상세주소 필드로 이동한다.
 		        document.getElementById("addressDetails").focus();
@@ -360,6 +357,7 @@ $(function(){
 
 
 // Function Declaration
+
 // "가입하기" 버튼 클릭시 호출되는 함수
 function goRegister() {
 	
@@ -397,7 +395,6 @@ function goRegister() {
 	const arr_addressInfo = [];
 	arr_addressInfo.push($('input#zipCode').val());
 	arr_addressInfo.push($('input#address').val());
-	arr_addressInfo.push($('input#addressDetails').val());
 	
 	for(let addressInfo of arr_addressInfo) {
 		if(addressInfo.trim() == "") {
@@ -422,11 +419,22 @@ function goRegister() {
 	}
 	// **** 약관에 동의를 했는지 검사하기 끝 **** //
 	
-	
 	const frm = document.registerFrm;
 	frm.method = "post";
  //	frm.action = "memberRegister.up";
 	frm.submit();
- 
 	
 }// end of function goRegister()-----------------------------
+
+
+ // "취소하기" 버튼 클릭시 호출되는 함수
+ function goReset() {
+
+	document.registerFrm.reset();
+
+    $('span.error').hide();
+    $('#emailCheckResult').html('');
+    $('#email').focus();
+
+    b_emailcheck_click = false;
+}// end of  function goReset(){}-----------
