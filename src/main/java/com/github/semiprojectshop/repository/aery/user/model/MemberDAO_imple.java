@@ -115,7 +115,7 @@ public class MemberDAO_imple implements MemberDAO {
 
 
 
-	// 로그인 처리 // 추후 로그인 파트와 충돌 있을 수 있음 취합 필요
+	// 로그인 처리
 	@Override
     public MemberVO login(Map<String, String> paraMap) throws SQLException {
 

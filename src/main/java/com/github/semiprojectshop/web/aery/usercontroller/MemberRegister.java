@@ -9,13 +9,13 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
 import com.github.semiprojectshop.repository.aery.user.model.MemberDAO;
-import com.github.semiprojectshop.repository.aery.util.security.Sha256;
 import com.github.semiprojectshop.web.aery.commoncontroller.AbstractController;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 public class MemberRegister extends AbstractController {
 
 //	private MemberDAO mdao = new MemberDAO_imple();

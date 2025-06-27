@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%
-   String ctxPath = request.getContextPath();
-%>    
-
 <jsp:include page="../../include/header.jsp" />
 
 <link rel="stylesheet" type="text/css" href="/aery/css/user/memberRegister.css" />
@@ -59,7 +55,7 @@
 			        	   <td>
 			                  <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px; margin-top: 5px;">
       						     <img src="/aery/images/help.png" id="help_icon" style="width: 16px; height: 16px;" />
-      							 <span style="font-size: 11px; color: #999999; line-height: 1;">(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~16)</span>
+      							 <span style="font-size: 11px; color: #999999; line-height: 1;">(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8~15자)</span>
     					 	  </div>
 			               </td> 
 			        	</tr>
