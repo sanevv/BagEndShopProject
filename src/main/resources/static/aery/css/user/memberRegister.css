@@ -65,16 +65,17 @@ span.star {
 	font-size: 12pt;
 }
 
-span.error,
 label[for="agree"]{
 	border: solid 0px green;
 	font-size: 14px;
-	color: #999999;
 }
 
-span.error, span.help {
+span.error {
+	font-size: 14px;
+	color : #f05650;
 	display: block;
 	margin-top: 5px;
+	
 }
 
 span.help {

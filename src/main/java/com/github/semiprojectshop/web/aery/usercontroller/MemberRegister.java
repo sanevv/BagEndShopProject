@@ -9,6 +9,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
 import com.github.semiprojectshop.repository.aery.user.model.MemberDAO;
+import com.github.semiprojectshop.repository.aery.util.security.Sha256;
 import com.github.semiprojectshop.web.aery.commoncontroller.AbstractController;
 
 import jakarta.servlet.ServletContext;
@@ -71,10 +72,10 @@ public class MemberRegister extends AbstractController {
 					paraMap.put("email", email);
 					paraMap.put("password", password);
 					
-					MemberVO loginuser = mdao.login(paraMap);
+					MemberVO loginUser = mdao.login(paraMap);
 					
 					HttpSession session = request.getSession();
-					session.setAttribute("loginuser", loginuser);
+					session.setAttribute("loginUser", loginUser);
 					
 					String message = name + "님 회원가입에 감사드립니다.";
 				    String loc = request.getContextPath()+"/";  

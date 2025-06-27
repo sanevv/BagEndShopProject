@@ -150,15 +150,17 @@ public class MemberDAO_imple implements MemberDAO {
                 member.setRegisterAt(rs.getString("register_at"));
                 member.setRoleId(rs.getInt("role_id"));
 
-                return member;
-
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } finally {
+        	
+            close();
         }
 
+
         return member;
+    
 	}// end of public MemberVO login(Map<String, String> paraMap) throws SQLException-----
 
 }

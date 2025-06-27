@@ -57,10 +57,10 @@
 			           
 			           <tr>
 			        	   <td>
-			                  <span style="display: inline-flex; align-items: center; gap: 5px;">
-		     				     <img src="/aery/images/help.png" id="help_icon" style="width:14px; height:14px; margin-bottom: 15px;" />
-		      				     <span class="help" style="margin-bottom: 15px;">(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~16)</span>
-		    				  </span>
+			                  <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px; margin-top: 5px;">
+      						     <img src="/aery/images/help.png" id="help_icon" style="width: 16px; height: 16px;" />
+      							 <span style="font-size: 11px; color: #999999; line-height: 1;">(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~16)</span>
+    					 	  </div>
 			               </td> 
 			        	</tr>
 			           
@@ -68,7 +68,7 @@
 			            <%-- 비밀번호 확인 --%>
 			            <tr>
 			               <td>
-			                  <label for="pwdchtext" id="pwdchtext">비밀번호 확인<span class="star">*</span></label>
+			                  <label for="pwdchtext" id="pwdchtext" style="margin-top: 15px;">비밀번호 확인<span class="star">*</span></label>
 			               </td>
 			           </tr>			  
 			           

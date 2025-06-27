@@ -21,20 +21,11 @@ $(function(){
 		if(!bool) {
 			// 이메일이 정규표현식에 위배된 경우
 				
-			$('table#tblMemberRegister :input').prop('disabled', true);
-			$(e.target).prop('disabled', false);
-			$(e.target).val('').focus();
-				
-		//	$(e.target).next().show();
-		//  또는
 		    $(e.target).parent().find('span.error').show();
 		}
 		else {
 			// 이메일이 정규표현식에 맞는 경우
-			$('table#tblMemberRegister :input').prop('disabled', false);
-				
-	     // $(e.target).next().hide();
-		 // 또는
+
 			$(e.target).parent().find('span.error').hide();
 		}
 				
@@ -53,20 +44,11 @@ $(function(){
 		if(!bool) {
 			// 암호가 정규표현식에 위배된 경우
 				
-			$('table#tblMemberRegister :input').prop('disabled', true);
-			$(e.target).prop('disabled', false);
-			$(e.target).val('').focus();
-				
-		//	$(e.target).next().show();
-		//  또는
 		    $(e.target).parent().find('span.error').show();
 		}
 		else {
 			// 암호가 정규표현식에 맞는 경우
-			$('table#tblMemberRegister :input').prop('disabled', false);
-				
-	     // $(e.target).next().hide();
-		 // 또는
+		
 			$(e.target).parent().find('span.error').hide();
 		}
 				
@@ -78,23 +60,11 @@ $(function(){
 		if( $('input#password').val() != $(e.target).val() ) {
 			// 암호와 암호확인값이 틀린 경우
 				
-			$('table#tblMemberRegister :input').prop('disabled', true);
-			$('input#password').prop('disabled', false);
-			$(e.target).prop('disabled', false);
-			
-			$('input#password').val('').focus();
-			$(e.target).val('');
-				
-		//	$(e.target).next().show();
-		//  또는
 		    $(e.target).parent().find('span.error').show();
 		}
 		else {
 			// 암호와 암호확인값이 같은 경우
-			$('table#tblMemberRegister :input').prop('disabled', false);
-				
-	     // $(e.target).next().hide();
-		 // 또는
+			
 			$(e.target).parent().find('span.error').hide();
 		}
 				
@@ -109,20 +79,11 @@ $(function(){
 			if(name == "") {
 				// 입력하지 않거나 공백만 입력했을 경우
 				
-				$('table#tblMemberRegister :input').prop('disabled', true);
-				$(e.target).prop('disabled', false);
-				$(e.target).val('').focus();
-				
-			//	$(e.target).next().show();
-			//  또는
 			    $(e.target).parent().find('span.error').show();
 			}
 			else {
 				// 공백이 아닌 글자를 입력했을 경우
-				$('table#tblMemberRegister :input').prop('disabled', false);
-				
-			 // $(e.target).next().hide();
-			 // 또는
+			
 				$(e.target).parent().find('span.error').hide();
 			}
 				
@@ -139,21 +100,12 @@ $(function(){
 		if(!bool) {
 			// 연락처 국번이 정규표현식에 위배된 경우
 				
-			$('table#tblMemberRegister :input').prop('disabled', true);
-			$(e.target).prop('disabled', false);
-			$(e.target).val('').focus();
-				
-		//	$(e.target).next().show();
-		//  또는
-		    $(e.target).parent().find('span.error').show();
+		    $(e.target).closest('td').find('span.error').show();
 		}
 		else {
 			// 연락처 국번이 정규표현식에 맞는 경우
-			$('table#tblMemberRegister :input').prop('disabled', false);
-				
-	     // $(e.target).next().hide();
-		 // 또는
-			$(e.target).parent().find('span.error').hide();
+		
+			$(e.target).closest('td').find('span.error').hide();
 		}
 				
 	});	// end of $('input#hp2').blur((e) => {})-------------------	
@@ -170,22 +122,13 @@ $(function(){
 		
 		if(!bool) {
 			// 연락처 마지막 4자리가 정규표현식에 위배된 경우
-				
-			$('table#tblMemberRegister :input').prop('disabled', true);
-			$(e.target).prop('disabled', false);
-			$(e.target).val('').focus();
-				
-		//	$(e.target).next().show();
-		//  또는
-		    $(e.target).parent().find('span.error').show();
+			
+		    $(e.target).closest('td').find('span.error').show();
 		}
 		else {
 			// 연락처 마지막 4자리가 정규표현식에 맞는 경우
-			$('table#tblMemberRegister :input').prop('disabled', false);
-				
-	     // $(e.target).next().hide();
-		 // 또는
-			$(e.target).parent().find('span.error').hide();
+		
+			$(e.target).closest('td').find('span.error').hide();
 		}
 				
 	});	// end of $('input#hp3').blur((e) => {})-------------------	
@@ -202,21 +145,11 @@ $(function(){
 		
 		if(!bool) {
 			// 우편번호가 정규표현식에 위배된 경우
-				
-			$('table#tblMemberRegister :input').prop('disabled', true);
-			$(e.target).prop('disabled', false);
-			$(e.target).val('').focus();
-				
-		//	$(e.target).next().show();
-		//  또는
+		
 		    $(e.target).parent().find('span.error').show();
 		}
 		else {
-			// 우편번호가 정규표현식에 맞는 경우
-			$('table#tblMemberRegister :input').prop('disabled', false);
-				
-	     // $(e.target).next().next().hide();
-		 // 또는
+			
 			$(e.target).parent().find('span.error').hide();
 		}
 				
