@@ -14,6 +14,7 @@ public class MailSendVerifyController {
 
     @PostMapping("/send")
     public boolean sendVerifyCodeToEmail(@RequestParam @Email(message = "이메일 타입이 아닙니다.") String email, HttpServletRequest request) {
+
         return emailVerifyService.sendVerifyCodeToEmail(email, request.getSession());
 
     }

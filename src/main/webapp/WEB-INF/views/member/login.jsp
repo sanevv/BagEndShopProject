@@ -79,7 +79,7 @@
                 </table>
 
                 <div class="text-center mt-3">
-                    <a href="#">회원가입</a>
+                    <a href="${pageContext.request.contextPath}/memberRegister.team1">회원가입</a>
                 </div>
             </form>
         </div>

@@ -19,9 +19,12 @@ public interface MemberDAO {
     // 비밀번호 찾기에서 이메일로 비밀번호를 찾는 것
     boolean findAPasswordByEmail(String email, String username, String userid) throws SQLException;
 
-    // 이메일로 인증받기페이지에서 이메일을 가져오려고 하는 것
-    MemberVO knowTheEmail(String email) throws SQLException;
-
     // 휴대폰 번호로 비밀번호 찾기 여부를 판단하는 메서드
     boolean judgmentCalledMobilePhoneNumber(String phoneNumber) throws SQLException;
+
+    // 이메일로 비밀번호 변경하기
+    int changePasswordByEmail(String email, String newPassword) throws SQLException;
+
+    // 휴대폰 번호로 비밀번호 변경하기
+    int changePasswordByPhoneNumber(String phoneNumber, String newPassword) throws SQLException;
 }
