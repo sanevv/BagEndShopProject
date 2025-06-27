@@ -1,0 +1,103 @@
+body {
+    background-color: #f8f9fa;
+    padding: 30px;
+}
+
+.cart-item {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    transition: box-shadow 0.3s ease;
+}
+
+.cart-item:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.item-image img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.item-remove {
+    cursor: pointer;
+    font-size: 20px;
+    color: #dc3545;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    transition: transform 0.2s;
+    transform-origin: center;
+}
+
+.item-remove:hover {
+    transform: scale(1.5);
+}
+
+#selectedDelete {
+    cursor: pointer;
+    transition: transform 0.2s;
+    transform-origin: center;
+    text-decoration: none;
+    display: inline-block;
+    color: #dc3545;
+}
+#selectedDelete:hover {
+    transform: scale(1.05);
+}
+
+.item-qty input {
+    width: 50px;
+    text-align: center;
+}
+
+.summary-box {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.summary-total {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.summary-buttons button {
+    width: 100%;
+}
+
+.btn-black {
+    background-color: #000;
+    color: #fff;
+    border: none;
+}
+
+.btn-black:hover {
+    background-color: #404040;
+    color: #fff;
+}
+
+.btn-outline-dark:hover {
+    background-color: #e5e5e6;
+    color: #000;
+}
+.detail-btn {
+    cursor: pointer;
+}
+#paymentBody {
+    position: sticky;
+    top: 140px;
+}
+.update-qty-btn:disabled {
+    background-color: #adb5bd !important; /* 어두운 회색 */
+    border-color: #adb5bd !important;
+    color: #fff !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}

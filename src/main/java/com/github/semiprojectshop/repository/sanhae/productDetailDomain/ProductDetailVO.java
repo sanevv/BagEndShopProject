@@ -26,6 +26,9 @@ public class ProductDetailVO {
     // product_image 테이블 조인해서 사용할거임
     private String productImagePath; // 대표이미지 경로
 
+    // review 작성자 이름 가져올거임
+    private String reviewUserName; // 작성자 이름
+
     // public static final 로 선언되어 있어서 객체 생성 없이 클래스명.상수명 으로 접근하는거야
     // 할인율 %
     public long getDiscountRate() {
@@ -41,25 +44,4 @@ public class ProductDetailVO {
     private int categoryId;       // 카테고리 번호
     private String productStatus; // 상품 상태 : 판매중, 품절, 숨김
 
-    // 사용자 이름 마스킹처리하기
-    public static String getMaskName(String userName) {
-        if (userName == null || userName.isEmpty() )  {
-            return "";
-        }
-
-        int len = userName.length();
-
-        if (len == 1) {
-            return userName; // 한 글자는 그대로
-        } else if (len == 2) {
-            return userName.charAt(0) + "*"; // 두 글자는 앞 글자만 남김
-        } else {
-            // 가운데 글자만 *로 대체
-            StringBuilder sb = new StringBuilder();
-            sb.append(userName.charAt(0));
-            sb.append("*".repeat(len - 2));
-            sb.append(userName.charAt(len - 1));
-            return sb.toString();
-        }
-    }
 }

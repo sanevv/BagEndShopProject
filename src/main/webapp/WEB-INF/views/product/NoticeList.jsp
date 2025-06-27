@@ -73,5 +73,5 @@ div#pageBar > nav {
 	</nav>
 </div>
 
-<input type="text" value="${msg}">
+
 <jsp:include page="../include/footer.jsp" />

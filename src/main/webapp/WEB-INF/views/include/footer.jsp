@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- footer -->
 <footer id="footer">
     <div class="inner">
@@ -13,7 +13,12 @@
 </footer>
 <!-- //footer -->
 <%-- 여기서 root 경로는 static 입니다.  --%>
-<script src="${pageContext.request.contextPath}/lib/bootstrap-4.6.2-dist/js/bootstrap.bundle.js"></script>
+<c:if test="${not empty requestScope.cart}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</c:if>
+<c:if test="${empty requestScope.cart}">
+    <script src="${pageContext.request.contextPath}/lib/bootstrap-4.6.2-dist/js/bootstrap.bundle.js"></script>
+</c:if>
 <script src="${pageContext.request.contextPath}/js/common/common.js" defer></script>
 
 </div>

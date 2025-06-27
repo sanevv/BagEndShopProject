@@ -1,25 +1,33 @@
-const productId = document.querySelector('[name="productId"]').value;
-const userName = document.querySelector('[name="userName"]').value;
+document.addEventListener('DOMContentLoaded', () => {
+    const productId = document.querySelector('[name="productId"]').value;
+
+    const btnReviewWrite = document.querySelector('.btn-write-review');
+
+    btnReviewWrite.onclick = () => {
+        location.href = `/review/write?productId=${productId}`;
+    }
 
 // 리뷰리스트 불러오기
-fetch(`/api/review/list?productId=${productId}`)
-    .then(response => response.json())
-    .then(reviews => {  // 직접 배열 받기
-        if (Array.isArray(reviews)) {
+    fetch(`/api/review/list?productId=${productId}`)
+        .then(response => response.json())
+        .then(reviews => {  // 직접 배열 받기
+            if (Array.isArray(reviews)) {
 
-            let reviewListHTML = ``;
+                let reviewListHTML = ``;
 
-            if(reviews.length > 0) {
+                if (reviews.length > 0) {
 
-                reviews.forEach(review => {
-                    reviewListHTML += `
+                    reviews.forEach(review => {
+                        const halfRating = (Number(review.rating) / 2).toFixed(1);
+
+                        reviewListHTML += `
                         <li class="review-item">
                             <div class="box">
                                 <p class="title">${review.reviewContents}</p>
                                 <div class="info">
-                                    <span class="name">사용자${userName}</span>
+                                    <span class="name">작성자 ${review.userName}</span>
                                     <span class="date">${review.createdAt}</span>
-                                    <span class="rating">별이 ${review.rating}개!!</span>
+                                    <span class="rating" data-rating="${review.rating}">별이 ${halfRating}개!!</span>
                                 </div>
                             </div>
                             <div class="image">
@@ -27,13 +35,15 @@ fetch(`/api/review/list?productId=${productId}`)
                             </div>
                         </li>
                     `;
-                });
-            }
-            else {
-                reviewListHTML += `<li class="review-empty">등록된 후기가 없어요.... <br> 인기가 없네요</li>`;
-            }
+                    });
+                } else {
+                    reviewListHTML += `<li class="review-empty">등록된 후기가 없어요.... <br> 인기가 없네요</li>`;
+                }
 
-            document.querySelector("#reviewList").innerHTML = reviewListHTML;
-        }
-    })
-    .catch(error => console.error("API 호출 실패:", error));
+                document.querySelector("#reviewList").innerHTML = reviewListHTML;
+
+
+            }
+        })
+        .catch(error => console.error("API 호출 실패:", error));
+});

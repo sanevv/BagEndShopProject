@@ -182,45 +182,33 @@ public class FirstController {
     }
 
     @GetMapping("receiveAuthenticationNumberByEmail")
-    public String receiveAuthenticationNumberByEmail(HttpServletRequest request) throws SQLException {
+    public String receiveAuthenticationNumberByEmail(HttpServletRequest request)  {
 
-        MemberVO mvo = new MemberVO();
         String email = request.getParameter("email");
-
-        MemberVO passwordImportEmail = memberDAO.knowTheEmail(email);
-
-        email = passwordImportEmail.getEmail();
-
         request.setAttribute("email", email);
-
-        Random rnd = new Random();
-
-        String certification_code = "";
-
-        char randchar = ' ';
-        for(int i=0; i<5; i++) {
-            randchar = (char)(rnd.nextInt('z' - 'a' + 1) + 'a');
-            certification_code += randchar;
-        };
-
-        int randnum = 0;
-        for(int i=0; i<7; i++) {
-            randnum = (char)(rnd.nextInt(9 - 0 + 1) + 0);
-            certification_code += randnum;
-        };
-        System.out.println("인증번호: " + certification_code);
-
-
-
-
-
         return "member/receiveAuthenticationNumberByEmail";
     }
 
     @GetMapping("receiveAuthenticationNumberByPhone")
-    public String receiveAuthenticationNumberByPhone(HttpServletRequest request) throws SQLException {
+    public String receiveAuthenticationNumberByPhone(HttpServletRequest request)  {
+
+         String phoneNumber = request.getParameter("phoneNumber");
+         request.setAttribute("phoneNumber", phoneNumber);
 
         return "member/receiveAuthenticationNumberByPhone";
+    }
+
+    @GetMapping("resetPassword")
+    public String resetPassword(HttpServletRequest request)  {
+
+        String email = request.getParameter("email");
+        String phoneNumber = request.getParameter("phoneNumber");
+
+        request.setAttribute("email", email);
+        request.setAttribute("phoneNumber", phoneNumber);
+
+
+        return "member/resetPassword";
     }
 
 

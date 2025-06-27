@@ -41,7 +41,7 @@
                     console.log(data.userName);
                     console.log(data.phoneNumber);
                     console.log(data.existUser);
-                    alert(data.phoneNumber);
+                    // alert(data.phoneNumber);
                     const phoneNum = data.phoneNumber;
                     if(data.existUser)
                         window.location.href = "/test/findEmailSuccess.up?name="+data.userName+"&phoneNum="+phoneNum;

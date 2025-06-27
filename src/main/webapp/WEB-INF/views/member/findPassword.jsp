@@ -120,7 +120,7 @@
                         console.log("아이디", data.userid);
                         console.log("이름", data.username);
                         if (data.existPhoneNum) {
-                            window.location.href = "/test/receiveAuthenticationNumberByPhonenum?phoneNumber="+data.phoneNumber;
+                            window.location.href = "/test/receiveAuthenticationNumberByPhone?phoneNumber="+data.phoneNumber;
                         } else {
                             alert("해당 정보로 가입된 회원이 없습니다.");
                         }

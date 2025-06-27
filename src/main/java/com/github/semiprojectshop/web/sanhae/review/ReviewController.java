@@ -1,37 +1,48 @@
 package com.github.semiprojectshop.web.sanhae.review;
 
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
+import com.github.semiprojectshop.repository.sanhae.productDetailDomain.ProductDetailVO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
 import com.github.semiprojectshop.repository.sanhae.reviewModel.ReviewDAO;
 import com.github.semiprojectshop.repository.sanhae.reviewModel.ReviewDAOImple;
 import com.github.semiprojectshop.repository.sihu.review.Review;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.SQLException;
-import java.util.List;
 
-// 웹 요청을 처리하는 컨트롤러
-@RestController // 포스트맨으로 JSON값을 확인하고 싶을 때
-@RequestMapping("/api/review")
-@RequiredArgsConstructor // final이 붙은 필드를 생성자(Constructor)를 자동으로 생성해줌
+@Controller
+@RequestMapping("/review")
+@RequiredArgsConstructor
+
+//TODO: 나중에 주문결제 완료한 사람만 등록되게 해야함
 public class ReviewController {
-
 
     private final ReviewDAO rvDAO;
 
-    // 리뷰 조회하기
-    @GetMapping("/list")
-    public List<ReviewVO> getReviewList(@RequestParam("productId") int productId) throws SQLException {
-        return rvDAO.reviewList(productId);
+    @GetMapping("/write")
+    public String reviewReg(@RequestParam("productId") int productId,  HttpSession session, Model model){
+
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+
+        // 대표이미지 찾아오기
+        String productImagePath = rvDAO.getProductImagePath(productId);
+
+        if (loginUser != null) {
+            int userId = loginUser.getUserId(); // 로그인한 사용자 ID
+
+            model.addAttribute("userId", userId);
+            System.out.println("userId : "+ userId);
+            //System.out.println("로그인 아이디 : "+ loginUser.getUserId());
+            model.addAttribute("productImagePath", productImagePath);
+        }
+
+
+        return "review/reviewWrite";
     }
-
-    // 리뷰 작성하기
-//    @PostMapping
-//    public ReviewVO addReview() throws SQLException {
-//        return  rvDAO.addReview();
-//    }
-
-
 }

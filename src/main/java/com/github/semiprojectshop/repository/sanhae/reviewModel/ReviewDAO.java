@@ -9,4 +9,10 @@ public interface ReviewDAO {
 
     // 상품아이디로 리뷰리스트 조회하기
     List<ReviewVO> reviewList(int productId) throws SQLException;
+
+    // 리뷰 등록하기
+    ReviewVO addReview(ReviewVO reviewVO);
+
+    // 대표이미지 찾아오기
+    String getProductImagePath(int productId);
 }

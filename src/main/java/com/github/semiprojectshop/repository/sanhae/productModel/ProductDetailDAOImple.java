@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Repository
@@ -43,18 +45,21 @@ public class ProductDetailDAOImple implements ProductDetailDAO {
         try {
             conn = ds.getConnection();
 
-            String sql = " SELECT product_id, product_name, product_info, product_contents, price, stock, product_size, matter, " +
-                         " ( SELECT b.image_path FROM product_image b WHERE b.product_id = a.product_id and thumbnail = 1 ) AS image_path, c.name AS userName " +
+            String sql = " SELECT a.user_id AS user_id, a.product_id, a.product_name, " +
+                         "    a.product_info, a.product_contents, a.price, a.stock, a.product_size, a.matter, " +
+                         "    ( SELECT b.image_path FROM product_image b WHERE b.product_id = a.product_id AND b.thumbnail = 1 ) AS image_path " +
                          " FROM product a " +
-                         " LEFT JOIN my_user c ON a.user_id = c.user_id " +
                          " WHERE a.product_id = ? ";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, productId);
             rs = pstmt.executeQuery();
 
-            if(rs.next()) {
+            if (rs.next()) {
+
                 prdVO = new ProductDetailVO();
+
+                prdVO.setUserId(rs.getInt("user_id"));
                 prdVO.setProductId(rs.getInt("product_id"));
                 prdVO.setProductName(rs.getString("product_name"));
                 prdVO.setProductInfo(rs.getString("product_info"));
@@ -64,7 +69,6 @@ public class ProductDetailDAOImple implements ProductDetailDAO {
                 prdVO.setProductSize(rs.getString("product_size"));
                 prdVO.setMatter(rs.getString("matter"));
                 prdVO.setProductImagePath(rs.getString("image_path"));
-                prdVO.setUserName(rs.getString("userName"));
 
                 return prdVO;
             }

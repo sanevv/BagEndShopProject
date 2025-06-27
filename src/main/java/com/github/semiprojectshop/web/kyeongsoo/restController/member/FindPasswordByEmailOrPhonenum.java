@@ -42,9 +42,6 @@ public class FindPasswordByEmailOrPhonenum {
 
         System.out.println(phoneNumber);
 
-        phoneNumber = phoneNumber.substring(0,3)+"-"+ phoneNumber.substring(3,7)+"-"+phoneNumber.substring(7);
-        System.out.println(phoneNumber);
-
         boolean existPhoneNum = memberDAO.judgmentCalledMobilePhoneNumber(phoneNumber);
 
 

@@ -89,10 +89,6 @@ public class MemberDAOImple implements MemberDAO{
         boolean result = false;
 
         String phoneNum = paramap.get("phoneNum");
-        System.out.println("변환 전 전화번호: " + phoneNum);
-
-        phoneNum = phoneNum.substring(0, 3) + "-" + phoneNum.substring(3,7) + "-" + phoneNum.substring(7);
-        System.out.println("변환 후 전화번호: " + phoneNum);
 
         try {
             conn = ds.getConnection();
@@ -122,10 +118,6 @@ public class MemberDAOImple implements MemberDAO{
         MemberVO member = null;
 
         String phoneNum = paramap.get("phoneNum");
-        // System.out.println("변환 전 전화번호: " + phoneNum);
-
-        phoneNum = phoneNum.substring(0, 3) + "-" + phoneNum.substring(3,7) + "-" + phoneNum.substring(7);
-        // System.out.println("변환 후 전화번호: " + phoneNum);
 
         try {
             conn = ds.getConnection();
@@ -180,38 +172,7 @@ public class MemberDAOImple implements MemberDAO{
         }
 
         return result;
-    }
-
-    // 이메일로 인증받기페이지에서 이메일을 가져오려고 하는 것
-    @Override
-    public MemberVO knowTheEmail(String email) throws SQLException {
-
-        MemberVO member = null;
-
-        try {
-            conn = ds.getConnection();
-
-            String sql = " select email from my_user where email=? ";
-
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, email);
-
-            rs = pstmt.executeQuery();
-
-            if(rs.next()) {
-                member = new MemberVO();
-                member.setEmail(rs.getString("email"));
-
-                return member;
-            }
-
-        } finally {
-            close();
-        }
-
-
-        return member;
-    }
+    } // end of public boolean findAPasswordByEmail(String email, String username, String userid) throws SQLException
 
     // 휴대폰 번호로 비밀번호 찾기 여부를 판단하는 메서드
     @Override
@@ -231,6 +192,54 @@ public class MemberDAOImple implements MemberDAO{
 
             result = rs.next();
 
+
+        } finally {
+            close();
+        }
+
+        return result;
+    }
+
+    // 이메일로 비밀번호 변경하기
+    @Override
+    public int changePasswordByEmail(String email, String newPassword) throws SQLException {
+
+        int result = 0;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " update my_user set password = ? where email = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, Sha256.encrypt(newPassword));
+            pstmt.setString(2, email);
+
+            result = pstmt.executeUpdate();
+
+        } finally {
+            close();
+        }
+
+        return result;
+    }
+
+    // 휴대폰 번호로 비밀번호 변경하기
+    @Override
+    public int changePasswordByPhoneNumber(String phoneNumber, String newPassword) throws SQLException {
+
+        int result = 0;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " update my_user set password = ? where phone_number = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, Sha256.encrypt(newPassword));
+            pstmt.setString(2, phoneNumber);
+
+            result = pstmt.executeUpdate();
 
         } finally {
             close();

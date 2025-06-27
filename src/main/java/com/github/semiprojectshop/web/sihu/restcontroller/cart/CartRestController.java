@@ -34,5 +34,10 @@ public class CartRestController {
         AddToCartResponse response = cartService.deleteFromCart(productId);
         return CustomResponse.ofOk(response.getMessage(), response);
     }
+    @PutMapping
+    public CustomResponse<AddToCartResponse> modifyQuantity(@RequestParam long productCartId, @RequestParam int quantity) {
+        AddToCartResponse response = cartService.modifyQuantity(productCartId, quantity);
+        return CustomResponse.ofOk(response.getMessage(), response);
+    }
 
 }
