@@ -43,10 +43,20 @@ public class ProductCartJpaCustomImpl implements ProductCartJpaCustom {
                                                 .where(QProductImage.productImage.product.productId.eq(QProductCart.productCart.product.productId)
                                                         .and(QProductImage.productImage.thumbnail.isTrue())).limit(1), "productImage"
                                 ),
-                                QProductCart.productCart.quantity
+                                QProductCart.productCart.quantity,
+                                QProductCart.productCart.product.price
                         ))
                 .from(QProductCart.productCart)
                 .where(QProductCart.productCart.myUser.userId.eq(loginUserId))
+                .orderBy(QProductCart.productCart.createdAt.desc())
                 .fetch();
+    }
+
+    @Override
+    public long updateProductQuantity(long productCartId, int quantity) {
+        return queryFactory.update(QProductCart.productCart)
+                .set(QProductCart.productCart.quantity, quantity)
+                .where(QProductCart.productCart.productCartId.eq(productCartId))
+                .execute();
     }
 }

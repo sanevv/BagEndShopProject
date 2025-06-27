@@ -112,6 +112,9 @@ searchProductList = () => {
         </div>
         <a href="javascript:;" class="product-link"></a>
       `;
+            li.addEventListener('click',()=>{
+                location.href = `/product/detail/${productId}`;
+            })
             productList.appendChild(li);
         });
         currentPage++; // 다음 페이지를 위해 페이지 증가

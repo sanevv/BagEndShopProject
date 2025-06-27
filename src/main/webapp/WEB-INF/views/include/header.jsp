@@ -8,8 +8,13 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <c:if test="${not empty requestScope.cart}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    </c:if>
+    <c:if test="${empty requestScope.cart}">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/bootstrap-4.6.2-dist/css/bootstrap.css">
+    </c:if>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/reset.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/common.css">
 
@@ -41,12 +46,14 @@
                         <div class="navi-item">
                             <c:if test="${empty sessionScope.loginUser}">
                                 <a href="/test/login.up" id="login-status">
-                                    <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg" alt="마이페이지 아이콘" />
+                                    <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg"
+                                         alt="마이페이지 아이콘"/>
                                 </a>
                             </c:if>
                             <c:if test="${not empty sessionScope.loginUser}">
                                 <a href="javascript:;" id="login-status">
-                                    <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg" alt="마이페이지 아이콘" />
+                                    <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg"
+                                         alt="마이페이지 아이콘"/>
                                 </a>
                             </c:if>
                         </div>
@@ -56,15 +63,17 @@
                     </div>
                     <div class="side-navi navi-list">
                         <div class="navi-item search-item">
-                            <button type="button" class="btn-search"><img src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg" alt="" class="max"></button>
+                            <button type="button" class="btn-search"><img
+                                    src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg"
+                                    alt="" class="max"></button>
                             <div class="search-form">
                                 <form>
-                                    <input type="search" class="inp-search" placeholder="검색어를 입력해주세요" />
+                                    <input type="search" class="inp-search" placeholder="검색어를 입력해주세요"/>
                                 </form>
                             </div>
                         </div>
                         <div class="navi-item">
-                            <a href="javascript:;">
+                            <a href="${pageContext.request.contextPath}/cart">
                                 <span class="count cart-count"><span class="basket-count">0</span></span>
                             </a>
                         </div>
@@ -75,7 +84,7 @@
                         <ul>
                             <li><a href="productList.one">BAG</a></li>
                             <li><a href="productList.one">ACC</a></li>
-                            <li><a href="productList.one">시후냉동바보</a></li>
+                            <li><a href="${pageContext.request.contextPath}/product/list">시후냉동바보</a></li>
                             <li><a href="${pageContext.request.contextPath}/notice/list.one">승호바보</a></li>
                             <li><a href="productList.one">경수바보</a></li>
                             <li><a href="productList.one">애리천재</a></li>
@@ -83,8 +92,8 @@
                     </div>
                 </div>
             </div>
+            <!-- //header -->
+
+
+        </header>
         <!-- //header -->
-
-
-    </header>
-    <!-- //header -->

@@ -20,14 +20,18 @@ public class StorageController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> fileListUploadTester(@RequestPart List<MultipartFile> fileList){
         Path uploadDir = storageService.createFileDirectory("test", "fileList");
+
         List<String> filePaths = new ArrayList<>();
         for (MultipartFile file : fileList) {
             if (!file.isEmpty()) {
-                String path = storageService.returnTheFilePathAfterTransfer(file, uploadDir, "시후천재_");
+                String path = storageService.returnTheFilePathAfterTransfer(file, uploadDir, "뭔데이거_");
+
                 filePaths.add(path);
             }
         }
         return filePaths;
     }
+
+
 
 }

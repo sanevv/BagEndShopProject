@@ -59,4 +59,10 @@ public class CartService {
         return productCartJpa.findAllByUserId(loginUserId);
 
     }
+    @Transactional
+    public AddToCartResponse modifyQuantity(long productCartId, int quantity) {
+        long result = productCartJpa.updateProductQuantity(productCartId, quantity);
+        if (result != 1) throw CustomMyException.fromMessage("장바구니 수량 수정에 실패했습니다. 다시 시도해주세요.");
+        return AddToCartResponse.of(productCartId, quantity, quantity, "장바구니 수량이 수정되었습니다.");
+    }
 }

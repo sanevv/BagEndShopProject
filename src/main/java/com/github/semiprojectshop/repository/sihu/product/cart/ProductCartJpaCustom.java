@@ -12,4 +12,6 @@ public interface ProductCartJpaCustom {
     long addQuantity(AddToCartRequest addToCartRequest, long loginUserId);
 
     List<CartListResponse> findAllByUserId(long loginUserId);
+
+    long updateProductQuantity(long productCartId, int quantity);
 }
