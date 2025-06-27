@@ -17,4 +17,8 @@ public interface NoticeDAO {
 
 	int delete_notice(String deleteId) throws SQLException;
 
+	int insertNotice(Map<String, String> paramap) throws SQLException;
+
+	int updateNotice(Map<String, String> paraMap) throws SQLException;
+
 }

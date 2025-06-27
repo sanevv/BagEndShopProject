@@ -160,4 +160,49 @@ public class NoticeDAO_imple implements NoticeDAO {
 		return result;
 	}
 
+	@Override
+	public int insertNotice(Map<String, String> paramap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "insert into notice(user_id, title, contents, thumbnail) values(3, ?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paramap.get("title"));
+			pstmt.setString(2, paramap.get("contents"));
+			pstmt.setString(3, paramap.get("thumbnail"));
+			result = pstmt.executeUpdate();
+			
+			
+		}
+		finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int updateNotice(Map<String, String> paraMap) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "update notice set title = ?,contents = ? where notice_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("title"));
+			pstmt.setString(2, paraMap.get("contents"));
+			pstmt.setString(3, paraMap.get("notice_id"));
+			result = pstmt.executeUpdate();
+			
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
 }
