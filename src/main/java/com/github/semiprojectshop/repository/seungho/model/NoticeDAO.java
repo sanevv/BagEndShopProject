@@ -19,4 +19,6 @@ public interface NoticeDAO {
 
 	int insertNotice(Map<String, String> paramap) throws SQLException;
 
+	int updateNotice(Map<String, String> paraMap) throws SQLException;
+
 }

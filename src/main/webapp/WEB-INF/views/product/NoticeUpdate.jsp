@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="../include/header.jsp"></jsp:include>
+
 <style type="text/css">
     body {
         margin: 0;
@@ -80,51 +80,25 @@
 </style>
 
 <script type="text/javascript">
-$(function() {
-	  $('button.btn-success').click(function(e) {
-	    e.preventDefault();
 
-	    const form = document.forms["writeFrm"];
-	    const formData = new FormData(form); 
 
-	    $.ajax({
-	      url: "${pageContext.request.contextPath}/notice/abc",
-	      type: "post",
-	      data: formData,
-	      processData: false,     // 반드시 false
-	      contentType: false,     // 반드시 false
-	      dataType: "json",       
-	      success: function(json) {
-	        console.log("응답:", JSON.stringify(json));
-	        if (json.result == 1) {
-	          location.href = "${pageContext.request.contextPath}/notice/list.one";
-	        }
-	      },
-	      error: function(request, status, error) {
-	        alert("에러 발생!");
-	        console.log("code:", request.status);
-	        console.log("message:", request.responseText);
-	        console.log("error:", error);
-	      }
-	    });
-	  });
-	});
 
 </script>
 
-
+<jsp:include page="../include/header.jsp"></jsp:include>
 
 <div id="container">
-    <h1>공지사항 쓰기</h1>
+    <h1>공지사항 수정하기</h1>
 
-    <form name="writeFrm" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/notice/abc" >
+    <form name="writeFrm" method="post" action="${pageContext.request.contextPath}/notice/update">
+    	<input name="notice_id" type="hidden" value="${nvo.notice_id}">
     	<input name="thumbnail" type="file">
-        <input name="title" id="title" type="text" placeholder="제목을 입력하세요">
-        <textarea name="contents" id="contents" placeholder="내용을 입력하세요"></textarea>
+        <input name="title" id="title" type="text" value="${nvo.title}">
+        <textarea name="contents" id="contents">${nvo.contents}</textarea>
 
         <div class="form-buttons">
-            <button class="btn btn-success" type="button" >글쓰기</button>
-            <a class="btn btn-common" style="border: solid 1px black" href="${pageContext.request.contextPath}/notice/list.one">취소</a>
+            <button class="btn btn-success" type="submit">수정하기</button>
+            <a class="btn btn-common" style="border: solid 1px black" href="${pageContext.request.contextPath}/notice/detail.one?${nvo.notice_id}">취소</a>
         </div>
     </form>
 </div>

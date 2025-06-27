@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.github.semiprojectshop.repository.seungho.domain.NoticeVO;
 import com.github.semiprojectshop.repository.seungho.model.NoticeDAO;
 import com.github.semiprojectshop.repository.seungho.model.NoticeDAO_imple;
+import com.github.semiprojectshop.service.sihu.StorageService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NoticeListController {
 	private final NoticeDAO ndao;
+
 	NoticeVO nvo = new NoticeVO();
 	@GetMapping("/list.one")
 	public String noticeList(HttpServletRequest request) throws SQLException {
@@ -44,7 +46,7 @@ public class NoticeListController {
 		
 		String pageBar = "";
 		
-		int blockSize = 8;
+		int blockSize = 10;
 		
 		try {
 
