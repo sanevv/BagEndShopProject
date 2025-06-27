@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -38,7 +39,8 @@ public class WishDAO_imple implements WishDAO {
 	// 로그인한 사용자가 본인의 위시리스트를 조회
 	@Override
 	public List<ProductDetailVO> selectWishListByUserId(int userId) throws SQLException {
-	    List<ProductDetailVO> list = new ArrayList<>();
+	    
+		List<ProductDetailVO> list = new ArrayList<>();
 
 	    try {
 	        conn = ds.getConnection();
@@ -51,7 +53,7 @@ public class WishDAO_imple implements WishDAO {
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setInt(1, userId);
 	        rs = pstmt.executeQuery();
-
+/*
 	        while (rs.next()) {
 	            ProductDetailVO vo = new ProductDetailVO();
 	            vo.setWish_id(rs.getInt("wish_id"));
@@ -62,16 +64,14 @@ public class WishDAO_imple implements WishDAO {
 
 	            list.add(vo);
 	        }
-
+*/
 	    } finally {
 	        close();
 	    }
 
 	    return list;
-	}		
 		
 		
-		return null;
 	}// end of private void close()---------------
 
 	
