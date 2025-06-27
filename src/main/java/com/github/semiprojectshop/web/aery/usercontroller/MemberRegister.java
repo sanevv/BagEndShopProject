@@ -15,6 +15,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 public class MemberRegister extends AbstractController {
 
 //	private MemberDAO mdao = new MemberDAO_imple();
@@ -71,10 +72,10 @@ public class MemberRegister extends AbstractController {
 					paraMap.put("email", email);
 					paraMap.put("password", password);
 					
-					MemberVO loginuser = mdao.login(paraMap);
+					MemberVO loginUser = mdao.login(paraMap);
 					
 					HttpSession session = request.getSession();
-					session.setAttribute("loginuser", loginuser);
+					session.setAttribute("loginUser", loginUser);
 					
 					String message = name + "님 회원가입에 감사드립니다.";
 				    String loc = request.getContextPath()+"/";  

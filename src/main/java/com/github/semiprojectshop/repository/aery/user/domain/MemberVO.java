@@ -7,11 +7,11 @@ public class MemberVO {
 	private String email;              // 이메일
 	private String password;           // 비밀번호 (SHA-256 암호화 대상)
 	private String name;               // 회원명
-	private String phoneNumber ;       // 연락처
-	private String zipCode ;              // 우편번호
+	private String phoneNumber;        // 연락처
+	private String zipCode;            // 우편번호
 	private String address;            // 주소
 	private String detailAddress;      // 상세주소
-	private String registerAt ;        // 가입일자 
+	private String registerAt;         // 가입일자 
 	private int roleId = 2;            // roleId 기본값 2(일반사용자)
 
 	
