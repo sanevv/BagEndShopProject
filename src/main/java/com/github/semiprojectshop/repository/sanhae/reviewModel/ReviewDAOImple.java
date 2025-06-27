@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +33,7 @@ public class ReviewDAOImple implements ReviewDAO {
 
 
 
+    // 리뷰리스트 구하기
     @Override
     public List<ReviewVO> reviewList(int productId) {
 
@@ -44,13 +42,15 @@ public class ReviewDAOImple implements ReviewDAO {
         try {
             conn = ds.getConnection();
 
-            String sql = " SELECT review_id, user_id, product_id, review_contents, rating, to_char(created_at, 'yyyy-mm-dd hh24:mm:ss') AS created_at, " +
+            String sql = " SELECT c.name AS userName, a.review_id, a.user_id, a.product_id, a.review_contents, a.rating, to_char(a.created_at, 'yyyy-mm-dd hh24:mm:ss') AS created_at, " +
                          " ( SELECT b.image_path " +
                          "   FROM product_image b " +
-                         "   WHERE b.product_id = a.product_id  and thumbnail = 1 " +
+                         "   WHERE b.product_id = a.product_id  and b.thumbnail = 1 " +
                          " ) AS image_path " +
                          " FROM review a " +
-                         " WHERE product_id = ? ";
+                         " LEFT JOIN my_user c ON a.user_id = c.user_id " +
+                         " WHERE product_id = ? " +
+                         " ORDER BY created_at desc ";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, productId);
@@ -59,6 +59,7 @@ public class ReviewDAOImple implements ReviewDAO {
             while(rs.next()){
                 ReviewVO rvo = new ReviewVO();
 
+                rvo.setUserName(rs.getString("userName"));
                 rvo.setReviewId(rs.getInt("review_id"));
                 rvo.setUserId(rs.getInt("user_id"));
                 rvo.setProductId(rs.getInt("product_id"));
@@ -69,10 +70,6 @@ public class ReviewDAOImple implements ReviewDAO {
 
                 rvList.add(rvo);
             }
-
-            System.out.println("확인용"+ rvList);
-
-
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -82,6 +79,73 @@ public class ReviewDAOImple implements ReviewDAO {
         }
 
         return rvList;
+    }
+
+
+    // 리뷰 등록하기
+    @Override
+    public ReviewVO addReview(ReviewVO reviewVO) {
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " INSERT INTO review (user_id, product_id, review_contents, rating, created_at) " +
+                         " VALUES (?, ?, ?, ?, SYSDATE)";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reviewVO.getUserId());
+            pstmt.setInt(2, reviewVO.getProductId());
+            pstmt.setString(3, reviewVO.getReviewContents());
+            pstmt.setInt(4, reviewVO.getRating());
+
+            int result = pstmt.executeUpdate();
+
+            if(result > 0) {
+
+                return reviewVO;
+            }
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
+
+        return null;
+    }
+
+
+
+    // 대표이미지 찾아오기
+    @Override
+    public String getProductImagePath(int productId) {
+
+        String result = null;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " SELECT image_path FROM product_image WHERE product_id = ? and thumbnail = 1 ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, productId);
+            rs = pstmt.executeQuery();
+
+            rs.next();
+
+            result = rs.getString(1);
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
+
+        return result;
     }
 
 

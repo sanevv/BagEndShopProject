@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/product/productDetail.css">
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/review/review.css">
 
 <jsp:include page="../include/header.jsp"></jsp:include>
 
@@ -67,34 +67,7 @@
 					<button type="button" class="btn btn-write-review">리뷰쓰기</button>
 				</div>
 				<div class="review-body">
-					<ul id="reviewList" class="review-list">
-<%--						<li class="review-item">--%>
-<%--							<div class="box">--%>
-<%--								<p class="title">만족</p>--%>
-<%--								<div class="info">--%>
-<%--									<span class="name">이순신</span>--%>
-<%--									<span class="date">2025-06-25</span>--%>
-<%--									<span class="rating">별점</span>--%>
-<%--								</div>--%>
-<%--							</div>--%>
-<%--							<div class="image">--%>
-<%--								<img src="//nukak.kr/web/product/tiny/202401/e6e3ba5e0a1d9ae819f6c6f7793f19aa.png" alt="">--%>
-<%--							</div>--%>
-<%--						</li>--%>
-<%--						<li class="review-item">--%>
-<%--							<div class="box">--%>
-<%--								<p class="title">만족</p>--%>
-<%--								<div class="info">--%>
-<%--									<span class="name">이순신</span>--%>
-<%--									<span class="date">2025-06-25</span>--%>
-<%--									<span class="rating">별점</span>--%>
-<%--								</div>--%>
-<%--							</div>--%>
-<%--							<div class="image">--%>
-<%--								<img src="//nukak.kr/web/product/tiny/202401/e6e3ba5e0a1d9ae819f6c6f7793f19aa.png" alt="">--%>
-<%--							</div>--%>
-<%--						</li>--%>
-					</ul>
+					<ul id="reviewList" class="review-list"></ul>
 				</div>
 			</div>
 			<!-- //리뷰 -->
@@ -110,12 +83,16 @@
 		</div>
 	</div>
 
-	<input type="hidden" name="userName" value="${maskedName}">
+	<input type="hidden" name="reviewUserName" value="${prdVO.reviewUserName}">
+	<input type="hidden" name="userId" value="${userId}">
 	<input type="hidden" name="productId" value="${prdVO.productId}">
 </main>
 
 <script src="${pageContext.request.contextPath}/js/product/productDetail.js"></script>
 <script>
+
+	const isLogin = `${sadsadsads}`;
+
 	const imgList = [
 		"${prdVO.productImagePath}",
 		"${pageContext.request.contextPath}/images/product/5/5-1.png",
@@ -162,5 +139,6 @@
 			showImg(currentIndex);
 		}
 	}
+
 </script>
 <jsp:include page="../include/footer.jsp"></jsp:include>
