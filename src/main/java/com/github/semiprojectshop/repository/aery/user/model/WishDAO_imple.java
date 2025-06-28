@@ -43,50 +43,120 @@ public class WishDAO_imple implements WishDAO {
 		List<ProductDetailVO> list = new ArrayList<>();
 
 	    try {
-	        conn = ds.getConnection();
+	    	conn = ds.getConnection();
 
-	        String sql = "SELECT w.wish_id, p.product_id, p.product_name, p.price, p.image "
-	                   + "FROM wish_list w "
-	                   + "JOIN product p ON w.product_id = p.product_id "
-	                   + "WHERE w.user_id = ?";
+	    	String sql = " SELECT u.user_id, p.product_id, p.product_name, p.price, "
+                    + " ( SELECT i.image_path "
+                    + "   FROM product_image i "
+                    + "   WHERE i.product_id = p.product_id AND i.thumbnail = 1 "
+                    + "   FETCH FIRST 1 ROWS ONLY) AS image_path, "
+                    + " TO_CHAR(w.created_at, 'YYYY-MM-DD') AS created_at "
+                    + " FROM wish w "
+                    + " LEFT JOIN my_user u ON w.user_id = u.user_id "
+                    + " LEFT JOIN product p ON w.product_id = p.product_id "
+                    + " WHERE w.user_id = ? "
+                    + " ORDER BY created_at DESC ";
 
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setInt(1, userId);
 	        rs = pstmt.executeQuery();
-/*
-	        while (rs.next()) {
-	            ProductDetailVO vo = new ProductDetailVO();
-	            vo.setWish_id(rs.getInt("wish_id"));
-	            vo.setProduct_id(rs.getInt("product_id"));
-	            vo.setProduct_name(rs.getString("product_name"));
-	            vo.setPrice(rs.getInt("price"));
-	            vo.setImage(rs.getString("image")); // 이미지 경로 또는 파일명
 
-	            list.add(vo);
+	        while (rs.next()) {
+	    	
+	        	ProductDetailVO pdvo = new ProductDetailVO();
+	        	
+	            pdvo.setUserId(rs.getInt("user_id"));
+	            pdvo.setProductId(rs.getInt("product_id"));
+	            pdvo.setProductName(rs.getString("product_name"));
+	            pdvo.setProductImagePath(rs.getString("image_path"));
+	            pdvo.setCreatedAt(rs.getString("created_at"));
+	            pdvo.setPrice(rs.getInt("price"));
+
+	            list.add(pdvo);
 	        }
-*/
+	        
 	    } finally {
-	        close();
+	    	close();
 	    }
 
 	    return list;
+	    
+	}// end of public List<ProductDetailVO> selectWishListByUserId(int userId) throws SQLException---------------
+	
+	
+	// 사용자가 해당 상품을 찜했는지 확인
+	@Override
+    public boolean exists(int userId, int productId) throws SQLException {
 		
-		
-	}// end of private void close()---------------
+        boolean isExist = false;
 
+        try {
+            conn = ds.getConnection();
+
+            String sql = "SELECT 1 FROM wish WHERE user_id = ? AND product_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, productId);
+
+            rs = pstmt.executeQuery();
+            isExist = rs.next();
+            
+        } finally {
+            close();
+        }
+
+        return isExist;
+    }
+	 
+
+	// 위시리스트에 상품 추가
+	@Override
+	public void insert(int userId, int productId) throws SQLException {
+        try {
+            conn = ds.getConnection();
+
+            String sql = "INSERT INTO wish (user_id, product_id) VALUES (?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, productId);
+
+            pstmt.executeUpdate();
+            
+        } finally {
+            close();
+        }
+    }
+	
+	
+	// 위시리스트에서 상품 제거
+	@Override
+    public void delete(int userId, int productId) throws SQLException {
+        try {
+            conn = ds.getConnection();
+
+            String sql = "DELETE FROM wish WHERE user_id = ? AND product_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, productId);
+
+            pstmt.executeUpdate();
+            
+        } finally {
+            close();
+        }
+    }
+	
+	
+	// 위시리스트 상태를 토글 (있으면 삭제, 없으면 추가)
+	@Override
+	public void toggle(int userId, int productId) throws SQLException {
+	    if (exists(userId, productId)) {
+	        delete(userId, productId);
+	    } else {
+	        insert(userId, productId);
+	    }
+	}
+	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
