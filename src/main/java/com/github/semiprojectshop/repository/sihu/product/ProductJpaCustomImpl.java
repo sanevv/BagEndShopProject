@@ -5,6 +5,8 @@ import com.github.semiprojectshop.web.sihu.dto.PaginationDto;
 import com.github.semiprojectshop.web.sihu.dto.product.MainProductResponse;
 import com.github.semiprojectshop.web.sihu.dto.product.ProductListRequest;
 import com.github.semiprojectshop.web.sihu.dto.product.ProductListResponse;
+import com.github.semiprojectshop.web.sihu.dto.product.cart.CartListResponse;
+import com.github.semiprojectshop.web.sihu.dto.product.order.OrderProductRequest;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -95,6 +97,37 @@ public class ProductJpaCustomImpl implements ProductJpaCustom {
                 productListResponses
         );
 
+    }
+    private void settingQuantityForOrder(List<CartListResponse> cartListResponses, List<OrderProductRequest> orderProductRequests) {
+        for (CartListResponse cartListResponse : cartListResponses) {
+            for (OrderProductRequest orderProductRequest : orderProductRequests) {
+                if (cartListResponse.getProductId() == orderProductRequest.getProductId()) {
+                    cartListResponse.settingForOrder(orderProductRequest.getCartId(), orderProductRequest.getQuantity());
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<CartListResponse> findProductInfoForOrder(List<OrderProductRequest> orderProductRequests) {
+        List<CartListResponse> cartListResponses = queryFactory.select(Projections.fields(CartListResponse.class,
+                        QProduct.product.productId,
+                        QProduct.product.productName,
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(QProductImage.productImage.imagePath)
+                                        .from(QProductImage.productImage)
+                                        .where(QProductImage.productImage.product.eq(QProduct.product)
+                                                .and(QProductImage.productImage.thumbnail.isTrue()))
+                                        .limit(1), "productImage"
+                        ),
+                        QProduct.product.price
+                ))
+                .from(QProduct.product)
+                .where(QProduct.product.productId.in(orderProductRequests.stream().map(OrderProductRequest::getProductId).toList()))
+                .fetch();
+        settingQuantityForOrder(cartListResponses,orderProductRequests);
+        return cartListResponses;
     }
 
     private BooleanExpression whereByCategory(ProductListRequest.ProductCategoryRequest category) {

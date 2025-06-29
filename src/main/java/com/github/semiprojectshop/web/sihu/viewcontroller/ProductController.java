@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/product")
 public class ProductController {
 
-    @GetMapping("/list")
+    @GetMapping
     public String list() {
         return "product/productList";
     }
 
     @GetMapping("/test")
     public String redirectToNoticeList() {
+        System.out.println(System.getProperty("user.dir"));
+        //D:\Develop\IntelliJ-Project\semi-project-shop
         return "redirect:/notice/list.one";
     }
 

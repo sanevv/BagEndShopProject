@@ -5,6 +5,8 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/product/product.css">
 <script src="<%=request.getContextPath()%>/js/product/productList.js" defer></script>
+<img src="/uploads/"
+
 
 <div class="header">
     <div class="categories">

@@ -6,6 +6,8 @@ import com.github.semiprojectshop.web.sihu.dto.PaginationDto;
 import com.github.semiprojectshop.web.sihu.dto.product.MainProductResponse;
 import com.github.semiprojectshop.web.sihu.dto.product.ProductListRequest;
 import com.github.semiprojectshop.web.sihu.dto.product.ProductListResponse;
+import com.github.semiprojectshop.web.sihu.dto.product.cart.CartListResponse;
+import com.github.semiprojectshop.web.sihu.dto.product.order.OrderProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,5 +38,10 @@ public class ProductService {
         long modified = wishJpa.steamingProductByUserId(productId, loginUserId);
         if (modified == 0)
             throw new RuntimeException("찜하기 처리에 실패했습니다. 다시 시도해주세요.");
+    }
+
+    @Transactional(readOnly = true)
+    public List<CartListResponse> getProductInfoForOrder(List<OrderProductRequest> orderProductRequests) {
+        return productJpa.findProductInfoForOrder(orderProductRequests);
     }
 }

@@ -30,8 +30,9 @@ public class CartRestController {
         return CustomResponse.ofOk(response.getMessage(), response);
     }
     @DeleteMapping
-    public CustomResponse<AddToCartResponse> requestDeleteFromCart(@RequestParam long productId) {
-        AddToCartResponse response = cartService.deleteFromCart(productId);
+    public CustomResponse<AddToCartResponse> requestDeleteFromCart(@RequestParam List<Long> productIds) {
+
+        AddToCartResponse response = cartService.deleteFromCart(productIds);
         return CustomResponse.ofOk(response.getMessage(), response);
     }
     @PutMapping

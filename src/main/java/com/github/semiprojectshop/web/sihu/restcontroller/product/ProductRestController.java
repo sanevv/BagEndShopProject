@@ -35,6 +35,7 @@ public class ProductRestController {
                 .map(paginationDto -> CustomResponse.ofOk("카테고리별 상품 검색 성공", paginationDto))
                 .orElseThrow(() -> CustomMyException.fromMessage("해당 카테고리의 상품이 없습니다."));
     }
+
     @PutMapping("/steam")
     public CustomResponse<String> steamingProcess(@RequestParam long productId,
                                                 HttpServletRequest request){

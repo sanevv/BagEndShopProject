@@ -1,5 +1,6 @@
 package com.github.semiprojectshop.config.cool;
 
+import com.github.semiprojectshop.config.DiscountConstants;
 import io.lettuce.core.dynamic.annotation.CommandNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
