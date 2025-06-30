@@ -1,6 +1,6 @@
 package com.github.semiprojectshop.web.sihu.viewcontroller;
 
-import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
