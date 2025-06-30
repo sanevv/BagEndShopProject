@@ -55,6 +55,9 @@
 .product-list .price {
     color: #000;
 }
+.show-detail {
+    cursor: pointer;
+}
 
 .product-list .product-link {
     position: absolute;
@@ -63,6 +66,7 @@
     bottom: 0;
     left: 0;
     z-index: 1;
+    pointer-events: none;
 }
 .product-list .btn-wish {
     position: absolute;

@@ -41,6 +41,10 @@ spring:
           starttls:
             enable: true
 #              Identity Manager 서버가 SSL을 사용하여 SMTP와 통신하도록 지시합니다.
+  servlet:
+    multipart:
+      max-file-size: 10MB #기본값 1MB
+      max-request-size: 20MB #기본값 10MB
 
 springdoc:
   api-docs:
@@ -51,4 +55,8 @@ springdoc:
 
 file:
   upload:
-    directory: c:/uploads/semi-project-shop/
+    directory: /uploads/
+
+portOne:
+  primary: ENC(4ZLh8TRm7hWGg7SQjUcdN9NNnCb2y+6V)
+

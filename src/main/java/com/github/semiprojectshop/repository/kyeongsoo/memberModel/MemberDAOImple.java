@@ -65,7 +65,7 @@ public class MemberDAOImple implements MemberDAO{
                 member.setEmail(rs.getString("email"));
                 member.setName(rs.getString("name"));
                 member.setPhoneNumber(rs.getString("phone_number"));
-                member.setZipCode(rs.getInt("zip_code"));
+                member.setZipCode(rs.getString("zip_code")); // getInt -> getString
                 member.setAddress(rs.getString("address"));
                 member.setAddressDetails(rs.getString("address_details"));
                 member.setRegisterAt(rs.getString("register_at"));

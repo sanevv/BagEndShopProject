@@ -1,6 +1,9 @@
 package com.github.semiprojectshop.service.sihu;
 
+import com.github.semiprojectshop.config.web.WebConfig;
 import com.github.semiprojectshop.service.sihu.exceptions.CustomMyException;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,11 +17,13 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class StorageService {
-    @Value("${file.upload.directory}")
-    private String uploadPath;
+    private final WebConfig webConfig;
+
 
     /**
      * 파일이 저장될 폴더 경로 생성 메서드 1번째 인자는 첫번째 폴더 이름, 2번째 인자는 두번째 폴더 이름
@@ -27,7 +32,7 @@ public class StorageService {
      * 예시) product/1, product/2, product/3, ... 등등
      */
     public Path createFileDirectory(String firstFolder, String secondFolder, String thirdFolder) {
-        Path uploadDir = Paths.get(uploadPath, firstFolder, secondFolder, thirdFolder);
+        Path uploadDir = Paths.get(webConfig.getEndPath(), firstFolder, secondFolder, thirdFolder);
         createFolder(uploadDir);
         return uploadDir;
     }
@@ -36,7 +41,7 @@ public class StorageService {
      * 폴더경로가 두개만 필요할경우 파라미터를 두개만 넣고 보냄
      */
     public Path createFileDirectory(String firstFolder, String secondFolder) {
-        Path uploadDir = Paths.get(uploadPath, firstFolder, secondFolder);
+        Path uploadDir = Paths.get(webConfig.getEndPath(), firstFolder, secondFolder);
         createFolder(uploadDir);
         return uploadDir;
     }
@@ -111,7 +116,7 @@ public class StorageService {
         if (destination == null)
             return null;
         String normalizedPath = normalizePath(destination.toString());
-        return normalizedPath.replaceFirst("^" + Pattern.quote(uploadPath), "/uploads/");
+        return normalizedPath.replaceFirst("^" + Pattern.quote(webConfig.getEndPath()), webConfig.getUploadPath());
     }
 
     /**

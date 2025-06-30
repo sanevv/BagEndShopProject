@@ -1,5 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    // 로그인 여부 확인
+    boolean isLogin = session.getAttribute("loginUser") != null;
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,7 +78,15 @@
                         </div>
                         <div class="navi-item">
                             <a href="${pageContext.request.contextPath}/cart">
-                                <span class="count cart-count"><span class="basket-count">0</span></span>
+                                <span class="count cart-count">
+                                    <c:if test="<%= !isLogin %>">
+                                        <span class="basket-count">0</span>
+                                    </c:if>
+                                    <c:if test="<%= isLogin %>">
+                                        <span class="basket-count"></span>
+                                    </c:if>
+
+                                </span>
                             </a>
                         </div>
                     </div>
@@ -97,3 +109,22 @@
 
         </header>
         <!-- //header -->
+        <script defer>//
+            const isLogin = <%= isLogin %>;
+            function showCartCount() {
+                axios.get('/api/cart/count')
+                    .then(response => {
+                        const count = response.data;
+                        const cartCountElement = document.querySelector('.basket-count');
+                        if (cartCountElement)
+                            cartCountElement.textContent = count > 0 ? count : 0;
+
+                    })
+                    .catch(error => {
+                        console.error('Error fetching cart count:', error);
+                    })
+            }
+
+            if(isLogin)
+                showCartCount();
+        </script>

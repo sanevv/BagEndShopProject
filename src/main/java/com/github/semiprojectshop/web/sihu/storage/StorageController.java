@@ -24,7 +24,7 @@ public class StorageController {
         List<String> filePaths = new ArrayList<>();
         for (MultipartFile file : fileList) {
             if (!file.isEmpty()) {
-                String path = storageService.returnTheFilePathAfterTransfer(file, uploadDir, "뭔데이거_");
+                String path = storageService.returnTheFilePathAfterTransfer(file, uploadDir, "앞부분에_");
 
                 filePaths.add(path);
             }

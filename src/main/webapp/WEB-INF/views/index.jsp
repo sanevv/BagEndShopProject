@@ -18,3 +18,4 @@
 <%-- Header --%>
 <jsp:include page="include/footer.jsp" />
 <script src="${pageContext.request.contextPath}/js/main/main.js"></script>
+<script src="${pageContext.request.contextPath}/IMG_20250217_131537.jpg"></script>

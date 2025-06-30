@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+div.sidebar {
+    width: 280px;
+}
+
+/* 회원 정보 (이름 + 버튼) */
+.sidebar .userinfo {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#Inquiry {
+	font-size: 11px;
+}
+
+
+/* 메뉴 제목 (예: 쇼핑 정보, 1:1 문의 등) */
+.sidebar .menu-list .title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #999999;
+    margin-bottom: 8px;
+}
+
+/* 메뉴 리스트 */
+.sidebar .menu-list .list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+/* 각 리스트 항목 링크 */
+.sidebar .menu-list .list li a {
+    display: block;
+    font-size: 15px;
+    color: #111111;
+    padding: 6px 0;
+    text-decoration: none;
+}
+
+/* 마우스 오버 시 */
+.sidebar .menu-list .list li a:hover {
+    text-decoration: underline;
+    color: #000000;
+}

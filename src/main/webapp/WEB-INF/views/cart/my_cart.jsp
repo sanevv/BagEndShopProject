@@ -28,7 +28,7 @@
         <div class="col-md-6 mt-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
-                    <input type="checkbox" class="me-2" id="allCheck" checked><label for="allCheck">전체선택</label>
+                    <input type="checkbox" class="me-2" id="allCheck"><label for="allCheck">전체선택</label>
                 </div>
                 <div>
                     <a id="selectedDelete">선택삭제</a>

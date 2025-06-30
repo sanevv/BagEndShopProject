@@ -16,11 +16,10 @@ public class MemberVO {
     private String password;
     private String name;
     private String phoneNumber;
-    private int zipCode;
+    private String zipCode; // zipCode String
     private String address;
     private String addressDetails;
     private String registerAt;
-    private int roleId;
-
+    private int roleId = 2; // roleId 기본값 2(일반사용자) - 애리
 
 }

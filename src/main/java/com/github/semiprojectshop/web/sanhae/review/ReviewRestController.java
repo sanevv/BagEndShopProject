@@ -1,8 +1,11 @@
 package com.github.semiprojectshop.web.sanhae.review;
 
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
 import com.github.semiprojectshop.repository.sanhae.reviewModel.ReviewDAO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -26,7 +29,7 @@ public class ReviewRestController {
     // @ResponseBody : 자바 객체를 JSON으로 변환해서 클라이언트에 던져줌
     // ==> @RestController 선언이 되어 있다면 생략가능
     @PostMapping("/write")
-    public ReviewVO addReview(@RequestBody ReviewVO reviewVO ) throws SQLException {
+    public ReviewVO addReview(@RequestBody ReviewVO reviewVO) throws SQLException {
 
         // addReview 메소드에서 처리한 결과 값을 ReviewVO insertReview 담아줌
         ReviewVO insertReview = rvDAO.addReview(reviewVO);
@@ -34,4 +37,66 @@ public class ReviewRestController {
         return insertReview;
     }
 
+    // 리뷰 삭제하기
+    @PostMapping("/delete")
+    // ResponseEntity<?> Spring에서 클라이언트에게 응답할 때 사용하는 객체
+    // 상태 코드(200 OK, 404 Not Found 등), 헤더, 본문(JSON 데이터 등)을 직접 제어할 수 있음!!!
+    // ResponseEntity.status(403) : 실패 응답 Forbidden - 클라이언트가 해당 요청에 대한 권한이 없다고 알려주는 것
+    // ResponseEntity.status(401) : 실패 응답 Unauthorized (승인 관련) - 클라이언트가 인증되지 않았기 때문에 요청을 정상적으로 처리할 수 없다고 알려주는 것
+    // ResponseEntity.ok : 상태코드 200~299일 때 true
+    public ResponseEntity<?> deleteReview(@RequestBody ReviewVO reviewVO, HttpSession session) throws SQLException {
+
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+        if(loginUser == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        String loginUserId = String.valueOf(loginUser.getUserId());
+        String reviewWriteUserId = rvDAO.getReviewWriteUserid(reviewVO.getReviewId());
+
+        if (!loginUserId.equals(reviewWriteUserId)) {
+            return ResponseEntity.status(403).body("본인만 삭제할 수 있습니다.");
+        }
+
+        ReviewVO deleted = rvDAO.deleteReview(reviewVO);
+
+        if (deleted == null) {
+            return ResponseEntity.status(500).body("리뷰 삭제에 실패했습니다.");
+        }
+
+        return ResponseEntity.ok(deleted);
+
+    }
+
+    @PostMapping("/update")
+    // 리뷰 수정하기
+    public ResponseEntity<?> updateReview(@RequestBody ReviewVO reviewVO, HttpSession session) throws SQLException {
+
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+        if(loginUser == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        String loginUserId = String.valueOf(loginUser.getUserId());
+        System.out.println("reviewVO.getReviewId() : " + reviewVO.getReviewId());
+        String reviewWriteUserId = rvDAO.getReviewWriteUserid(reviewVO.getReviewId());
+
+        //System.out.println("reviewVO.getReviewId()" + reviewVO.getReviewId());
+
+
+        if (!loginUserId.equals(reviewWriteUserId)) {
+            return ResponseEntity.status(403).body("본인만 수정할 수 있습니다.");
+        }
+
+        int updated = rvDAO.updateReview(reviewVO);
+
+        if (updated < 1) {
+            return ResponseEntity.status(500).body("리뷰 수정 실패");
+        }
+
+        return ResponseEntity.ok(updated);
+
+    }
 }

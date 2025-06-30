@@ -31,7 +31,7 @@ public class ProductDetailController {
         ProductDetailVO prdVO = productDetailDAO.ProductDetail(productId);
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
-        System.out.println("으아아아아아 : " + prdVO.getUserName());
+        //System.out.println("으아아아아아 : " + prdVO.getUserName());
 
         if (loginUser != null) {
             int userId = loginUser.getUserId(); // 로그인한 사용자 ID
@@ -42,6 +42,7 @@ public class ProductDetailController {
         //System.out.println("확인용 : " + product.getProductName());
 
         // JSP + Servlet 에서 사용하는 Request.setAttribute와 같은 듯?
+        model.addAttribute("loginUser", loginUser);
         model.addAttribute("prdVO", prdVO);
 
 

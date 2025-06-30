@@ -14,7 +14,7 @@
     <%-- 좌측 마이페이지 메뉴 --%>
     <jsp:include page="../../include/mypageMenu.jsp" />
 
-    <div class="wishlist-content pl-4 w-100">
+    <div class="wishlist-content col-lg-7 col-md-8">
         <h3 class="mb-4">관심 상품</h3>
 
         <form name="wishForm" method="post">
@@ -31,10 +31,15 @@
                 <tbody>
                     <c:forEach var="wish" items="${wishList}">
                         <tr>
-                            <td><input type="checkbox" name="wish_id" value="${wish.wish_id}" /></td>
-                            <td>
-                                <img src="/aery/images/product/${wish.image}" alt="상품 이미지" width="80" />
+                            <td><input type="checkbox" name="product_id" value="${wish.product_id}" /></td>
+
+      						<td>
+                                <img src="${pageContext.request.contextPath}/images/product/${wish.productImagePath}"
+                                     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/images/product/no_image.png';"
+                                     alt="상품 이미지" width="80" />
                             </td>
+                            
+                            
                             <td>
                                 <a href="/product/detail/?product_id=${wish.product_id}">
                                     ${wish.product_name}
@@ -44,7 +49,7 @@
                             <td>
                                 <button type="button" class="btn btn-sm btn-outline-primary add-cart" data-id="${wish.product_id}">장바구니</button>
                                 <button type="button" class="btn btn-sm btn-outline-success order-now" data-id="${wish.product_id}">주문하기</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger delete-wish" data-id="${wish.wish_id}">삭제</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger delete-wish" data-id="${wish.product_id}">삭제</button>
                             </td>
                         </tr>
                     </c:forEach>

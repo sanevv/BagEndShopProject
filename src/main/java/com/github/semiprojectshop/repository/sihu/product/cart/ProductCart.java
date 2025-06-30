@@ -31,5 +31,10 @@ public class ProductCart {
         productCart.createdAt = LocalDateTime.now();
         return productCart;
     }
+    public static ProductCart onlyId(Long productCartId) {
+        ProductCart productCart = new ProductCart();
+        productCart.productCartId = productCartId;
+        return productCart;
+    }
 
 }
