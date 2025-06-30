@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 @Controller
 @RequestMapping("/test")
 @RequiredArgsConstructor
-public class FirstController {
+public class MemberController {
     private final DaoCustom daoCustom;
     private final MemberDAO memberDAO;
     private AES256 aes256;
@@ -209,6 +208,26 @@ public class FirstController {
 
 
         return "member/resetPassword";
+    }
+
+    @GetMapping("myPage")
+    public String myPage(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+        request.setAttribute("loginUser", loginUser);
+
+        return "include/mypageMenu";
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        session.invalidate(); // 세션을 무효화하여 로그아웃 처리
+
+        return "redirect:/test/index.up"; // 로그아웃 후 메인 페이지로 리다이렉트
     }
 
 

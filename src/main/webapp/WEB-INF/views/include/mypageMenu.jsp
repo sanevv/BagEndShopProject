@@ -1,8 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+
+<jsp:include page="../include/header.jsp"/>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/mypageMenu.css">
 
-<div class="container mt-5">
+<script type="text/javascript">
+
+	function Logout() {
+		if (confirm("로그아웃 하시겠습니까?")) {
+			location.href = "${pageContext.request.contextPath}/test/logout";
+		}
+	}
+
+</script>
+
+
+
+<div class="container mt-5" style="width: 900px;">
     <div class="row">
 		<div class="sidebar col-lg-3 col-md-4 pt-4">
 
@@ -39,7 +54,12 @@
 		                <li><a href="/member/modify.html">회원 정보</a></li>
 		            </ul>
 		        </div>
+
+				<button class="btn btn-black" type="button" id="logout" name="logout" onclick="Logout()">로그아웃</button>
 		    </aside>
 		</div>
 	</div>
-</div>		
+</div>
+
+
+<jsp:include page="../include/footer.jsp"/>
