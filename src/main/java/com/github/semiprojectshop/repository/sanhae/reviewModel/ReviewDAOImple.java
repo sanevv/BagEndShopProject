@@ -42,7 +42,7 @@ public class ReviewDAOImple implements ReviewDAO {
         try {
             conn = ds.getConnection();
 
-            String sql = " SELECT c.name AS userName, a.review_id, a.user_id, a.product_id, a.review_contents, a.rating, to_char(a.created_at, 'yyyy-mm-dd hh24:mm:ss') AS created_at, " +
+            String sql = " SELECT c.name AS userName, a.review_id, a.user_id, a.product_id, a.review_contents, a.rating, a.created_at, " +
                          " ( SELECT b.image_path " +
                          "   FROM product_image b " +
                          "   WHERE b.product_id = a.product_id  and b.thumbnail = 1 " +
@@ -149,4 +149,127 @@ public class ReviewDAOImple implements ReviewDAO {
     }
 
 
+    // 리뷰 등록한 사람 찾기
+    @Override
+    public String getReviewWriteUserid(int reviewId) {
+
+        String writeUserId = null;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " SELECT user_id FROM review WHERE review_id = ? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reviewId);
+            rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                writeUserId = rs.getString(1);
+            };
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
+
+        return writeUserId;
+    }
+
+    // 리뷰 삭제하기
+    @Override
+    public ReviewVO deleteReview(ReviewVO reviewVO) {
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " DELETE FROM review " +
+                         " WHERE review_id = ? ";
+
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reviewVO.getReviewId());
+
+            int result = pstmt.executeUpdate();
+
+            if(result > 0) {
+                return reviewVO;
+            }
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
+
+        return null;
+    }
+
+
+    // 리뷰 수정하기
+    @Override
+    public int updateReview(ReviewVO reviewVO) {
+        int result = 0;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " UPDATE review " +
+                         " SET review_contents = ?, rating = ?, created_at = SYSDATE " +
+                         " WHERE review_id = ? AND product_id = ? AND user_id = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, reviewVO.getReviewContents());
+            pstmt.setInt(2, reviewVO.getRating());
+            pstmt.setInt(3, reviewVO.getReviewId());
+            pstmt.setInt(4, reviewVO.getProductId());
+            pstmt.setInt(5, reviewVO.getUserId());
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+
+        return result;
+    }
+
+    // 리뷰 내용 알아오기
+    @Override
+    public ReviewVO getReviewById(int reviewId) {
+
+        ReviewVO reviewVO = null;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " SELECT review_contents, rating FROM review " +
+                         " WHERE review_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reviewId);
+            rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                reviewVO = new ReviewVO();
+                reviewVO.setReviewContents(rs.getString("review_contents"));
+                reviewVO.setRating(rs.getInt("rating"));
+            };
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
+
+
+        return reviewVO;
+    }
 }

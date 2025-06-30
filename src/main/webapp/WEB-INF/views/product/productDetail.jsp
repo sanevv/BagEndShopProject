@@ -40,31 +40,36 @@
 				</div>
 
 				<div class="product-sticky-info">
-					<div class="product-info">
-						<p class="product-name">${prdVO.productName}</p>
-						<div class="product-price">
-							<p class="before_price"><fmt:formatNumber value="${prdVO.price}" type="number" maxFractionDigits="0" />원</p>
-							<p class="discount">
-								<span class="discount-rate">${prdVO.discountRate}%</span>
-								<span class="price"><fmt:formatNumber value="${prdVO.discountedPrice}" type="number" maxFractionDigits="0" />원</span>
-							</p>
+					<form id="addCartForm" name="addCartForm">
+						<div class="product-info">
+							<p class="product-name">${prdVO.productName}</p>
+							<div class="product-price">
+								<p class="before_price"><fmt:formatNumber value="${prdVO.price}" type="number" maxFractionDigits="0" />원</p>
+								<p class="discount">
+									<span class="discount-rate">${prdVO.discountRate}%</span>
+									<span class="price"><fmt:formatNumber value="${prdVO.discountedPrice}" type="number" maxFractionDigits="0" /> <span>원</span></span>
+								</p>
+								<p class="quantity">
+									<input type="number" name="quantity" value="1" min="1" max="100" />
+								</p>
+							</div>
+							<div class="total-price">
+								<span>총 상품금액</span>
+								<span class="total-amount">0원</span>
+							</div>
+							<div class="product-buttons">
+								<button type="button" id="btnAddCart" class="btn btn-cart">장바구니 담기</button>
+								<button type="button" class="btn btn-buy">바로 구매하기</button>
+							</div>
 						</div>
-						<div class="total-price">
-							<span>총 상품금액</span>
-							<span class="total-amount">0 (0개)</span>
-						</div>
-						<div class="product-buttons">
-							<button type="button" class="btn btn-cart">장바구니 담기</button>
-							<button type="button" class="btn btn-buy">바로 구매하기</button>
-						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 			<!-- 리뷰 -->
 			<div class="review-container">
 				<div class="review-header">
 					<h2>REVIEW</h2>
-					<button type="button" class="btn btn-write-review">리뷰쓰기</button>
+					<button type="button" class="btn btn-review-write" onclick="isLoginCheck('write')">리뷰쓰기</button>
 				</div>
 				<div class="review-body">
 					<ul id="reviewList" class="review-list"></ul>
@@ -89,9 +94,11 @@
 </main>
 
 <script src="${pageContext.request.contextPath}/js/product/productDetail.js"></script>
+<script src="${pageContext.request.contextPath}/js/review/review.js"></script>
 <script>
 
-	const isLogin = `${sadsadsads}`;
+	// 로그인 유무
+	const isLogin = "${loginUser}";
 
 	const imgList = [
 		"${prdVO.productImagePath}",

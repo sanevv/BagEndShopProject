@@ -9,14 +9,19 @@
 <!-- main contents -->
 <main id="main">
     <div id="reviewForm">
-        <div id="reviewWrite" class="review-container">
+        <div id="reviewUpdate" class="review-container">
             <div class="review-header">
                 <h2>REVIEW</h2>
             </div>
             <div class="review-body">
-                <form id="reviewWriteForm" name="reviewWriteForm">
+                <form id="reviewUpdateForm" name="reviewUpdateForm">
+                    <input type="hidden" name="reviewId" value="${reviewId}">
+                    <input type="hidden" name="productId" value="${productId}">
                     <input type="hidden" name="userId" value="${userId}">
-                    <input type="hidden" name="rating" value="">
+                    <input type="hidden" name="rating" value="${rating}">
+<%--                    <input type="hidden" name="productImagePath" value="${productImagePath}">--%>
+<%--                    <input type="hidden" name="reviewContents" value="">--%>
+
                     <table class="review-table">
                         <colgroup>
                             <col style="width: 200px">
@@ -34,7 +39,7 @@
                         <tr>
                             <th>내용</th>
                             <td>
-                                <textarea name="reviewContents"></textarea>
+                                <textarea name="reviewContents">${reviewContents}</textarea>
                             </td>
                         </tr>
                         <tr>
@@ -92,7 +97,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <button type="button" id="btnAddReview" class="btn-review-write" onclick="reviewSubmit()">등록</button>
+                    <button type="button" id="btnUpdateReview" class="btn-review-write" onclick="reviewUpdate()">리뷰 수정하기</button>
 
                 </form>
             </div>
@@ -100,6 +105,15 @@
     </div>
 </main>
 <!-- //main contents -->
+
+
+<script>
+    const starBox = document.querySelector('.star-box');
+
+    starBox.addEventListener('click', function(e) {
+        this.querySelector('input').checked = true;
+    })
+</script>
 
 
 

@@ -15,4 +15,17 @@ public interface ReviewDAO {
 
     // 대표이미지 찾아오기
     String getProductImagePath(int productId);
+
+    // 리뷰 등록한 사람 찾기
+    String getReviewWriteUserid(int reviewId);
+
+    // 리뷰 삭제하기
+    ReviewVO deleteReview(ReviewVO reviewVO);
+
+
+    // 리뷰 수정하기
+    int updateReview(ReviewVO reviewVO);
+
+    // 리뷰 내용 알아오기
+    ReviewVO getReviewById(int reviewId);
 }
