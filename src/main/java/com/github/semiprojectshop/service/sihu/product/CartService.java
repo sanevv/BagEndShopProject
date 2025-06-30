@@ -20,9 +20,8 @@ public class CartService {
     private final ProductCartJpa productCartJpa;
 
     @Transactional
-    public AddToCartResponse addToCart(AddToCartRequest addToCartRequest) {
-        //TODO: 로그인 로직 완성 이후 세션에서 꺼내오는걸로 변경해야됨
-        long loginUserId = 1L;
+    public AddToCartResponse addToCart(AddToCartRequest addToCartRequest, long loginUserId) {
+
         long productId = addToCartRequest.getProductId();
         int quantity = addToCartRequest.getQuantity();
         MyUser userOnlyId = MyUser.onlyId(loginUserId);
@@ -42,9 +41,8 @@ public class CartService {
 
     }
     @Transactional
-    public AddToCartResponse deleteFromCart(List<Long> productIds) {
-        //TODO: 로그인 로직 완성 이후 세션에서 꺼내오는걸로 변경해야됨
-        long loginUserId = 1L;
+    public AddToCartResponse deleteFromCart(List<Long> productIds, long loginUserId) {
+
         MyUser userOnlyId = MyUser.onlyId(loginUserId);
         List<Product> productOnlyIds = productIds.stream().map(Product::onlyId).toList();
         long deletedCount = productCartJpa.deleteByProductInAndMyUser(productOnlyIds, userOnlyId);
@@ -64,5 +62,9 @@ public class CartService {
         long result = productCartJpa.updateProductQuantity(productCartId, quantity);
         if (result != 1) throw CustomMyException.fromMessage("장바구니 수량 수정에 실패했습니다. 다시 시도해주세요.");
         return AddToCartResponse.of(productCartId, quantity, quantity, "장바구니 수량이 수정되었습니다.");
+    }
+
+    public long getMyCartCount(long loginUserId) {
+        return productCartJpa.countByMyUser_UserId(loginUserId);
     }
 }

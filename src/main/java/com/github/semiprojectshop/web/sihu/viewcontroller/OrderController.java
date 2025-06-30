@@ -1,6 +1,7 @@
 package com.github.semiprojectshop.web.sihu.viewcontroller;
 
 import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,15 +23,17 @@ public class OrderController {
         return "order/order_confirm";
     }
     @GetMapping("/payment")
-    public String paymentPage(@RequestParam("paymentRequestJson") String paymentRequestJson, Model model) {
+    public String paymentPage(@RequestParam("paymentRequestJson") String paymentRequestJson, Model model, HttpSession session) {
+        if(session.getAttribute("loginUser") == null)
+            return "redirect:/test/login.up"; // 로그인 페이지로 리다이렉트
 
 
         model.addAttribute("paymentRequestJson", paymentRequestJson);
 
-        MemberVO memberVO = new MemberVO();//TODO: 로그인 로직 완성후 세션에서 꺼내오기
-        model.addAttribute("email", "sihu2589@naver.com");
-        model.addAttribute("name", "시후");
-        model.addAttribute("phoneNumber", "010-2225-8999");
+        MemberVO memberVO = (MemberVO) session.getAttribute("loginUser");
+        model.addAttribute("email", memberVO.getEmail());
+        model.addAttribute("name", memberVO.getName());
+        model.addAttribute("phoneNumber", memberVO.getPhoneNumber());
 
         model.addAttribute("portOnePrimary", portOnePrimary);
         return "order/order_process";

@@ -429,7 +429,7 @@ requestDeleteCartProduct = (productIds) =>{
         params : {
             productIds: productIds
         },
-        paramsSerializer: params => {
+        paramsSerializer: params => {//파라미터 키값에 [] 제거
             return jQuery.param(params)
         }
     })

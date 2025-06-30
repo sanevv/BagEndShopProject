@@ -1,19 +1,18 @@
-
-
-requestOrderProductsTest = ()=>{
+requestOrderProductsTest = () => {
     axios.post('/api/order/confirm', orderProductRequests)
         .then(response => {
             console.log(response.data);
-            if(response.data.success)
+            if (response.data.success)
                 viewProductInfo(response.data.success.responseData);
-            else{
+            else {
                 alert('주문 상품을 불러오지 못했습니다.');
                 history.back();
-            }})
-            .catch(error => {
-                console.error('주문 페이지 이동 실패:', error);
-                alert('요청에 실패했습니다.');
-            })
+            }
+        })
+        .catch(error => {
+            console.error('주문 페이지 이동 실패:', error);
+            alert('요청에 실패했습니다.');
+        })
 
 }
 let paymentRequests = [{}];
@@ -31,8 +30,6 @@ viewProductInfo = (responseData) => {
         .map(item => item.productName)
         .slice(0, 2)//앞에서부터 두개만 0, 1
         .join(', ') + '...'; // 나머지는 '...'로 표시
-
-
 
 
     let totalPrice = 0;
@@ -74,7 +71,6 @@ viewProductInfo = (responseData) => {
 }
 
 
-
 function requestPayment() {
     axios.post('/api/order/payment', paymentRequests)
         .then(response => {
@@ -83,31 +79,71 @@ function requestPayment() {
         })
         .catch(error => {
             console.error('결제 요청 실패:', error);
+            if(error.response && error.response.status === 400)
+                alert("로그인 후 이용해주세요.");
             alert('결제 요청에 실패했습니다.');
             history.back();
         })
 }
 
-realPaymentPortOne = (data) =>{
+realPaymentPortOne = (data) => {
     alert('결제 요청이 성공적으로 처리되었습니다. 결제창을 띄웁니다.');
     const requestObject = {
         ordersId: data.ordersId,
         totalPrice: data.totalPrice,
         totalStock: data.totalStock,
+        productCartIds: data.productCartIds,
         refProductName: refProductName
     };
     const requestJson = encodeURIComponent(JSON.stringify(requestObject));
 
     //팝업창 띄우기
-    const url = ctxPath+'/order/payment?paymentRequestJson=' + requestJson;
+    const url = ctxPath + '/order/payment?paymentRequestJson=' + requestJson;
     const width = 1000;
     const height = 600;
-    const left = Math.ceil( (window.screen.width - width) / 2 ); //화면의 너비
+    const left = Math.ceil((window.screen.width - width) / 2); //화면의 너비
     const top = Math.ceil((window.screen.height - height) / 2); //화면의 높이
     window.open(url, 'ProductPayment', `left=${left}, top=${top}, width=${width}, height=${height}`);
 
 }
 
 
-
 requestOrderProductsTest();
+
+//결제 성공시 함수
+async function paymentSuccess(ordersId, productCartIds) {
+    axios.post('/api/order/success', {}, {
+            params: {
+                ordersId: ordersId,
+                productCartIds: productCartIds
+            },
+            paramsSerializer: params => {
+                return jQuery.param(params)
+            }
+    })
+        .then((res) => {
+            console.log(res.data);
+            if (res.data.success) {
+                alert('결제가 완료되었습니다.');
+                location.href = "/";
+            }
+        }).catch(error => {
+        console.error('결제 성공 처리 중 오류 발생:', error);
+        alert('결제 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+        history.back();
+    })
+
+}
+
+async function paymentFail(ordersId) {
+    axios.delete('/api/order/fail', {params: {ordersId: ordersId}})
+        .then((res) => {
+            console.log(res.data);
+
+            alert('결제에 실패하였습니다. 다시 시도해주세요. ㅔ롱메롱' + ordersId);
+            history.back();
+        })
+        .catch(error => {
+            console.error('결제 실패 처리 중 오류 발생:', error);
+        })
+}

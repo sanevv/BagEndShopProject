@@ -5,12 +5,14 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/product/product.css">
 <script src="<%=request.getContextPath()%>/js/product/productList.js" defer></script>
-<img src="/uploads/"
+<script>
+    const category = '${category}';
+</script>
 
 
 <div class="header">
     <div class="categories">
-        <div class="category active" data-category="all">ALL</div>
+        <div class="category" data-category="all">ALL</div>
         <div class="category" data-category="messenger">MESSENGER</div>
         <div class="category" data-category="cross">CROSS</div>
         <div class="category" data-category="backpack">BACKPACK</div>

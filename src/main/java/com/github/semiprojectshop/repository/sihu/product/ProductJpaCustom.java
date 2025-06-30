@@ -13,7 +13,7 @@ public interface ProductJpaCustom {
 
     List<MainProductResponse> findMainProductList();
 
-    PaginationDto<ProductListResponse> findCategoryProductList(ProductListRequest productListRequest, long loginUserId);
+    PaginationDto<ProductListResponse> findCategoryProductList(ProductListRequest productListRequest, Long loginUserId);
 
     List<CartListResponse> findProductInfoForOrder(List<OrderProductRequest> orderProductRequests);
 }

@@ -1,4 +1,4 @@
-let currentCategory = 'all';
+let currentCategory = category;// category 는 ALL("전체"),MESSENGER("메신저"),CROSS("크로스백"),BACKPACK("백팩"); 참고
 let currentSort = 'newest';
 let currentPage = 1;
 const currentPageSize = 12;
@@ -19,6 +19,14 @@ function registerScrollEvent() {
     $(window).off('scroll', onScrollLoad); // 중복 방지
     $(window).on('scroll', onScrollLoad);
 }
+//카테고리 초기 액티브 등록
+categories.forEach(category => {
+    if (category.dataset.category === currentCategory) {
+        category.classList.add('active');
+    } else {
+        category.classList.remove('active');
+    }
+});
 
 
 categories.forEach(category => {
@@ -97,11 +105,11 @@ searchProductList = () => {
             li.dataset.productId = productId;
             li.innerHTML = `
         <div class="product-img">
-          <img src="${thumbnail ? thumbnail : '/images/product/test2.png'}" alt="${productName}">
+          <img class="show-detail" src="${thumbnail ? thumbnail : '/images/product/test2.png'}" alt="${productName}">
            <button type="button" class="btn-wish${wished ? ' active' : ''}"><span class="blind">좋아요</span></button>
         </div>
         <div class="product-info">
-          <p class="product-name">${productName}</p>
+          <p class="product-name show-detail">${productName}</p>
           <div class="product-price">
             <p class="before_price">${formattedOriginal}</p>
             <p class="discount">
@@ -112,8 +120,11 @@ searchProductList = () => {
         </div>
         <a href="javascript:;" class="product-link"></a>
       `;
-            li.addEventListener('click',()=>{
-                location.href = `/product/detail/${productId}`;
+            li.querySelectorAll('.show-detail').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation(); // 이벤트 전파 방지 부모의 이벤트리스너는 실행되지않음
+                    location.href = `/product/detail/${productId}`;
+                });
             })
             productList.appendChild(li);
         });
@@ -142,6 +153,8 @@ document.querySelector('.product-list').addEventListener('click', function(e) {
             })
             .catch(error => {
                 console.error('Error updating wish status:', error);
+                if (error.response && error.response.status === 400)
+                    alert(error.response.data.message);
             });
     }
 });

@@ -26,6 +26,16 @@ public class Orders {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrdersProduct> orders;
 
+    public void modifyStatus() {
+        if (this.status == orderStatus.READY) {
+            this.status = orderStatus.DELIVERY; // 상태를 DELIVERY로 변경
+        } else if (this.status == orderStatus.DELIVERY) {
+            this.status = orderStatus.COMPLETED; // 상태를 COMPLETED로 변경
+        } else {
+            throw new IllegalStateException("주문 상태를 변경할 수 없습니다.");
+        }
+    }
+
     public enum orderStatus {
         DELIVERY, CANCEL, COMPLETED, READY
     }

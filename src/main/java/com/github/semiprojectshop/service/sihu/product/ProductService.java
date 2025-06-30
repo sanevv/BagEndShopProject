@@ -27,8 +27,8 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<PaginationDto<ProductListResponse>> getCategoryProductList(ProductListRequest productListRequest) {
-        long loginUserId = 1L; // TODO: 로그인 기능 구현 후 제거
+    public Optional<PaginationDto<ProductListResponse>> getCategoryProductList(ProductListRequest productListRequest, Long loginUserId) {
+
         PaginationDto<ProductListResponse> paginationDto = productJpa.findCategoryProductList(productListRequest, loginUserId);
         return Optional.ofNullable(paginationDto);
     }

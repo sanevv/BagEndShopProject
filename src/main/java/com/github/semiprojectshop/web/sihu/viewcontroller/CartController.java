@@ -1,6 +1,8 @@
 package com.github.semiprojectshop.web.sihu.viewcontroller;
 
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,4 +19,5 @@ public class CartController {
         request.setAttribute("cart", "나 카트얌");
         return "cart/my_cart";
     }
+
 }

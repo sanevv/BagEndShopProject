@@ -18,6 +18,27 @@
 
   <script type="text/javascript">
     const paymentRequestJson = JSON.parse('${paymentRequestJson}');
+    // 자식창에서 실행
+    let originalHref = window.opener.location.href;
+    let isSuccess = false;
+    let blockParentNavigation = true; // 부모창 이동 방지 플래그
+    //부모창 닫기 방지
+    function monitorParent() {
+      if (!blockParentNavigation) return;
+      try {
+        if (window.opener && !window.opener.closed) {
+          if (window.opener.location.href !== originalHref) {
+            alert('다시 시도해 주세요.');
+            self.close();
+          }
+        }
+      } catch (e) {
+        // cross-origin 등 예외 무시
+      }
+      setTimeout(monitorParent, 500);
+    }
+    monitorParent(); // 부모창 모니터링 시작
+
 
 
     $(document).ready(function() {
@@ -72,22 +93,40 @@
           <%--   $(opener.location).attr("href", "javascript:goCoinUpdate('<%= ctxPath%>', '${requestScope.userid}','${requestScope.coinmoney}');");  --%>
           // self.close();
           (async function() {
-            alert('결제가 완료되었습니다.');
-            //todo: 결제 완료 로직
-            <%--await window.opener.goCoinUpdate('<%= ctxPath%>', '${requestScope.userId}', '${requestScope.realCoin}', '${requestScope.point}');--%>
+            //결제 완료 로직
+            isSuccess = true;
+            await window.opener.paymentSuccess(paymentRequestJson.ordersId, paymentRequestJson.productCartIds);
+            blockParentNavigation = false; // 부모창 이동 방지 플래그 해제
             self.close();
           })();
 
         } else {
-          //todo: 결제 실패 로직
+          console.log(rsp);
+          // 결제 실패 로직
           const 좆됐음 = true;
+          (async function(){
+            blockParentNavigation = false; // 부모창 이동 방지 플래그 해제
+            self.close();
+          })()
           // location.href="/MyMVC";
-          alert("결제에 실패하였습니다." + 좆됐음);
+
         }
 
       }); // end of IMP.request_pay()----------------------------
 
+
     }); // end of $(document).ready()-----------------------------
+    window.onbeforeunload = function() {
+      blockParentNavigation = false; // 부모창 이동 방지 플래그 해제
+      if(isSuccess) return;
+      if (window.opener && !window.opener.closed) {
+        // window.opener.부모함수명();
+        (async function(){
+          await window.opener.paymentFail(paymentRequestJson.ordersId);
+        })();
+
+      }
+    };
 
   </script>
 </head>
