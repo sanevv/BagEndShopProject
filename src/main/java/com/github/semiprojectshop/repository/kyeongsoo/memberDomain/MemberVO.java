@@ -22,5 +22,4 @@ public class MemberVO {
     private String registerAt;
     private int roleId;
 
-
 }
