@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/review")
 @RequiredArgsConstructor
-
 //TODO: 나중에 주문결제 완료한 사람만 등록되게 해야함
 public class ReviewController {
 
@@ -39,10 +38,36 @@ public class ReviewController {
             model.addAttribute("userId", userId);
             System.out.println("userId : "+ userId);
             //System.out.println("로그인 아이디 : "+ loginUser.getUserId());
+            //model.addAttribute("productId", productId);
             model.addAttribute("productImagePath", productImagePath);
         }
 
-
         return "review/reviewWrite";
+    }
+
+    @GetMapping("/update")
+    public String reviewUpdate(@RequestParam("productId") int productId, @RequestParam("reviewId") int reviewId, HttpSession session, Model model){
+
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return "redirect:/test/login.up";
+        }
+
+        // 로그인한 사용자 ID
+        int userId = loginUser.getUserId();
+        String productImagePath = rvDAO.getProductImagePath(productId);
+
+        // 리뷰 내용 조회
+        ReviewVO review = rvDAO.getReviewById(reviewId);
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("productId", productId);
+        model.addAttribute("reviewId", reviewId);
+        model.addAttribute("productImagePath", productImagePath);
+        model.addAttribute("reviewContents", review.getReviewContents());
+        model.addAttribute("rating", review.getRating());
+
+        return "review/reviewUpdate";
     }
 }
