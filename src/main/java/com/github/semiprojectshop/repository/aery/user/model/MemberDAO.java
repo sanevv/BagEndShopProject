@@ -1,9 +1,8 @@
 package com.github.semiprojectshop.repository.aery.user.model;
+
 import java.sql.SQLException;
 import java.util.Map;
-
-import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
-
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 
 public interface MemberDAO {
 
