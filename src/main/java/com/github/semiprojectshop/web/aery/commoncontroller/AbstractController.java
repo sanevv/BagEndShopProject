@@ -1,8 +1,9 @@
 package com.github.semiprojectshop.web.aery.commoncontroller;
 
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
 
 public abstract class AbstractController implements InterCommand {
 

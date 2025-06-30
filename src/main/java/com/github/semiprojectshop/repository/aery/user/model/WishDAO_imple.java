@@ -36,16 +36,16 @@ public class WishDAO_imple implements WishDAO {
 		}
 	}
 
-	// 로그인한 사용자가 본인의 위시리스트를 조회
+	// 로그인한 사용자가 본인의 관심상품을 조회
 	@Override
-	public List<ProductDetailVO> selectWishListByUserId(int userId) throws SQLException {
+	public List<ProductDetailVO> selectWishListByUser(String email) throws SQLException {
 	    
 		List<ProductDetailVO> list = new ArrayList<>();
 
 	    try {
 	    	conn = ds.getConnection();
 
-	    	String sql = " SELECT u.user_id, p.product_id, p.product_name, p.price, "
+	    	String sql = " SELECT u.user_id, u.email, p.product_id, p.product_name, p.price, "
                     + " ( SELECT i.image_path "
                     + "   FROM product_image i "
                     + "   WHERE i.product_id = p.product_id AND i.thumbnail = 1 "
@@ -54,11 +54,11 @@ public class WishDAO_imple implements WishDAO {
                     + " FROM wish w "
                     + " LEFT JOIN my_user u ON w.user_id = u.user_id "
                     + " LEFT JOIN product p ON w.product_id = p.product_id "
-                    + " WHERE w.user_id = ? "
+                    + " WHERE u.email = ? "
                     + " ORDER BY created_at DESC ";
 
 	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setInt(1, userId);
+	        pstmt.setString(1, email);
 	        rs = pstmt.executeQuery();
 
 	        while (rs.next()) {
@@ -84,7 +84,7 @@ public class WishDAO_imple implements WishDAO {
 	}// end of public List<ProductDetailVO> selectWishListByUserId(int userId) throws SQLException---------------
 	
 	
-	// 사용자가 해당 상품을 찜했는지 확인
+	// 사용자가 해당 상품을 관심상품에 등록했는지 확인
 	@Override
     public boolean exists(int userId, int productId) throws SQLException {
 		
@@ -109,7 +109,7 @@ public class WishDAO_imple implements WishDAO {
     }
 	 
 
-	// 위시리스트에 상품 추가
+	// 관심상품 등록
 	@Override
 	public void insert(int userId, int productId) throws SQLException {
         try {
@@ -128,7 +128,7 @@ public class WishDAO_imple implements WishDAO {
     }
 	
 	
-	// 위시리스트에서 상품 제거
+	// 관심상품 제거
 	@Override
     public void delete(int userId, int productId) throws SQLException {
         try {
@@ -147,7 +147,7 @@ public class WishDAO_imple implements WishDAO {
     }
 	
 	
-	// 위시리스트 상태를 토글 (있으면 삭제, 없으면 추가)
+	// 관심상품 등록 상태를 토글 (있으면 삭제, 없으면 추가)
 	@Override
 	public void toggle(int userId, int productId) throws SQLException {
 	    if (exists(userId, productId)) {

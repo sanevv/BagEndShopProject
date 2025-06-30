@@ -7,8 +7,8 @@ import java.util.Map;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
 import com.github.semiprojectshop.repository.aery.user.model.MemberDAO;
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.web.aery.commoncontroller.AbstractController;
 
 import jakarta.servlet.ServletContext;
@@ -60,8 +60,8 @@ public class MemberRegister extends AbstractController {
 			member.setPhoneNumber(phoneNumber);
 			member.setZipCode(zipCode);
 			member.setAddress(address);
-			member.setDetailAddress(addressDetails);
-			
+			member.setAddressDetails(addressDetails);
+
 			
 			// #### 회원가입이 성공되어지면 자동으로 로그인 되도록 하겠다. #### //
 			try {

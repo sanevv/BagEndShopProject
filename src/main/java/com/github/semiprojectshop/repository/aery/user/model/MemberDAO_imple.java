@@ -10,8 +10,8 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
-import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
 import com.github.semiprojectshop.repository.aery.util.security.Sha256;
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -100,7 +100,7 @@ public class MemberDAO_imple implements MemberDAO {
 			  pstmt.setString(4, member.getPhoneNumber());
 			  pstmt.setString(5, member.getZipCode());
 			  pstmt.setString(6, member.getAddress());
-			  pstmt.setString(7, member.getDetailAddress());
+			  pstmt.setString(7, member.getAddressDetails());
 			  pstmt.setInt(8, member.getRoleId());
 			  
 			  result = pstmt.executeUpdate();
@@ -146,7 +146,7 @@ public class MemberDAO_imple implements MemberDAO {
                 member.setPhoneNumber(rs.getString("phone_number"));
                 member.setZipCode(rs.getString("zip_code"));
                 member.setAddress(rs.getString("address"));
-                member.setDetailAddress(rs.getString("address_details"));
+                member.setAddressDetails(rs.getString("address_details"));
                 member.setRegisterAt(rs.getString("register_at"));
                 member.setRoleId(rs.getInt("role_id"));
 
