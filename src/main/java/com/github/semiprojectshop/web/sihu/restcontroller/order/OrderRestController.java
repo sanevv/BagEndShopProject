@@ -1,6 +1,6 @@
 package com.github.semiprojectshop.web.sihu.restcontroller.order;
 
-import com.github.semiprojectshop.repository.aery.user.domain.MemberVO;
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.service.sihu.exceptions.CustomMyException;
 import com.github.semiprojectshop.service.sihu.exceptions.CustomMyViewException;
 import com.github.semiprojectshop.service.sihu.order.OrderService;
