@@ -31,6 +31,7 @@ public class NoticeController {
 		String title = request.getParameter("title");
 		String contents = request.getParameter("contents");
 		String notice_id =request.getParameter("notice_id");
+		
 		//System.out.println(title + contents + notice_id);
 		Map<String, String> paraMap = new HashMap<>();
 		
@@ -81,6 +82,7 @@ public class NoticeController {
 
 	    try {
 	        NoticeVO nvo = ndao.getNoticeInfo(notice_id);
+	        System.out.println(nvo.getThumbnail());
 	        request.setAttribute("nvo", nvo);
 	    } catch (SQLException e) {
 	        e.printStackTrace();

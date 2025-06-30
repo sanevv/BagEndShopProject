@@ -92,7 +92,6 @@
 
     <form name="writeFrm" method="post" action="${pageContext.request.contextPath}/notice/update">
     	<input name="notice_id" type="hidden" value="${nvo.notice_id}">
-    	<input name="thumbnail" type="file">
         <input name="title" id="title" type="text" value="${nvo.title}">
         <textarea name="contents" id="contents">${nvo.contents}</textarea>
 

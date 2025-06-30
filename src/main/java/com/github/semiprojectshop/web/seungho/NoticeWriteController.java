@@ -32,13 +32,13 @@ public class NoticeWriteController {
 
 	@PostMapping("/abc")
 	@ResponseBody
-	public String NoticeInsert(@RequestParam("thumbnail") MultipartFile thumbnail,
+	public Map<String, Object> NoticeInsert(@RequestParam("thumbnail") MultipartFile thumbnail,
 					            @RequestParam("title") String title,
 					            @RequestParam("contents") String contents,
 					            HttpServletRequest request) throws Exception {
 		System.out.println("나왔어!");
 		System.out.println(thumbnail.getOriginalFilename());
-		
+		Map<String, Object> json = new HashMap<>();
 		/*
 		 * String title = nvo.getTitle(); String contents = nvo.getContents();
 		 */
@@ -56,11 +56,12 @@ public class NoticeWriteController {
 		System.out.println(result +"개 성공");
 		}
 		if(result == 1) {
+	        json.put("result", 1);
+	        json.put("message", "등록 성공");
+	        json.put("url", "/notice/list.one");
 			
-			
-			return "redirect:/notice/list.one";
 		}
-		return "/";
+		return json;
 	}
 
 	@PostMapping("/write")
