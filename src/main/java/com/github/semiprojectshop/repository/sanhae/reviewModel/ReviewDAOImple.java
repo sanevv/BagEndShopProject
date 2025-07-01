@@ -219,15 +219,16 @@ public class ReviewDAOImple implements ReviewDAO {
             conn = ds.getConnection();
 
             String sql = " UPDATE review " +
-                         " SET review_contents = ?, rating = ?, created_at = SYSDATE " +
+                         " SET review_contents = ?, rating = ?, review_image_path = ?, created_at = SYSDATE " +
                          " WHERE review_id = ? AND product_id = ? AND user_id = ? ";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, reviewVO.getReviewContents());
             pstmt.setInt(2, reviewVO.getRating());
-            pstmt.setInt(3, reviewVO.getReviewId());
-            pstmt.setInt(4, reviewVO.getProductId());
-            pstmt.setInt(5, reviewVO.getUserId());
+            pstmt.setString(3, reviewVO.getReviewImagePath());
+            pstmt.setInt(4, reviewVO.getReviewId());
+            pstmt.setInt(5, reviewVO.getProductId());
+            pstmt.setInt(6, reviewVO.getUserId());
 
             result = pstmt.executeUpdate();
 

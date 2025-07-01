@@ -85,18 +85,8 @@ public class ReviewRestController {
 
             path = storageService.returnTheFilePathAfterTransfer(file, uploadDir);
 
-            System.out.println("path222 : " + path);
-
-            // 이미지 경로 업데이트
-            //boolean updated = rvDAO.updateReviewImage(insertReview.getReviewId(), path);
-
-//            if(updated) {
-//                // 기존 객체에 이미지 경로 설정
-//                insertReview.setReviewImagePath(path);
-//            }
+            //System.out.println("path222 : " + path);
         }
-
-        //ReviewVO insertReview = rvDAO.addReview(reviewVO, path);
 
         return rvDAO.addReview(reviewVO, path);
     }
@@ -146,15 +136,15 @@ public class ReviewRestController {
 
         String loginUserId = String.valueOf(loginUser.getUserId());
 
-        System.out.println("reviewVO.getReviewId() : " + reviewVO.getReviewId());
+        //System.out.println("reviewVO.getReviewId() : " + reviewVO.getReviewId());
 
         String reviewWriteUserId = rvDAO.getReviewWriteUserid(reviewVO.getReviewId());
 
-        System.out.println("loginUserId : " + loginUserId);
-        System.out.println("reviewWriteUserId : " + reviewWriteUserId);
+        //System.out.println("loginUserId : " + loginUserId);
+        //System.out.println("reviewWriteUserId : " + reviewWriteUserId);
 
         if (!loginUserId.equals(reviewWriteUserId)) {
-            return ResponseEntity.status(403).body("본인만 수정할 수 있습니다.ㅋㅋㅋㅋㅋㅋ");
+            return ResponseEntity.status(403).body("본인만 수정할 수 있습니다.");
         }
 
         int updated = rvDAO.updateReview(reviewVO);
