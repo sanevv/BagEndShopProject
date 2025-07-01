@@ -19,7 +19,8 @@ public class StorageController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> fileListUploadTester(@RequestPart List<MultipartFile> fileList){
-        Path uploadDir = storageService.createFileDirectory("test", "fileList");
+
+        Path uploadDir = storageService.createFileDirectory("상품", "productPrimaryKey","detailImages");
 
         List<String> filePaths = new ArrayList<>();
         for (MultipartFile file : fileList) {

@@ -2,6 +2,7 @@ package com.github.semiprojectshop.config.web;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -24,7 +25,9 @@ public class WebConfig implements WebMvcConfigurer {
 
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(@NotNull ResourceHandlerRegistry registry) {
+        if(endPath.startsWith("/"))
+            endPath = endPath.replaceFirst("/", ""); // 경로가 '/'로 시작한다면 제거
 
         // 외부 업로드 폴더 매핑
         registry.addResourceHandler("/uploads/**")//예 /uploads/image.jpg 즉 /uploads/로 시작하는 URL 요청을 처리
