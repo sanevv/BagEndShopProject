@@ -17,6 +17,9 @@ public class ReviewVO {
     private String reviewContents; // 리뷰내용
     private int rating;            // 별점
     private String createdAt;      // 작성일
+    private String reviewImagePath; // 리뷰 이미지
+
+    private boolean isLoginReviewUser; // 로그인한 사람과 리뷰작성한 사람인지 알아올거
 
     // product_image 테이블 조인해서 사용할거임
     private String productImagePath; // 대표이미지 경로

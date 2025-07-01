@@ -1,6 +1,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 금액 초기화
     priceInit();
+
 });
 
 
@@ -10,6 +12,9 @@ const productId = document.querySelector('[name="productId"]').value;
 fetch(`/api/review/list?productId=${productId}`)
     .then(response => response.json())
     .then(reviews => {  // 직접 배열 받기
+
+        console.log(reviews);
+
         if (Array.isArray(reviews)) {
 
             let reviewListHTML = ``;
@@ -31,11 +36,20 @@ fetch(`/api/review/list?productId=${productId}`)
                                     <span class="date">${review.createdAt}</span>
                                     <span class="rating" data-rating="${review.rating}">별이 ${displayRating}개!!</span>
                                 </div>
-                                <div class="review-buttons">
-                                    <button type="button" class="btn btn-review-update" onclick="isLoginCheck('update', ${review.reviewId})">수정하기</button>
-                                    <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button>
+                                `;
+
+                    // 로그인한 userid와 리뷰 작성한 userid가 같으면 보여줌
+                    if(review.loginReviewUser){
+
+                    reviewListHTML += ` <div class="review-buttons">
+                                            <button type="button" class="btn btn-review-update" onclick="isLoginCheck('update', ${review.reviewId})">수정하기</button>
+                                            <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button>
+                                        </div>
+                                        `;
+                    }
+                    reviewListHTML += `
+                                    <a href="/review/detail/${productId}/${review.reviewId}" class="btn-review-detail"></a>
                                 </div>
-                            </div>
                             <div class="image">
                                 <img src="${review.productImagePath}" alt="상품 대표이미지" />
                             </div>
@@ -85,14 +99,6 @@ const inpQuantity = document.querySelector('[name="quantity"]');
 const priceElement = document.querySelector('.price');
 const totalAmountElement = document.querySelector('.total-amount');
 
-if (inpQuantity && priceElement && totalAmountElement) {
-    inpQuantity.addEventListener('input', function () {
-        priceInit();
-    });
-} else {
-    console.error('필요한 DOM 요소를 찾을 수 없습니다.');
-}
-
 priceInit = () => {
 
     const count = Math.max(0, Number(inpQuantity.value) || 0); // 음수 방지, NaN일 경우 0
@@ -123,14 +129,66 @@ addCart = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(addCartData)
     })
-        .then(response => response.json())
-        .then(data => {
-            alert('해당 상품이 장바구니에 담겼습니다!');
-            location.href = '/cart';
-        });
+    .then(async response => {
+        const contentType = response.headers.get('content-type');
+
+        if (contentType && contentType.includes('application/json')) {
+            // JSON 응답일 경우 처리
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log('성공 응답:', data);
+                if (confirm('해당 상품이 장바구니에 담겼습니다! 이동하시겠습니까?')) {
+                    location.href = '/cart';
+                }
+            } else {
+                console.warn('에러 응답:', data);
+                alert(data.message || '장바구니 추가 실패');
+            }
+        } else {
+            // 로그인 페이지 리디렉션 시킥
+            alert('로그인 후 장바구니에 상품을 추가해주세요.');
+            location.href = '/test/login.up';
+        }
+    })
+    .catch(error => {
+        console.error('요청 중 오류 발생:', error);
+        alert('서버 또는 네트워크 오류가 발생했습니다.');
+    });
 }
 
 const btnAddCart = document.querySelector("#btnAddCart");
 btnAddCart.addEventListener("click", addCart);
+
+const btnMinus = document.querySelector('.btn-min');
+const btnPlus = document.querySelector('.btn-plus');
+
+// - 버튼 클릭 이벤트
+btnMinus.addEventListener('click', () => {
+    let currentValue = parseInt(inpQuantity.value) || 1;
+    let min = parseInt(inpQuantity.min) || 1;
+
+    if (currentValue > min) {
+        inpQuantity.value = currentValue - 1;
+        priceInit();
+    }
+});
+
+// + 버튼 클릭 이벤트
+btnPlus.addEventListener('click', () => {
+    let currentValue = parseInt(inpQuantity.value) || 1;
+    let max = parseInt(inpQuantity.max) || 100;
+
+    if (currentValue < max) {
+        inpQuantity.value = currentValue + 1;
+        priceInit();
+    }
+});
+
+
+
+document.querySelector('#btnBuy').addEventListener('click', () => {
+    requestOrderProducts([{ productId: productId, quantity: inpQuantity.value}]);
+});
 
 

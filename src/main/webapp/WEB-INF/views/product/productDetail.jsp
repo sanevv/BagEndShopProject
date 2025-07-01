@@ -8,7 +8,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/review/review.css">
 
 <jsp:include page="../include/header.jsp"></jsp:include>
-
+<script>
+	// 로그인 유무
+	let isLogin = ${loginUser};
+</script>
 <main id="main">
 	<div class="product-container">
 		<div class="product-banner-top">
@@ -50,7 +53,9 @@
 									<span class="price"><fmt:formatNumber value="${prdVO.discountedPrice}" type="number" maxFractionDigits="0" /> <span>원</span></span>
 								</p>
 								<p class="quantity">
-									<input type="number" name="quantity" value="1" min="1" max="100" />
+									<button type="button" class="btn btn-min">-</button>
+									<input type="text" name="quantity" value="1" min="1" max="100" readonly />
+									<button type="button" class="btn btn-plus">+</button>
 								</p>
 							</div>
 							<div class="total-price">
@@ -59,7 +64,7 @@
 							</div>
 							<div class="product-buttons">
 								<button type="button" id="btnAddCart" class="btn btn-cart">장바구니 담기</button>
-								<button type="button" class="btn btn-buy">바로 구매하기</button>
+								<button type="button" id="btnBuy" class="btn btn-buy">바로 구매하기</button>
 							</div>
 						</div>
 					</form>
@@ -95,10 +100,8 @@
 
 <script src="${pageContext.request.contextPath}/js/product/productDetail.js"></script>
 <script src="${pageContext.request.contextPath}/js/review/review.js"></script>
+<script src="${pageContext.request.contextPath}/js/cart/myCart.js"></script>
 <script>
-
-	// 로그인 유무
-	const isLogin = "${loginUser}";
 
 	const imgList = [
 		"${prdVO.productImagePath}",
