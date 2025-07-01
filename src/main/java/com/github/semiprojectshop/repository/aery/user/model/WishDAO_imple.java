@@ -76,6 +76,7 @@ public class WishDAO_imple implements WishDAO {
 	        }
 	        
 	    } finally {
+	    	
 	    	close();
 	    }
 
@@ -102,6 +103,7 @@ public class WishDAO_imple implements WishDAO {
             isExist = rs.next();
             
         } finally {
+        	
             close();
         }
 
@@ -123,6 +125,7 @@ public class WishDAO_imple implements WishDAO {
             pstmt.executeUpdate();
             
         } finally {
+        	
             close();
         }
     }
@@ -142,6 +145,7 @@ public class WishDAO_imple implements WishDAO {
             pstmt.executeUpdate();
             
         } finally {
+        	
             close();
         }
     }
@@ -156,7 +160,96 @@ public class WishDAO_imple implements WishDAO {
 	        insert(userId, productId);
 	    }
 	}
+
 	
+	// 관심상품을 장바구니에 담기
+	@Override
+	public void wishToCart(int userId, int productId) throws SQLException {
+	    try {
+	        conn = ds.getConnection();
+
+	        // 이미 장바구니에 있는지 확인
+	        String checkCart = "SELECT quantity "
+	        		         + " FROM product_cart "
+	        		         + " WHERE user_id = ? AND product_id = ? ";
+	        
+	        pstmt = conn.prepareStatement(checkCart);
+	        pstmt.setInt(1, userId);
+	        pstmt.setInt(2, productId);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            // 이미 장바구니에 해당 상품이 있다면 수량 1 증가
+	            String updateCart = " UPDATE product_cart "
+	            		          + " SET quantity = quantity + 1"
+	            		          + " WHERE user_id = ? AND product_id = ? ";
+	            pstmt = conn.prepareStatement(updateCart);
+	            pstmt.setInt(1, userId);
+	            pstmt.setInt(2, productId);
+	            pstmt.executeUpdate();
+	        } else {
+	            // 장바구니에 해당 상품이 없다면 새로 추가
+	            String insertSql = " INSERT INTO product_cart (user_id, product_id, quantity, created_at) "
+	            		         + " VALUES (?, ?, 1, SYSDATE) ";
+	            pstmt = conn.prepareStatement(insertSql);
+	            pstmt.setInt(1, userId);
+	            pstmt.setInt(2, productId);
+	            pstmt.executeUpdate();
+	        }
+	        
+	    } finally {
+	    	
+	        close();
+	    }
+	    
+	}// end of public void moveToCart(int userId, int productId) throws SQLException--------------------------------
+
+	
+	// 관심상품을 기반으로 주문 생성 (orders + orders_product에 insert), orders_id 생성 반환
+	@Override
+	public int createWishOrder(int userId, int productId) throws SQLException {
+		
+	    int ordersId = -1; // 생성된 주문 ID 반환
+
+	    try {
+	        conn = ds.getConnection();
+	        conn.setAutoCommit(false);
+
+	        // orders 테이블에 insert (주문 생성)
+	        String insertOrder = " INSERT INTO orders (user_id, created_at, status)"
+	        		           + " VALUES (?, SYSDATE, 'DELIVERY') ";
+	        pstmt = conn.prepareStatement(insertOrder, new String[] { "orders_id" }); // 자동 생성 키
+	        pstmt.setInt(1, userId);
+	        pstmt.executeUpdate();
+
+	        // 생성된 orders_id 가져오기
+	        rs = pstmt.getGeneratedKeys();
+	        if (rs.next()) {
+	            ordersId = rs.getInt(1);
+	        } else {
+	            throw new SQLException("주문 ID 생성 실패");
+	        }
+
+	        //  orders_product 테이블에 insert
+	        String insertOrderProduct = " INSERT INTO orders_product (orders_id, product_id) "
+	        		                     + " VALUES (?, ?) ";
+	        pstmt = conn.prepareStatement(insertOrderProduct);
+	        pstmt.setInt(1, ordersId);
+	        pstmt.setInt(2, productId);
+	        pstmt.executeUpdate();
+
+	        conn.commit();
+
+	    } catch (SQLException e) {
+	        if (conn != null) conn.rollback();
+	        throw e;
+	    } finally {
+	        conn.setAutoCommit(true);
+	        close();
+	    }
+
+	    return ordersId;
+	}
 	
 }
 
