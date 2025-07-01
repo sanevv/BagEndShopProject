@@ -6,13 +6,17 @@ import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
 import com.github.semiprojectshop.repository.sanhae.reviewModel.ReviewDAO;
 import com.github.semiprojectshop.repository.sanhae.reviewModel.ReviewDAOImple;
 import com.github.semiprojectshop.repository.sihu.review.Review;
+import com.github.semiprojectshop.service.sihu.StorageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.nio.file.Path;
 
 
 @Controller
@@ -23,24 +27,46 @@ public class ReviewController {
 
     private final ReviewDAO rvDAO;
 
+
+    @GetMapping("/detail/{productId}/{reviewId}")
+    public String reviewDetail(@PathVariable String productId, @PathVariable String reviewId, Model model){
+
+        // 대표이미지 찾아오기
+        String productImagePath = rvDAO.getProductImagePath(Integer.parseInt(productId));
+
+        System.out.println("productImagePath : " + productImagePath);
+        System.out.println("reviewId : " + reviewId);
+
+        // 리뷰 내용 조회
+        ReviewVO review = rvDAO.getReviewById(Integer.parseInt(reviewId));
+
+        //System.out.println("등록한 리뷰이미지  : " + review.getReviewImagePath());
+
+        model.addAttribute("reviewVO", review);
+        model.addAttribute("productImagePath", productImagePath);
+
+
+
+        return "review/reviewDetail";
+    }
     @GetMapping("/write")
     public String reviewReg(@RequestParam("productId") int productId,  HttpSession session, Model model){
 
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
-
         // 대표이미지 찾아오기
         String productImagePath = rvDAO.getProductImagePath(productId);
 
-        if (loginUser != null) {
-            int userId = loginUser.getUserId(); // 로그인한 사용자 ID
-
-            model.addAttribute("userId", userId);
-            System.out.println("userId : "+ userId);
-            //System.out.println("로그인 아이디 : "+ loginUser.getUserId());
-            //model.addAttribute("productId", productId);
-            model.addAttribute("productImagePath", productImagePath);
+        if(loginUser == null) {
+            return "redirect:/test/login.up";
         }
+
+        int userId = loginUser.getUserId(); // 로그인한 사용자 ID
+
+        model.addAttribute("userId", userId);
+        System.out.println("userId : "+ userId);
+
+        model.addAttribute("productImagePath", productImagePath);
 
         return "review/reviewWrite";
     }
@@ -61,12 +87,13 @@ public class ReviewController {
         // 리뷰 내용 조회
         ReviewVO review = rvDAO.getReviewById(reviewId);
 
+
+
         model.addAttribute("userId", userId);
-        model.addAttribute("productId", productId);
         model.addAttribute("reviewId", reviewId);
+        model.addAttribute("productId", productId);
         model.addAttribute("productImagePath", productImagePath);
-        model.addAttribute("reviewContents", review.getReviewContents());
-        model.addAttribute("rating", review.getRating());
+        model.addAttribute("reviewVO", review);
 
         return "review/reviewUpdate";
     }

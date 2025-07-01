@@ -1,29 +1,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- Header --%>
 <jsp:include page="../include/header.jsp" />
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/review/review.css">
-<script src="<%=request.getContextPath()%>/js/review/review.js" defer></script>
 
 <!-- main contents -->
 <main id="main">
     <div id="reviewForm">
-        <div id="reviewWrite" class="review-container">
+        <div id="reviewDetail" class="review-container">
             <div class="review-header">
-                <h2>REVIEW</h2>
+                <h2>REVIEW 상세보기</h2>
             </div>
             <div class="review-body">
-                <form id="reviewWriteForm" name="reviewWriteForm">
-                    <input type="hidden" name="userId" value="${userId}">
-                    <input type="hidden" name="rating" value="">
-
-                    <table class="review-table">
-                        <colgroup>
-                            <col style="width: 200px">
-                            <col style="width: auto">
-                        </colgroup>
-                        <tbody>
+                <table class="review-table">
+                    <colgroup>
+                        <col style="width: 200px">
+                        <col style="width: auto">
+                    </colgroup>
+                    <tbody>
                         <tr>
                             <th>구매한 상품</th>
                             <td>
@@ -35,7 +30,7 @@
                         <tr>
                             <th>내용</th>
                             <td>
-                                <textarea name="reviewContents"></textarea>
+                                <div>${reviewVO.reviewContents}</div>
                             </td>
                         </tr>
                         <tr>
@@ -86,22 +81,39 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>첨부파일</th>
+                            <th>첨부된 이미지</th>
                             <td>
-                                <input type="file" name="reviewImageFile">
+                                <c:if test="${not empty reviewVO.reviewImagePath}">
+                                <img src="${pageContext.request.contextPath}${reviewVO.reviewImagePath}" alt="첨부된 이미지" />
+                                </c:if>
+                                <c:if test="${empty reviewVO.reviewImagePath}">
+                                    등록된 이미지가 없다!
+                                </c:if>
                             </td>
                         </tr>
-                        </tbody>
-                    </table>
-                    <button type="button" id="btnAddReview" class="btn-review-write" onclick="reviewSubmit()">등록</button>
-
-                </form>
+                    </tbody>
+                </table>
+                <button type="button" class="btn-review-write" onclick="history.back()">목록으로 돌아가기</button>
             </div>
         </div>
     </div>
+
+    <input type="hidden" id="rating" value="${reviewVO.rating}">
 </main>
 <!-- //main contents -->
 
+<script>
+    $(function(){
+
+        const $starBox = $(".star-box");
+        const ratingVal = $("#rating").val();
+
+        if( Number(ratingVal) === 0 ) return;
+
+        $starBox.eq(Number(ratingVal - 1)).trigger("click");
+
+    });
+</script>
 
 
 <%-- Footer --%>

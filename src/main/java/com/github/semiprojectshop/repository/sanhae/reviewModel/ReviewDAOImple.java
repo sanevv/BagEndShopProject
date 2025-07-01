@@ -84,24 +84,24 @@ public class ReviewDAOImple implements ReviewDAO {
 
     // 리뷰 등록하기
     @Override
-    public ReviewVO addReview(ReviewVO reviewVO) {
+    public ReviewVO addReview(ReviewVO reviewVO, String path) {
 
         try {
             conn = ds.getConnection();
 
-            String sql = " INSERT INTO review (user_id, product_id, review_contents, rating, created_at) " +
-                         " VALUES (?, ?, ?, ?, SYSDATE)";
+            String sql = " INSERT INTO review (user_id, product_id, review_contents, rating, review_image_path, created_at) " +
+                         " VALUES (?, ?, ?, ?, ?, SYSDATE) ";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, reviewVO.getUserId());
             pstmt.setInt(2, reviewVO.getProductId());
             pstmt.setString(3, reviewVO.getReviewContents());
             pstmt.setInt(4, reviewVO.getRating());
+            pstmt.setString(5, path);
 
             int result = pstmt.executeUpdate();
 
             if(result > 0) {
-
                 return reviewVO;
             }
 
@@ -164,8 +164,8 @@ public class ReviewDAOImple implements ReviewDAO {
             rs = pstmt.executeQuery();
 
             if(rs.next()){
-                writeUserId = rs.getString(1);
-            };
+                writeUserId = rs.getString("user_id");
+            }
 
         }
         catch (SQLException e) {
@@ -249,7 +249,7 @@ public class ReviewDAOImple implements ReviewDAO {
         try {
             conn = ds.getConnection();
 
-            String sql = " SELECT review_contents, rating FROM review " +
+            String sql = " SELECT review_contents, rating, review_image_path FROM review " +
                          " WHERE review_id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, reviewId);
@@ -259,6 +259,7 @@ public class ReviewDAOImple implements ReviewDAO {
                 reviewVO = new ReviewVO();
                 reviewVO.setReviewContents(rs.getString("review_contents"));
                 reviewVO.setRating(rs.getInt("rating"));
+                reviewVO.setReviewImagePath(rs.getString("review_image_path"));
             };
 
         }
@@ -272,4 +273,30 @@ public class ReviewDAOImple implements ReviewDAO {
 
         return reviewVO;
     }
+
+
+
+    @Override
+    public boolean updateReviewImage(int reviewId, String path) {
+        try {
+            conn = ds.getConnection();
+
+            String sql = " UPDATE review SET review_image_path = ? WHERE review_id = ? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, path);
+            pstmt.setInt(2, reviewId);
+
+            int result = pstmt.executeUpdate();
+            return result > 0;
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            close();
+        }
+    }
+
 }
