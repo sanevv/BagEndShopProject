@@ -77,7 +77,6 @@ public class MemberController {
 
         String userEmail = request.getParameter("userEmail");
         String pwd = request.getParameter("pwd");
-        String test = request.getParameter("test");
         
         // 클라이언트 IP 가져오기
         String clientip = request.getRemoteAddr();
@@ -262,6 +261,7 @@ public class MemberController {
 
         return "member/memberOneChange"; // 회원 정보 수정 페이지로 이동
     }
+
 
 
 }

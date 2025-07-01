@@ -4,6 +4,7 @@ import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.kyeongsoo.memberModel.MemberDAO;
 import com.github.semiprojectshop.repository.sihu.user.MyUserJpa;
 import lombok.RequiredArgsConstructor;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -23,6 +24,10 @@ public class resetPasswordResponse {
     @GetMapping("/exist-phone")
     public boolean existPhone(@RequestParam String phoneNumber) {
         return !myUserJpa.existsByPhoneNumber(phoneNumber);
+    }
+    @GetMapping("/exist-pwd")
+    public boolean existPassword(@RequestParam String password) {
+        return !myUserJpa.existsByPassword(password);
     }
 
     @PutMapping("/resetPassword")
@@ -101,6 +106,13 @@ public class resetPasswordResponse {
 
 
         return isUpdated;
+    }
+
+    @PostMapping("login")
+    public boolean login(@RequestParam String userEmail, @RequestParam String loginPwd) throws SQLException {
+
+
+        return myUserJpa.existsByEmail(userEmail) && myUserJpa.existsByPassword(loginPwd);
     }
 
 

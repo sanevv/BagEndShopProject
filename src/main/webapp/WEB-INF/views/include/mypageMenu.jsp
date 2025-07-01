@@ -33,7 +33,7 @@
 		    	<!-- 쇼핑 정보 -->
 		        <div class="menu-list">
 		            <h5 class="title">쇼핑 정보</h5><ul class="list"><br>
-		                <li><a href="#">주문 내역</a></li><br>
+		                <li><a href="${pageContext.request.contextPath}/cart">주문 내역</a></li><br>
 		                <li><a href="/wishList.team1">위시리스트</a></li><br>
 		            </ul>
 		        </div>

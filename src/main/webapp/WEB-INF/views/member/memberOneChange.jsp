@@ -254,74 +254,107 @@
         }); // end of $('button#update').on('click', function(){})-------------------
 
 
-        $(function(){
-            const originalEmail = "${requestScope.email}";
+        const originalEmail = "${requestScope.email}";
+        const emailInput = $('input#email');
+        const confirmBtn = $('button#emailDuplicateConfirmation');
 
-            $('input#email').on('input', function() {
-                const currentEmail = $(this).val();
+        // 👉 먼저 input 값을 세팅
+        emailInput.val(originalEmail);
 
-                if (originalEmail === currentEmail) {
-                    $('button#emailDuplicateConfirmation').hide();
-                } else {
-                    $('button#emailDuplicateConfirmation').show();
-                }
-            });
+        //  input 값 설정이 끝난 다음에 비교
+        if (originalEmail === emailInput.val()) {
+            confirmBtn.hide();
+        } else {
+            confirmBtn.show();
+        }
 
-            // 버튼 클릭 이벤트는 따로 등록
-            $('button#emailDuplicateConfirmation').on('click', function(){
-                $.ajax({
-                    url: "/api/member/exist-email",
-                    type: "GET",
-                    data: {
-                        email: $('input#email').val()
-                    },
-                    success: function(response) {
-                        if(response) {
-                            alert('사용 가능한 이메일입니다.');
-                        } else {
-                            alert('이미 사용중인 이메일입니다.');
-                            $('input#email').val("");
-                            $('input#email').focus();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('이메일 중복 확인에 실패했습니다. 다시 시도해주세요.');
+        //  사용자가 값을 바꿨을 때
+        emailInput.on('input', function() {
+            if (originalEmail === $(this).val()) {
+                confirmBtn.hide();
+            } else {
+                confirmBtn.show();
+            }
+        });
+
+        //  중복 확인 버튼 클릭
+        confirmBtn.on('click', function() {
+            $.ajax({
+                url: "/api/member/exist-email",
+                type: "GET",
+                data: {
+                    email: emailInput.val()
+                },
+                success: function(response) {
+                    if (response) {
+                        alert('사용 가능한 이메일입니다.');
+                        confirmBtn.hide();
+                    } else {
+                        alert('이미 사용중인 이메일입니다.');
+                        emailInput.val("").focus();
                     }
-                });
+                },
+                error: function() {
+                    alert('이메일 중복 확인에 실패했습니다.');
+                }
             });
         });
 
 
-        if("${requestScope.hp2}" === $('input#hp2').val() && "${requestScope.hp3}" === $('input#hp3').val()){
-            $('button#checkThePhoneNumberDuplicate').hide();
-        }
-        else{
-            $('button#checkThePhoneNumberDuplicate').show();
-            $('button#checkThePhoneNumberDuplicate').on('click', function(){
-                const phoneNumber = $('input#hp1').val() + $('input#hp2').val() + $('input#hp3').val();
-                $.ajax({
-                    url: "/api/member/exist-phone",
-                    type: "GET",
-                    data: {
-                        phoneNumber: phoneNumber
-                    },
-                    success: function(response) {
-                        if(response) {
-                            alert('사용 가능한 휴대폰 번호입니다.');
+        // 전화번호 중복확인 버튼 제어
+        const originalHp2 = "${requestScope.hp2}";
+        const originalHp3 = "${requestScope.hp3}";
 
-                        } else {
-                            alert('이미 사용중인 휴대폰 번호입니다.');
-                            $('input#hp2').val("");
-                            $('input#hp3').val("");
-                            $('input#hp2').focus();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('휴대폰 번호 중복 확인에 실패했습니다. 다시 시도해주세요.');
+        const hp2Input = $('input#hp2');
+        const hp3Input = $('input#hp3');
+        const phoneCheckBtn = $('button#checkThePhoneNumberDuplicate');
+
+        //  초기 로딩 시 비교해서 버튼 숨기기 또는 보이기
+        if (hp2Input.val() === originalHp2 && hp3Input.val() === originalHp3) {
+            phoneCheckBtn.hide();
+        } else {
+            phoneCheckBtn.show();
+        }
+
+        // 입력 변경 시 버튼 상태 업데이트
+        hp2Input.on('input', togglePhoneCheckButton);
+        hp3Input.on('input', togglePhoneCheckButton);
+
+        function togglePhoneCheckButton() {
+            const currentHp2 = hp2Input.val();
+            const currentHp3 = hp3Input.val();
+
+            if (currentHp2 === originalHp2 && currentHp3 === originalHp3) {
+                phoneCheckBtn.hide();
+            } else {
+                phoneCheckBtn.show();
+            }
+        }
+
+        //  중복확인 버튼 클릭 시 로직
+        phoneCheckBtn.on('click', function() {
+            const phoneNumber = $('input#hp1').val() + hp2Input.val() + hp3Input.val();
+
+            $.ajax({
+                url: "/api/member/exist-phone",
+                type: "GET",
+                data: { phoneNumber: phoneNumber },
+                success: function(response) {
+                    if (response) {
+                        alert('사용 가능한 휴대폰 번호입니다.');
+                        phoneCheckBtn.hide(); // 확인 완료 시 숨김
+                    } else {
+                        alert('이미 사용중인 휴대폰 번호입니다.');
+                        hp2Input.val("").focus();
+                        hp3Input.val("");
                     }
-                }); // end of $.ajax({})
-            }) // end of $('button#checkThePhoneNumberDuplicate').on('click', function(){})-------------------
-        } // end of if()
+                },
+                error: function() {
+                    alert('휴대폰 번호 중복 확인에 실패했습니다.');
+                }
+            });
+        });
+
 
 
 
