@@ -30,3 +30,34 @@
     left: 0;
     z-index: 2;
 }
+
+
+div.container-fluid {
+	margin-top: 200px;
+}
+
+.image-card {
+    height: 270px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    position: relative;
+    margin: 20px 0;
+  }
+
+  .image-title {
+    position: absolute;
+    bottom: 30px;
+	left: 20px;
+    color: white;
+    font-weight: bold;
+    font-size:14pt;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+  }
+
+  .notice-link {
+    display: block;
+    margin: 0 5px; 
+  }
+
+.image.title:hover {text-decoration:none}

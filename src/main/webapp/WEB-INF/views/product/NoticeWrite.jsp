@@ -97,7 +97,7 @@ $(function() {
 	      success: function(json) {
 	        console.log("응답:", JSON.stringify(json));
 	        if (json.result == 1) {
-	          location.href = "${pageContext.request.contextPath}/notice/list.one";
+	          location.href = "${pageContext.request.contextPath}"+json.url;
 	        }
 	      },
 	      error: function(request, status, error) {
