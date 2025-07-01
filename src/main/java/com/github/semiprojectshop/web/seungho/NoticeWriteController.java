@@ -43,7 +43,7 @@ public class NoticeWriteController {
 		 * String title = nvo.getTitle(); String contents = nvo.getContents();
 		 */
 		int result = 0;
-		Path uploadDir = storageService.createFileDirectory("image", title);
+		Path uploadDir = storageService.createFileDirectory("notice", title);
 		String imagePath = storageService.returnTheFilePathAfterTransfer(thumbnail, uploadDir);
 		
 		
@@ -53,7 +53,7 @@ public class NoticeWriteController {
 		paramap.put("contents", contents);
 		paramap.put("thumbnail", imagePath);
 		result = ndao.insertNotice(paramap);
-		System.out.println(result +"개 성공");
+		
 		}
 		if(result == 1) {
 	        json.put("result", 1);

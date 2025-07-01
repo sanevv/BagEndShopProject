@@ -9,12 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.seungho.domain.NoticeVO;
 import com.github.semiprojectshop.repository.seungho.model.NoticeDAO;
 import com.github.semiprojectshop.repository.seungho.model.NoticeDAO_imple;
 import com.github.semiprojectshop.service.sihu.StorageService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -22,11 +24,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NoticeListController {
 	private final NoticeDAO ndao;
-
+	
 	NoticeVO nvo = new NoticeVO();
 	@GetMapping("/list.one")
 	public String noticeList(HttpServletRequest request) throws SQLException {
-		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginUser");
+
+		request.setAttribute("loginuser", loginuser);
 		String ctxPath = request.getContextPath();
 		
 		String sizePerPage = "8";
@@ -62,7 +67,7 @@ public class NoticeListController {
 		
 		
 		List<NoticeVO> noticeList = ndao.noticeList(paraMap);
-
+		
 		request.setAttribute("noticeList", noticeList);
 		request.setAttribute("sizePerPage", sizePerPage);
 		int loop = 1;
@@ -118,7 +123,7 @@ public class NoticeListController {
 		
 		/* >>> 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 
         검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작 <<< */
-
+		
 		request.setAttribute("currentShowPageNo", currentShowPageNo);
 		
 		

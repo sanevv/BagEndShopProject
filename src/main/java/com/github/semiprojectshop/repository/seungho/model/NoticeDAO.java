@@ -21,4 +21,6 @@ public interface NoticeDAO {
 
 	int updateNotice(Map<String, String> paraMap) throws SQLException;
 
+	List<NoticeVO> selectMainPageNotice() throws SQLException;
+
 }
