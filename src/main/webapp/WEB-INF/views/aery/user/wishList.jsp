@@ -82,7 +82,7 @@
                                 </li>
                             </c:forEach>
                             <c:if test="${currentPage < totalPage}">
-                                <li class="page-item>
+                                <li class="page-item2">
                                     <a class="page-link" href="wishList.team1?page=${currentPage + 1}">&raquo;</a>
                                 </li>
                             </c:if>
