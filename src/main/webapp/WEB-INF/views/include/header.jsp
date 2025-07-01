@@ -55,7 +55,7 @@
                                 </a>
                             </c:if>
                             <c:if test="${not empty sessionScope.loginUser}">
-                                <a href="/test/myPage" id="login-status">
+                                <a href="/test/memberOneChange" id="login-status">
                                     <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg"
                                          alt="마이페이지 아이콘"/>
                                 </a>

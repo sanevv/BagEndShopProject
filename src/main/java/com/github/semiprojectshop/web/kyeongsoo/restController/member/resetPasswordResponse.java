@@ -1,20 +1,29 @@
 package com.github.semiprojectshop.web.kyeongsoo.restController.member;
 
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.kyeongsoo.memberModel.MemberDAO;
+import com.github.semiprojectshop.repository.sihu.user.MyUserJpa;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class resetPasswordResponse {
-
+    private final MyUserJpa myUserJpa;
     private final MemberDAO memberDAO;
+    @GetMapping("/exist-email")
+    public boolean existEmail(@RequestParam String email) {
+        return !myUserJpa.existsByEmail(email);
+    }
+    @GetMapping("/exist-phone")
+    public boolean existPhone(@RequestParam String phoneNumber) {
+        return !myUserJpa.existsByPhoneNumber(phoneNumber);
+    }
 
     @PutMapping("/resetPassword")
     public boolean resetPassword(@RequestParam String newPassword,
@@ -57,5 +66,43 @@ public class resetPasswordResponse {
 
         return isUpdated;
     }
+
+    @PostMapping("memberOneChange")
+    public boolean memberOneChage(@RequestParam String email,
+                                  @RequestParam String password,
+                                  @RequestParam String name,
+                                  @RequestParam String hp1,
+                                  @RequestParam String hp2,
+                                  @RequestParam String hp3,
+                                  @RequestParam String zipCode,
+                                  @RequestParam String address,
+                                  @RequestParam String addressDetails) throws SQLException {
+
+        boolean isUpdated = false;
+
+        String phoneNumber = hp1 + hp2 + hp3;
+
+        Map<String, String> paramap = new HashMap<>();
+        paramap.put("email", email);
+        paramap.put("password", password);
+        paramap.put("phoneNumber", phoneNumber);
+        paramap.put("name", name);
+        paramap.put("zipCode", zipCode);
+        paramap.put("address", address);
+        paramap.put("addressDetails", addressDetails);
+
+        int n = memberDAO.memberOneChange(paramap);
+
+        if(n == 1){
+            isUpdated = true;
+        }
+
+
+
+
+        return isUpdated;
+    }
+
+
 
 }
