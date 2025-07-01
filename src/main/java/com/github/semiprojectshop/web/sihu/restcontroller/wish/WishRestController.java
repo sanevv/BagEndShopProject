@@ -21,10 +21,10 @@ public class WishRestController {
 
     @GetMapping
     public CustomResponse<List<WishResponse>> getMyWishList(HttpSession session) {
-        if(session.getAttribute("loginUser") == null)
-            throw CustomMyException.fromMessage("로그인이 필요합니다.");
-
-        long userId = ((MemberVO) session.getAttribute("loginUser")).getUserId();
+//        if(session.getAttribute("loginUser") == null)
+//            throw CustomMyException.fromMessage("로그인이 필요합니다.");
+//
+//        long userId = ((MemberVO) session.getAttribute("loginUser")).getUserId();
         List<WishResponse> responseList = wishService.getMyWishList(1L);
         return CustomResponse.ofOk("위시리스트 조회 성공", responseList);
 
