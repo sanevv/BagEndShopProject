@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 @ConfigurationProperties(prefix = "spring.server-url")
-public class ServerUrlProperties {
+public class ServerUrlProperties {//스웨거에서쓰일거임
     private String base;
+    private String https;
 }

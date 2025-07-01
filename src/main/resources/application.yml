@@ -13,6 +13,7 @@ coolsms:
 spring:
   server-url:
     base: http://localhost:8080
+    https: 구현전
   mvc:
     path match:
       matching-strategy: ant_path_matcher #????????? ???? ???? ???
@@ -60,3 +61,48 @@ file:
 portOne:
   primary: ENC(4ZLh8TRm7hWGg7SQjUcdN9NNnCb2y+6V)
 
+oauth:
+  microsoft:
+    client-id: ENC(LedXUSvMhPFHhVU456L+Eh41G5qoxqtzWIVQ8icVQmnfpmBB0F6rstW7NeWQ5I9K)
+    secret: ENC(HBLUSjzUSImevhuVG4zEFoaOezQDpERHPu96YgqRziuIuMhICibuxOErH1HY6QX6zfqxEo87gJQ=)
+    url:
+      auth: https://login.microsoftonline.com
+      api: https://graph.microsoft.com
+  twitter:
+    client-id: ENC(73GxRq+PjH6RVC4DEai2kRG5Q2yfEzantYpMzq11wiPFCcKx2aBZLCVCElid9Yev)
+    secret: ENC(+1I3jRKTfpiPReOXOXByPJhJ0eun42n5L523v84pSVKcdc2wcanA1POlV0NURZobg9grI/uom2I7h7TkctUydg==)
+    url:
+      code: https://x.com
+      api: https://api.x.com
+  facebook:
+    client-id: ENC(pibffdzGa+t9+ZL1HK3goDegcSgEJUNDIulbmj/zT84=)
+    secret: ENC(tIcuGtXhBekEHG5FjHMt0F+2zFGe6mliCxlGurf3X4IxHxr2ZzfGy/JEKbRce9zc)
+    url:
+      code: https://www.facebook.com
+      api: https://graph.facebook.com
+  kakao:
+    client-id: ENC(psGppJ2gd4Iam30//UfAPxCA6FC0ssdNfBw6Dn9M2qQTATIbRcxYxfJqPS+e9VGk)
+    secret: ENC(ensnSNHjUnedqhr9BxpEBWpydU7roBdN1lSZbr+gAQSysNwAlWA7RHppjnx07Ttt)
+    url:
+      auth: https://kauth.kakao.com
+      api: https://kapi.kakao.com
+  naver:
+    client-id: ENC(VjsjeWjzfBUcmFKA8iMU1+Bu6M/uveAORz+eZrDojfI=)
+    secret: ENC(J9kF6Jp4SbAmFht9zt8zxoLCWnNFVHfs)
+    state: ENC(IlhXZD511qEmHWeBhgp+XlaxTFW06Jqx5uycDGKkmuw=)
+    url:
+      auth: https://nid.naver.com
+      api: https://openapi.naver.com
+  google:
+    client-id: ENC(zi1y68mAguh2JPdpbfL+5h9a8YvflNAAMlWIka4e1PGYQVcoXgqPcSQdjW1R7QNe0Eia4wRu0xMw28+Sxk0RJfNZGctG971ucRLZwpy/GFumJOO7Gy16+A==)
+    secret: ENC(TQ+L4nJYfNH1C2M6wpcs77GUN9u0q/dGnAu2OZxUVD5XWEXBqxRimiDbxnqdkTtb)
+    url:
+      code: https://accounts.google.com
+      auth: https://oauth2.googleapis.com
+      api: https://www.googleapis.com
+  github:
+    client-id: ENC(nuitn7XlNsGuXb+pv3gZ6QS5MUi8qR7vVhCtUcbSbyI=)
+    secret: ENC(HnQ9bKaNeWK7JSPaRE5Rkm5BEB3KYAz7kER4zLrUYIuqaIKfX4sbppjhqUGHgLR77H9HJLnXb7k=)
+    url:
+      auth: https://github.com
+      api: https://api.github.com

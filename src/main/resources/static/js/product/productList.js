@@ -29,6 +29,8 @@ categories.forEach(category => {
 });
 
 
+
+
 categories.forEach(category => {
     category.addEventListener('click', () => {
         const selectedCategory = category.dataset.category;
