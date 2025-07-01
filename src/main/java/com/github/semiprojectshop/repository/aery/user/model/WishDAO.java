@@ -2,12 +2,12 @@ package com.github.semiprojectshop.repository.aery.user.model;
 
 import java.sql.SQLException;
 import java.util.List;
-import com.github.semiprojectshop.repository.sanhae.productDetailDomain.ProductDetailVO;
+import com.github.semiprojectshop.repository.kyeongsoo.productDomain.ProductVO;
 
 public interface WishDAO {
 	
 	// 로그인한 사용자가 본인의 관심상품을 조회
-	List<ProductDetailVO> selectWishListByUser(String email) throws SQLException;
+	List<ProductVO> selectWishListByUser(String email) throws SQLException;
 
 	// 사용자가 해당 상품을 관심상품에 등록했는지 확인
 	boolean exists(int userId, int productId) throws SQLException;
