@@ -1,9 +1,17 @@
 package com.github.semiprojectshop.repository.sihu.product.wish;
 
 import com.github.semiprojectshop.repository.sihu.product.Product;
+import com.github.semiprojectshop.repository.sihu.product.QProductImage;
+import com.github.semiprojectshop.repository.sihu.product.cart.QProductCart;
 import com.github.semiprojectshop.repository.sihu.user.MyUser;
+import com.github.semiprojectshop.web.sihu.dto.product.wish.WishResponse;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 public class WishJpaCustomImpl implements WishJpaCustom {
@@ -27,5 +35,28 @@ public class WishJpaCustomImpl implements WishJpaCustom {
                          QWish.wish.wishPk.myUser.userId)
                 .values(productId, loginUserId)
                 .execute();
+    }
+
+    @Override
+    public List<WishResponse> findMyWishListByUserId(long userId) {
+
+
+        return queryFactory
+                .select(Projections.fields(
+                        WishResponse.class,
+                        QWish.wish.wishPk.product.productId,
+                        QWish.wish.wishPk.product.productName,
+                        QWish.wish.wishPk.product.price.as("productPrice"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(QProductImage.productImage.imagePath)
+                                        .from(QProductImage.productImage)
+                                        .where(QProductImage.productImage.product.productId.eq(QWish.wish.wishPk.product.productId)
+                                                .and(QProductImage.productImage.thumbnail.isTrue())).limit(1), "productImage"
+                        )
+                ))
+                .from(QWish.wish)
+                .where(QWish.wish.wishPk.myUser.userId.eq(userId))
+                .fetch();
     }
 }

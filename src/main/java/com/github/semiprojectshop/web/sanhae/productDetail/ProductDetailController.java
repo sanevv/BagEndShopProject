@@ -20,7 +20,7 @@ public class ProductDetailController {
 
     // 생성자, 필드, 메서드 가져오기
     @Autowired
-    private ProductDetailDAO productDetailDAO;
+    private ProductDetailDAO prdDAO;
     // GET으로 들어올 때
     // {productId} 는 경로 변수임
     @GetMapping("/detail/{productId}")
@@ -28,7 +28,7 @@ public class ProductDetailController {
     public String detail(@PathVariable int productId, HttpSession session, Model model) throws SQLException {
 
 
-        ProductDetailVO prdVO = productDetailDAO.ProductDetail(productId);
+        ProductDetailVO prdVO = prdDAO.ProductDetail(productId);
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
         //System.out.println("으아아아아아 : " + prdVO.getUserName());
@@ -42,6 +42,7 @@ public class ProductDetailController {
         //System.out.println("확인용 : " + product.getProductName());
 
         // JSP + Servlet 에서 사용하는 Request.setAttribute와 같은 듯?
+
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("prdVO", prdVO);
 

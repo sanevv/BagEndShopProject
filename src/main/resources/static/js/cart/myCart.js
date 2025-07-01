@@ -15,6 +15,7 @@ getMyCartProducts = () => {
             showMyCartProducts(cartProducts)
         })
         .catch(error => {
+
             console.error('Error fetching cart products:', error);
         });
 }

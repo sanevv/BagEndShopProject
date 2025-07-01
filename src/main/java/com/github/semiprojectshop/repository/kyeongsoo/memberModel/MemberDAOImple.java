@@ -7,13 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -247,6 +246,41 @@ public class MemberDAOImple implements MemberDAO{
 
         return result;
     }
+
+    // 로그인한 회원이 내 정보 수정하기
+    @Override
+    public int memberOneChange(Map<String, String> paramap) throws SQLException {
+
+        int n = 0;
+
+        try {
+
+            conn = ds.getConnection();
+
+            String sql = " update my_user set email = ?, password = ?, name = ?, phone_number = ?, zip_code = ?, " +
+                    " address = ?, address_details = ? where email = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, paramap.get("email"));
+            pstmt.setString(2, Sha256.encrypt(paramap.get("password")));
+            pstmt.setString(3, paramap.get("name"));
+            pstmt.setString(4, paramap.get("phoneNumber"));
+            pstmt.setString(5, paramap.get("zipCode"));
+            pstmt.setString(6, paramap.get("address"));
+            pstmt.setString(7, paramap.get("addressDetails"));
+            pstmt.setString(8, paramap.get("email"));
+
+            n = pstmt.executeUpdate();
+
+
+        } finally {
+            close();
+        }
+
+        return n;
+    }
+
+
 
 
 }

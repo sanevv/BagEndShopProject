@@ -26,13 +26,20 @@
 }
 
 .review-list .review-item {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: solid 1px #eee;
     padding: 24px 0;
 }
-
+.review-list .review-item .btn-review-detail {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
 .review-list .review-item .image {
     width: 100px;
 }
@@ -147,6 +154,8 @@
 }
 
 .review-buttons {
+    position: relative;
+    z-index: 1;
     margin-top: 10px;
 }
 .review-buttons .btn {

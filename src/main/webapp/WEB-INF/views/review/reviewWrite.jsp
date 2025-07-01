@@ -17,6 +17,7 @@
                 <form id="reviewWriteForm" name="reviewWriteForm">
                     <input type="hidden" name="userId" value="${userId}">
                     <input type="hidden" name="rating" value="">
+
                     <table class="review-table">
                         <colgroup>
                             <col style="width: 200px">
@@ -87,7 +88,7 @@
                         <tr>
                             <th>첨부파일</th>
                             <td>
-                                <input type="file" name="attachFile">
+                                <input type="file" name="reviewImageFile">
                             </td>
                         </tr>
                         </tbody>

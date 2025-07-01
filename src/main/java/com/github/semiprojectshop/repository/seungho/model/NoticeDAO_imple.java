@@ -86,7 +86,7 @@ public class NoticeDAO_imple implements NoticeDAO {
 		try {
 			conn = ds.getConnection();
 
-			String sql = "select notice_id, user_id, title, contents, thumbnail, to_char(created_at, 'yyyy-mm-dd') as created_at"
+			String sql = "select notice_id, user_id, title, contents, thumbnail, to_char(created_at, 'yyyy-mm-dd hh24:mi:ss') as created_at"
 					+ " from notice " + " order by created_at desc " + " OFFSET (?-1)*? ROW "
 					+ "	FETCH NEXT 8 ROW ONLY";
 
@@ -105,7 +105,13 @@ public class NoticeDAO_imple implements NoticeDAO {
 				nvo.setNotice_id(rs.getString(1));
 				nvo.setUserid(rs.getString(2));
 				nvo.setTitle(rs.getString(3));
-				nvo.setContents(rs.getString(4));
+				String contents = rs.getString(4);
+				if(contents.length() > 30) {
+					nvo.setContents(contents.substring(0, 30)+"...");
+				}
+				else {
+					nvo.setContents(rs.getString(4));
+				}
 				nvo.setThumbnail(rs.getString(5));
 				nvo.setCreated_at(rs.getString(6));
 
@@ -190,11 +196,12 @@ public class NoticeDAO_imple implements NoticeDAO {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = "update notice set title = ?,contents = ? where notice_id = ? ";
+			String sql = "update notice set title = ?,contents = ?, thumbnail = ? where notice_id = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("title"));
 			pstmt.setString(2, paraMap.get("contents"));
-			pstmt.setString(3, paraMap.get("notice_id"));
+			pstmt.setString(3, paraMap.get("thumbnail"));
+			pstmt.setString(4, paraMap.get("notice_id"));
 			result = pstmt.executeUpdate();
 			
 			
@@ -203,6 +210,33 @@ public class NoticeDAO_imple implements NoticeDAO {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public List<NoticeVO> selectMainPageNotice() throws SQLException {
+		List<NoticeVO> noticeList = new ArrayList<>();
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select notice_id, title, thumbnail, created_at from( select * from notice order by created_at desc) where rownum <= 4";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				NoticeVO nvo = new NoticeVO();
+				nvo.setNotice_id(rs.getString(1));
+				nvo.setTitle(rs.getString(2));
+				nvo.setThumbnail(rs.getString(3));
+				
+				noticeList.add(nvo);
+			}
+			
+			
+		}finally {
+			close();
+		}
+		
+		return noticeList;
 	}
 
 }

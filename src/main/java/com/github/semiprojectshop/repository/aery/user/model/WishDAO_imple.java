@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
-import com.github.semiprojectshop.repository.sanhae.productDetailDomain.ProductDetailVO;
+import com.github.semiprojectshop.repository.kyeongsoo.productDomain.ProductVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,24 +38,23 @@ public class WishDAO_imple implements WishDAO {
 
 	// 로그인한 사용자가 본인의 관심상품을 조회
 	@Override
-	public List<ProductDetailVO> selectWishListByUser(String email) throws SQLException {
+	public List<ProductVO> selectWishListByUser(String email) throws SQLException {
 	    
-		List<ProductDetailVO> list = new ArrayList<>();
+		List<ProductVO> list = new ArrayList<>();
 
 	    try {
 	    	conn = ds.getConnection();
 
-	    	String sql = " SELECT u.user_id, u.email, p.product_id, p.product_name, p.price, "
-                    + " ( SELECT i.image_path "
-                    + "   FROM product_image i "
-                    + "   WHERE i.product_id = p.product_id AND i.thumbnail = 1 "
-                    + "   FETCH FIRST 1 ROWS ONLY) AS image_path, "
-                    + " TO_CHAR(w.created_at, 'YYYY-MM-DD') AS created_at "
-                    + " FROM wish w "
-                    + " LEFT JOIN my_user u ON w.user_id = u.user_id "
-                    + " LEFT JOIN product p ON w.product_id = p.product_id "
-                    + " WHERE u.email = ? "
-                    + " ORDER BY created_at DESC ";
+	    	String sql = " SELECT u.user_id, u.email, p.product_id, p.product_name, p.price, pi.image_path, "
+	    			+ "       TO_CHAR(w.created_at, 'YYYY-MM-DD') AS created_at "
+	    			+ " FROM wish w "
+	    			+ " JOIN my_user u ON w.user_id = u.user_id "
+	    			+ " JOIN product p ON w.product_id = p.product_id "
+	    			+ " LEFT JOIN product_image pi "
+	    			+ "       ON pi.product_id = p.product_id "
+	    			+ "      AND pi.thumbnail = 1 "
+	    			+ " WHERE u.email = ? "
+	    			+ " ORDER BY w.created_at DESC ";
 
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setString(1, email);
@@ -63,12 +62,12 @@ public class WishDAO_imple implements WishDAO {
 
 	        while (rs.next()) {
 	    	
-	        	ProductDetailVO pdvo = new ProductDetailVO();
+	        	ProductVO pdvo = new ProductVO();
 	        	
 	            pdvo.setUserId(rs.getInt("user_id"));
 	            pdvo.setProductId(rs.getInt("product_id"));
 	            pdvo.setProductName(rs.getString("product_name"));
-	            pdvo.setProductImagePath(rs.getString("image_path"));
+	        //    pdvo.setProductImagePath(rs.getString("image_path"));
 	            pdvo.setCreatedAt(rs.getString("created_at"));
 	            pdvo.setPrice(rs.getInt("price"));
 
@@ -76,6 +75,7 @@ public class WishDAO_imple implements WishDAO {
 	        }
 	        
 	    } finally {
+	    	
 	    	close();
 	    }
 
@@ -102,6 +102,7 @@ public class WishDAO_imple implements WishDAO {
             isExist = rs.next();
             
         } finally {
+        	
             close();
         }
 
@@ -112,20 +113,26 @@ public class WishDAO_imple implements WishDAO {
 	// 관심상품 등록
 	@Override
 	public void insert(int userId, int productId) throws SQLException {
-        try {
-            conn = ds.getConnection();
+		try {
+	        conn = ds.getConnection();
 
-            String sql = "INSERT INTO wish (user_id, product_id) VALUES (?, ?)";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, userId);
-            pstmt.setInt(2, productId);
+	        // 중복 여부 확인
+	        if (exists(userId, productId)) {
+	            return; // 이미 존재하면 아무 작업도 하지 않음
+	        }
 
-            pstmt.executeUpdate();
-            
-        } finally {
-            close();
-        }
-    }
+	        String sql = "INSERT INTO wish (user_id, product_id) VALUES (?, ?)";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, userId);
+	        pstmt.setInt(2, productId);
+
+	        pstmt.executeUpdate();
+
+	    } finally {
+	        close();
+	    }
+	}
+
 	
 	
 	// 관심상품 제거
@@ -142,6 +149,7 @@ public class WishDAO_imple implements WishDAO {
             pstmt.executeUpdate();
             
         } finally {
+        	
             close();
         }
     }
@@ -156,7 +164,96 @@ public class WishDAO_imple implements WishDAO {
 	        insert(userId, productId);
 	    }
 	}
+
 	
+	// 관심상품을 장바구니에 담기
+	@Override
+	public void wishToCart(int userId, int productId) throws SQLException {
+	    try {
+	        conn = ds.getConnection();
+
+	        // 이미 장바구니에 있는지 확인
+	        String checkCart = "SELECT quantity "
+	        		         + " FROM product_cart "
+	        		         + " WHERE user_id = ? AND product_id = ? ";
+	        
+	        pstmt = conn.prepareStatement(checkCart);
+	        pstmt.setInt(1, userId);
+	        pstmt.setInt(2, productId);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            // 이미 장바구니에 해당 상품이 있다면 수량 1 증가
+	            String updateCart = " UPDATE product_cart "
+	            		          + " SET quantity = quantity + 1"
+	            		          + " WHERE user_id = ? AND product_id = ? ";
+	            pstmt = conn.prepareStatement(updateCart);
+	            pstmt.setInt(1, userId);
+	            pstmt.setInt(2, productId);
+	            pstmt.executeUpdate();
+	        } else {
+	            // 장바구니에 해당 상품이 없다면 새로 추가
+	            String insertSql = " INSERT INTO product_cart (user_id, product_id, quantity, created_at) "
+	            		         + " VALUES (?, ?, 1, SYSDATE) ";
+	            pstmt = conn.prepareStatement(insertSql);
+	            pstmt.setInt(1, userId);
+	            pstmt.setInt(2, productId);
+	            pstmt.executeUpdate();
+	        }
+	        
+	    } finally {
+	    	
+	        close();
+	    }
+	    
+	}// end of public void moveToCart(int userId, int productId) throws SQLException--------------------------------
+
+	
+	// 관심상품을 기반으로 주문 생성 (orders + orders_product에 insert), orders_id 생성 반환
+	@Override
+	public int createWishOrder(int userId, int productId) throws SQLException {
+		
+	    int ordersId = -1; // 생성된 주문 ID 반환
+
+	    try {
+	        conn = ds.getConnection();
+	        conn.setAutoCommit(false);
+
+	        // orders 테이블에 insert (주문 생성)
+	        String insertOrder = " INSERT INTO orders (user_id, created_at, status)"
+	        		           + " VALUES (?, SYSDATE, 'DELIVERY') ";
+	        pstmt = conn.prepareStatement(insertOrder, new String[] { "orders_id" }); // 자동 생성 키
+	        pstmt.setInt(1, userId);
+	        pstmt.executeUpdate();
+
+	        // 생성된 orders_id 가져오기
+	        rs = pstmt.getGeneratedKeys();
+	        if (rs.next()) {
+	            ordersId = rs.getInt(1);
+	        } else {
+	            throw new SQLException("주문 ID 생성 실패");
+	        }
+
+	        //  orders_product 테이블에 insert
+	        String insertOrderProduct = " INSERT INTO orders_product (orders_id, product_id) "
+	        		                     + " VALUES (?, ?) ";
+	        pstmt = conn.prepareStatement(insertOrderProduct);
+	        pstmt.setInt(1, ordersId);
+	        pstmt.setInt(2, productId);
+	        pstmt.executeUpdate();
+
+	        conn.commit();
+
+	    } catch (SQLException e) {
+	        if (conn != null) conn.rollback();
+	        throw e;
+	    } finally {
+	        conn.setAutoCommit(true);
+	        close();
+	    }
+
+	    return ordersId;
+	}
 	
 }
 

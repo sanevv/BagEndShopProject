@@ -7,7 +7,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.github.semiprojectshop.repository.aery.user.model.WishDAO;
 import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
-import com.github.semiprojectshop.repository.sanhae.productDetailDomain.ProductDetailVO;
+import com.github.semiprojectshop.repository.kyeongsoo.productDomain.ProductVO;
 import com.github.semiprojectshop.web.aery.commoncontroller.AbstractController;
 
 import jakarta.servlet.ServletContext;
@@ -36,7 +36,7 @@ public class WishList extends AbstractController {
             // 로그인한 사용자 본인의 이메일로 관심상품 조회
             String email = loginUser.getEmail();
 
-            List<ProductDetailVO> wishProductList = wdao.selectWishListByUser(email);
+            List<ProductVO> wishProductList = wdao.selectWishListByUser(email);
 
             request.setAttribute("wishProductList", wishProductList);
 

@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @Controller
 @RequestMapping("/test")
 @RequiredArgsConstructor
-public class FirstController {
+public class MemberController {
     private final DaoCustom daoCustom;
     private final MemberDAO memberDAO;
     private AES256 aes256;
@@ -77,7 +77,6 @@ public class FirstController {
 
         String userEmail = request.getParameter("userEmail");
         String pwd = request.getParameter("pwd");
-        String test = request.getParameter("test");
         
         // 클라이언트 IP 가져오기
         String clientip = request.getRemoteAddr();
@@ -210,6 +209,59 @@ public class FirstController {
 
         return "member/resetPassword";
     }
+
+    @GetMapping("myPage")
+    public String myPage(HttpServletRequest request) {
+
+        String referer = request.getHeader("Referer"); // referer가 없으면 메인페이지로 이동
+
+        if (referer == null) {
+            // referer == null 은 웹브라우저 주소창에 URL 을 직접 입력하고 들어온 경우이다.
+            return "redirect:/test/index.up";
+        }
+
+        HttpSession session = request.getSession();
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+        request.setAttribute("loginUser", loginUser);
+
+        return "include/mypageMenu";
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        session.invalidate(); // 세션을 무효화하여 로그아웃 처리
+
+        return "redirect:/test/index.up"; // 로그아웃 후 메인 페이지로 리다이렉트
+    }
+
+    @GetMapping("memberOneChange")
+    public String memberOneChange(HttpServletRequest request) throws SQLException {
+
+        HttpSession session = request.getSession();
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+        request.setAttribute("loginUser", loginUser);
+
+        String phoneNumber = loginUser.getPhoneNumber();
+
+        String hp1 = phoneNumber.substring(0,3);
+        String hp2 = phoneNumber.substring(3,7);
+        String hp3 = phoneNumber.substring(7);
+
+        request.setAttribute("hp1", hp1);
+        request.setAttribute("hp2", hp2);
+        request.setAttribute("hp3", hp3);
+        request.setAttribute("phoneNumber", phoneNumber);
+        request.setAttribute("email", loginUser.getEmail());
+
+
+
+
+        return "member/memberOneChange"; // 회원 정보 수정 페이지로 이동
+    }
+
 
 
 }

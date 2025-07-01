@@ -3,6 +3,7 @@ package com.github.semiprojectshop.repository.kyeongsoo.memberModel;
 import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 public interface MemberDAO {
@@ -27,4 +28,9 @@ public interface MemberDAO {
 
     // 휴대폰 번호로 비밀번호 변경하기
     int changePasswordByPhoneNumber(String phoneNumber, String newPassword) throws SQLException;
+
+    // 로그인한 회원이 내 정보 수정하기
+    int memberOneChange(Map<String, String> paramap) throws SQLException;
+
+
 }

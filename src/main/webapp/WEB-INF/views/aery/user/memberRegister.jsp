@@ -28,15 +28,15 @@
 			                  <span class="error" style="display: block; margin-top: 5px;">이메일 형식에 맞지 않습니다.</span>
 			               </td>
 			           </tr>
-			        
+
 			           <tr>
 			        		<td>
 			                  <button type="button" class="btn btn-dark" id="emailcheck" style="display: block; margin: 5px auto 15px;">이메일중복확인</button>
 			                  <span id="emailCheckResult"></span>
-			               </td>   
+			               </td>
 			        	</tr>
-						
-						
+
+
 						<%-- 비밀번호 입력 --%>
 						<tr>
 			               <td>
