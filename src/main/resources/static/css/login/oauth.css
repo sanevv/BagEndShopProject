@@ -1,0 +1,28 @@
+.social-login {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.social-login p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.social-icons img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+}

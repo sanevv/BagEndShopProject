@@ -23,15 +23,16 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
 
-
     @Override
     public void addResourceHandlers(@NotNull ResourceHandlerRegistry registry) {
-        if(endPath.startsWith("/"))
-            endPath = endPath.replaceFirst("/", ""); // 경로가 '/'로 시작한다면 제거
 
         // 외부 업로드 폴더 매핑
         registry.addResourceHandler("/uploads/**")//예 /uploads/image.jpg 즉 /uploads/로 시작하는 URL 요청을 처리
-                .addResourceLocations("file:/"+this.endPath) // file:///은 시스템의 루트 경로를 뜻함 그이후 C:/upload/ 등등을 작성
+                .addResourceLocations(
+                        (endPath.startsWith("/") ?
+                                "file:" : "file:/") +
+                                this.endPath
+                ) // file:///은 시스템의 루트 경로를 뜻함 그이후 C:/upload/ 등등을 작성
                 .setCachePeriod(3600);
 
         // 기존 static 리소스 매핑
