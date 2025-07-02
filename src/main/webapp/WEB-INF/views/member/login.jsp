@@ -34,31 +34,45 @@
 
         //소셜로그인버튼 이벤트등록
         const socialButtons = document.querySelectorAll('.social-btn');
-        console.log('내려옴')
         socialButtons.forEach(button => {
-            console.log('포이치들옴')
             button.addEventListener('click', async function () {
                     console.log('이벤트발생')
                     const provider = this.getAttribute('data-provider');
                     const authUrl = await requestAuthUrl(provider);
-                    console.log(authUrl);
+                    requestOAuthLogin(authUrl);
                 }
             )
         })
-        //소셜로그인 요청 URL 생성
-        requestAuthUrl = async (provider) => {
-            const apiUrl = `${pageContext.request.contextPath}/api/oauth/\${provider}/authorize`;
-
-            const response = await axios.get(apiUrl);
-            if (!response.ok)
-                throw new Error(`Error fetching auth URL: \${response.statusText}`);
-
-            return response.data.success.responseData;
-        }
 
 
 
     }) // end of $(function (){}
+    //소셜로그인 요청 URL 생성
+    async function requestAuthUrl(provider) {
+        const apiUrl = `${pageContext.request.contextPath}/api/oauth/\${provider}/authorize`;
+        await console.log(apiUrl);
+        const response = await axios.get(apiUrl);
+        if (response.status !== 200)
+            throw new Error(`Error fetching auth URL: \${response.statusText}`);
+
+        return response.data.success.responseData;
+    }
+    function requestOAuthLogin(authUrl) {
+        // 새 창으로 인증 URL 열기
+        const width = 600;
+        const height = 700;
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+
+        window.open(authUrl, 'OAuth Login', `width=\${width},height=\${height},left=\${left},top=\${top}`);
+    }
+    function handleLoginSuccess(responseData){
+        console.log(responseData);
+        alert(`'\${responseData.name}'님 환영합니다.`);
+        // 로그인 성공 후 페이지 이동
+        location.href = '/';
+
+    }
 
 </script>
 

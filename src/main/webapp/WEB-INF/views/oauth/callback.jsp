@@ -50,6 +50,10 @@
         if (response.status === 200) {
 
             console.log('Login or Register successful:', data);
+            //로그인 성공후 부모창의 함수호출
+            if (window.opener && !window.opener.closed)
+                window.opener.handleLoginSuccess(data.success.responseData);
+            self.close();
             // Redirect or handle success
         } else if (response.status === 201) {
             console.log('User registered successfully:', data);
