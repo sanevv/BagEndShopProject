@@ -1,5 +1,6 @@
 package com.github.semiprojectshop.repository.sihu.user;
 
+import com.github.semiprojectshop.config.module.converter.RoleConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -10,8 +11,8 @@ public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
-    @Enumerated(EnumType.STRING)
-    private RoleName roleName;
+    @Convert(converter = RoleConverter.class)
+    private RoleName name;
 
     public enum RoleName {
         ROLE_USER,
