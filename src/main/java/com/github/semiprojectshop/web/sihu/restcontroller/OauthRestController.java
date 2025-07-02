@@ -48,7 +48,7 @@ public class OauthRestController {
     public CustomResponse<String> getProviderAuthUrl(@PathVariable OAuthProvider provider, @RequestParam String redirectUri) {
         return CustomResponse.ofOk("인증 URL 생성 성공", oAuthProviderService.getOAuthLoginPageUrl(provider, redirectUri));
     }
-    @GetMapping("/{provider}/local")
+    @GetMapping("/{provider}/authorize")
     public CustomResponse<String> getProviderAuthUrlForLocal(@PathVariable OAuthProvider provider, HttpServletRequest request) {
         return CustomResponse.ofOk("인증 URL 생성 성공", oAuthProviderService.getOAuthLoginPageUrlLocal(provider, request));
     }

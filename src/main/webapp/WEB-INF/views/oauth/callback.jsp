@@ -45,12 +45,18 @@
             },
             body: JSON.stringify(params)
         });
+        const data = await response.json(); // 응답 데이터를 JSON으로 파싱
 
-        if (response.ok) {
-            const data = await response.json();
+        if (response.status === 200) {
+
             console.log('Login or Register successful:', data);
             // Redirect or handle success
-        } else {
+        } else if (response.status === 201) {
+            console.log('User registered successfully:', data);
+            // Redirect to login or handle registration success
+        }
+
+        else {
             console.error('Login or Register failed:', response.statusText);
             // Handle error
         }
