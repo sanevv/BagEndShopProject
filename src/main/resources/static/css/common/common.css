@@ -280,10 +280,6 @@
    ========================== */
 
 #allMenu {
-    position: fixed;
-    top: 160px;
-    right: 0;
-    left: 0;
     display: none;
     background: #f8f8f8;
 }

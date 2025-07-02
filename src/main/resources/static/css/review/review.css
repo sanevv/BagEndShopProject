@@ -165,3 +165,20 @@
     border-radius: 4px;
     font-size: 12px;
 }
+
+
+#pageBar {
+    display: flex;
+    gap: 0 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 23px;
+    margin: 30px auto 60px;
+}
+#pageBar .page-btn {
+    color: #888;
+}
+#pageBar .page-btn.active {
+    color: #000;
+    font-weight: bold;
+}

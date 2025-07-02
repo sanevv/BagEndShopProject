@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
 
@@ -25,7 +26,10 @@ public class ProductDetailController {
     // {productId} 는 경로 변수임
     @GetMapping("/detail/{productId}")
     // Model model은 Spring 에서 제공하는 View(jsp)페이지로 데이터를 전달에 필요한 인터페이스 객체이다.
-    public String detail(@PathVariable int productId, HttpSession session, Model model) throws SQLException {
+    public String detail(@PathVariable int productId,
+                         @RequestParam(value = "page", defaultValue = "1") int page,
+                         @RequestParam(value = "sizePerPage", defaultValue = "5") int sizePerPage,
+                        HttpSession session, Model model) throws SQLException {
 
 
         ProductDetailVO prdVO = prdDAO.ProductDetail(productId);

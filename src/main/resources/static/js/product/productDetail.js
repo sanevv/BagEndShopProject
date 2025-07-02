@@ -1,72 +1,132 @@
+let productId;
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    // productId 값 가져오기
+    productId = document.querySelector('[name="productId"]').value;
+
     // 금액 초기화
     priceInit();
+
+
+    // 초기 리뷰리스트 보여주기
+    reviewListLoad(productId, 1);
 
 });
 
 
-const productId = document.querySelector('[name="productId"]').value;
 
-// 리뷰리스트 불러오기
-fetch(`/api/review/list?productId=${productId}`)
-    .then(response => response.json())
-    .then(reviews => {  // 직접 배열 받기
+// 리뷰리스트 보여주기
+reviewListLoad = (productId, page) => {
+    fetch(`/api/review/list?productId=${productId}&page=${page}&sizePerPage=5`)
+        .then(response => response.json())
+        .then(data => {
 
-        console.log(reviews);
+            reviewListCall(data.reviewList);
+            reviewPaginationCall(data.currentPage, data.totalPages, productId);
 
-        if (Array.isArray(reviews)) {
+        })
+        .catch(error => console.error("API 호출 실패:", error));
+}
 
-            let reviewListHTML = ``;
+// 리뷰리스트 그려주기
+reviewListCall = (reviewList) => {
 
-            if (reviews.length > 0) {
+    const reviewListMain = document.querySelector('#reviewList');
 
-                reviews.forEach(review => {
 
-                    const rating = Number(review.rating);
-                    const halfRating = rating / 2;
-                    const displayRating = (halfRating % 1 === 0) ? halfRating : halfRating.toFixed(1);
+    if (!reviewList || reviewList.length === 0) {
+        reviewListMain.innerHTML = `<li class="review-empty">등록된 후기가 없어요.... <br> 인기가 없네요</li>`;
+        return;
+    }
 
-                    reviewListHTML += `
-                        <li class="review-item">
-                            <div class="box">
-                                <p class="title">${review.reviewContents}</p>
-                                <div class="info">
-                                    <span class="name">작성자 ${review.userName}</span>
-                                    <span class="date">${review.createdAt}</span>
-                                    <span class="rating" data-rating="${review.rating}">별이 ${displayRating}개!!</span>
-                                </div>
-                                `;
+    let reviewListHTML = ``;
 
-                    // 로그인한 userid와 리뷰 작성한 userid가 같으면 보여줌
-                    if(review.loginReviewUser){
+    reviewList.forEach(review => {
 
-                    reviewListHTML += ` <div class="review-buttons">
-                                            <button type="button" class="btn btn-review-update" onclick="isLoginCheck('update', ${review.reviewId})">수정하기</button>
-                                            <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button>
-                                        </div>
-                                        `;
-                    }
-                    reviewListHTML += `
-                                    <a href="/review/detail/${productId}/${review.reviewId}" class="btn-review-detail"></a>
-                                </div>
-                            <div class="image">
-                                <img src="${review.productImagePath}" alt="상품 대표이미지" />
+        const rating = Number(review.rating);
+        const halfRating = rating / 2;
+        const displayRating = (halfRating % 1 === 0) ? halfRating : halfRating.toFixed(1);
+
+        reviewListHTML += `
+                    <li class="review-item">
+                        <div class="box">
+                            <p class="title">${review.reviewContents}</p>
+                            <div class="info">
+                                <span class="name">작성자 ${review.userName}</span>
+                                <span class="date">${review.createdAt}</span>
+                                <span class="rating" data-rating="${review.rating}">별이 ${displayRating}개!!</span>
                             </div>
-                        </li>
-                    `;
-                });
-            } else {
-                reviewListHTML += `<li class="review-empty">등록된 후기가 없어요.... <br> 인기가 없네요</li>`;
-            }
+                            `;
 
-            document.querySelector("#reviewList").innerHTML = reviewListHTML;
+        // 로그인한 userid와 리뷰 작성한 userid가 같으면 보여줌
+        if(review.loginReviewUser){
 
-
+            reviewListHTML += ` <div class="review-buttons">
+                                        <button type="button" class="btn btn-review-update" onclick="isLoginCheck('update', ${review.reviewId})">수정하기</button>
+                                        <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button>
+                                    </div>
+                                    `;
         }
-    })
-    .catch(error => console.error("API 호출 실패:", error));
+        reviewListHTML += `
+                                <a href="/review/detail/${productId}/${review.reviewId}" class="btn-review-detail"></a>
+                            </div>
+                        <div class="image">
+                            <img src="${review.productImagePath}" alt="상품 대표이미지" />
+                        </div>
+                    </li>
+                `;
 
+
+        reviewListMain.innerHTML = reviewListHTML;
+
+    })
+
+}
+
+// 리뷰리스트 페이지네이션 보여주기
+reviewPaginationCall = (currentPage, totalPages, productId) => {
+
+    const reviewListPagination = document.querySelector('#pageBar');
+
+    if(!reviewListPagination) return;
+    if (totalPages <= 1) {
+        reviewListPagination.innerHTML = '';
+        return;
+    }
+
+    let reviewListPaginationHTML = ``;
+
+    // 이전
+    if (currentPage > 1) {
+        reviewListPaginationHTML += `<button class="page-btn" data-page="${currentPage - 1}">‹</button>`;
+    }
+
+    // 페이지 번호들
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+            const active = i === currentPage ? 'active' : '';
+            reviewListPaginationHTML += `<button class="page-btn ${active}" data-page="${i}">${i}</button>`;
+        } else if (Math.abs(i - currentPage) === 2) {
+            reviewListPaginationHTML += `<span>...</span>`;
+        }
+    }
+
+    // 다음
+    if (currentPage < totalPages) {
+        reviewListPaginationHTML += `<button class="page-btn" data-page="${currentPage + 1}">›</button>`;
+    }
+
+    reviewListPagination.innerHTML = reviewListPaginationHTML;
+
+    // 클릭 이벤트
+    reviewListPagination.onclick = (e) => {
+        if (e.target.dataset.page) {
+            reviewListLoad(productId, parseInt(e.target.dataset.page));
+        }
+    };
+
+}
 
 
 window.isLoginCheck = (val, reviewId) => {
@@ -83,17 +143,16 @@ window.isLoginCheck = (val, reviewId) => {
         case "update":
             msg = "수정";
             url = `/review/${val}?productId=${productId}&reviewId=${reviewId}`;
-        break;
+            break;
     }
     if(!isLogin) {
-        alert("리뷰를 "+msg+"하기 위해선 로그인이 필요합니다.");
+        if (!confirm("리뷰를 "+msg+"하기 위해선 로그인이 필요합니다.\n로그인하시겠습니까?")) return;
         location.href = '/test/login.up';
         return;
     }
 
     location.href = url;
 }
-
 
 const inpQuantity = document.querySelector('[name="quantity"]');
 const priceElement = document.querySelector('.price');

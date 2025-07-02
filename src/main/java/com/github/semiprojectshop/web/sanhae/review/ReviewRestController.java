@@ -27,21 +27,33 @@ public class ReviewRestController {
 
     // 리뷰 조회하기
     @GetMapping("/list")
-    public List<ReviewVO> getReviewList(@RequestParam("productId") int productId, HttpSession session) throws SQLException {
+    public Map<String, Object> getReviewList(@RequestParam("productId") int productId,
+                                        @RequestParam(value = "page", defaultValue = "1") int page,
+                                        @RequestParam(value = "sizePerPage", defaultValue = "5") int sizePerPage,
+                                        HttpSession session) throws SQLException {
 
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
         int loginUserId = (loginUser != null) ? loginUser.getUserId() : -1;
 
+
         //System.out.println("loginUserId: " + loginUserId);
-        List<ReviewVO> reviewList = rvDAO.reviewList(productId);
+        List<ReviewVO> reviewList = rvDAO.reviewList(productId, page, sizePerPage);
+        int totalPages = rvDAO.getTotalPage(productId, sizePerPage);
+
+        // 처음에 보여줄 리스트 넣어주기
+        Map<String, Object> reviewMap = new HashMap<>();
+        reviewMap.put("reviewList", reviewList);
+        reviewMap.put("currentPage", page);
+        reviewMap.put("totalPages", totalPages);
+
 
         for (ReviewVO review : reviewList) {
             // 리뷰 작성자가 현재 로그인한 사람인지 확인하고 맞으면 true 아니면 false
             review.setLoginReviewUser(review.getUserId() == loginUserId);
         }
 
-        return reviewList;
+        return reviewMap;
     }
 
     // 리뷰 작성하기
@@ -71,24 +83,33 @@ public class ReviewRestController {
 //        return insertReview;
 //    }
 
-    @PostMapping(value = "/write", consumes = {"multipart/form-data"})
-    public ReviewVO addReviewForm(
+    @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addReviewForm(
             @ModelAttribute ReviewVO reviewVO,
-            @RequestPart(value = "file", required = false) MultipartFile file) throws SQLException {
+            @RequestPart(value = "file", required = false) MultipartFile file)  {
 
-        String path = "";
+        try {
 
-        if (file != null && !file.isEmpty()) {
+            String path = "";
             Path uploadDir = storageService.createFileDirectory("review",
                     String.valueOf(reviewVO.getUserId()),
                     String.valueOf(reviewVO.getProductId()));
 
-            path = storageService.returnTheFilePathAfterTransfer(file, uploadDir);
+            if (file != null && !file.isEmpty()) {
 
-            //System.out.println("path222 : " + path);
+                path = storageService.returnTheFilePathAfterTransfer(file, uploadDir);
+            }
+
+            ReviewVO insertReview = rvDAO.addReview(reviewVO, path);
+
+
+            return ResponseEntity.ok(insertReview);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("리뷰 저장 중 오류 발생");
         }
 
-        return rvDAO.addReview(reviewVO, path);
     }
 
 
@@ -124,36 +145,92 @@ public class ReviewRestController {
 
     }
 
-    @PostMapping("/update")
     // 리뷰 수정하기
-    public ResponseEntity<?> updateReview(@RequestBody ReviewVO reviewVO, HttpSession session) throws SQLException {
+    @PostMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateReviewForm(
+            @ModelAttribute ReviewVO reviewVO,
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            HttpSession session) throws SQLException {
 
+        // 로그인 확인
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-
-        if(loginUser == null) {
+        if (loginUser == null) {
             return ResponseEntity.status(401).body("로그인이 필요합니다.");
         }
 
         String loginUserId = String.valueOf(loginUser.getUserId());
 
-        //System.out.println("reviewVO.getReviewId() : " + reviewVO.getReviewId());
-
+        // ReviewId 로 작성자 userId 조회하기
         String reviewWriteUserId = rvDAO.getReviewWriteUserid(reviewVO.getReviewId());
 
-        //System.out.println("loginUserId : " + loginUserId);
-        //System.out.println("reviewWriteUserId : " + reviewWriteUserId);
+        System.out.println("reviewVO.getReviewId() : " + reviewVO.getReviewId());
+
+        System.out.println("loginUserId : " + loginUserId);
+        System.out.println("reviewWriteUserId : " + reviewWriteUserId);
 
         if (!loginUserId.equals(reviewWriteUserId)) {
             return ResponseEntity.status(403).body("본인만 수정할 수 있습니다.");
         }
 
-        int updated = rvDAO.updateReview(reviewVO);
+        String reviewImgPath = null;
+
+        // 파일이 존재하지 않는 경우
+        if (file != null && !file.isEmpty()) {
+            Path uploadDir = storageService.createFileDirectory("review",
+                    String.valueOf(reviewVO.getUserId()),
+                    String.valueOf(reviewVO.getProductId()));
+
+            reviewImgPath = storageService.returnTheFilePathAfterTransfer(file, uploadDir);
+        }
+        // 파일이 기존에 존재한 경우
+        else {
+            // 기존 이미지 경로 조회
+            reviewImgPath = rvDAO.getReviewImagePath(reviewVO.getReviewId());
+        }
+
+        System.out.println("reviewImgPath : " + reviewImgPath);
+
+        // 리뷰 정보 및 이미지 경로 함께 업데이트
+        int updated = rvDAO.updateReview(reviewVO, reviewImgPath);
 
         if (updated < 1) {
             return ResponseEntity.status(500).body("리뷰 수정 실패");
         }
 
         return ResponseEntity.ok(updated);
-
     }
+
+
+    @GetMapping("/pagination")
+    public Map<String, Object> getReviewListPagination(@RequestParam("productId") int productId,
+                                                       @RequestParam("page") int page,
+                                                       @RequestParam("sizePerPage") int sizePerPage,
+                                                       @RequestParam("currentShowPageNo") int currentShowPageNo,
+                                                       HttpSession session) throws SQLException {
+
+
+        List<ReviewVO> reviewList = rvDAO.reviewList(productId, page, sizePerPage);
+
+        // 1페이지에 보여줄 개수
+        sizePerPage = 5;
+        int totalPages = rvDAO.getTotalPage(productId, sizePerPage);
+        int currentPage = currentShowPageNo;
+
+
+
+        // 페이지네이션 정보만 전달
+        Map<String, Object> pagination = new HashMap<>();
+        pagination.put("currentPage", currentPage);
+        pagination.put("totalPages", totalPages);
+        pagination.put("hasNext", currentPage < totalPages);
+        pagination.put("hasPrevious", currentPage > 1);
+        pagination.put("startPage", Math.max(1, currentPage - 5));
+        pagination.put("endPage", Math.min(totalPages, currentPage + 5));
+
+        pagination.put("pagination", pagination);
+
+        return pagination;
+    }
+
+
 }

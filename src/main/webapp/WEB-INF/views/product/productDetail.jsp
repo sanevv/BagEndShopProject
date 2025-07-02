@@ -8,10 +8,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/review/review.css">
 
 <jsp:include page="../include/header.jsp"></jsp:include>
-<script>
-	// 로그인 유무
-	let isLogin = ${loginUser};
-</script>
+
 <main id="main">
 	<div class="product-container">
 		<div class="product-banner-top">
@@ -79,6 +76,7 @@
 				<div class="review-body">
 					<ul id="reviewList" class="review-list"></ul>
 				</div>
+				<div class="review-footer" id="pageBar"></div>
 			</div>
 			<!-- //리뷰 -->
 
