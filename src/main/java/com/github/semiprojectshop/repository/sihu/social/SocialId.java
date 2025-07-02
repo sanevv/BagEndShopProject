@@ -24,24 +24,24 @@ public class SocialId {
     @JoinColumn(name = "user_id", nullable = false)
     private MyUser myUser;
 
-    private LocalDateTime connectAt;
+    private LocalDateTime connectedAt;
 
     public static SocialId ofSocialIdPkAndMyUser(SocialIdPk socialIdPk, MyUser myUser){
         SocialId socialId = new SocialId(socialIdPk.getSocialId(), socialIdPk.getSocialProvider(), myUser);
-        socialId.connectAt = LocalDateTime.now();
+        socialId.connectedAt = LocalDateTime.now();
         return socialId;
     }
 
-    public SocialId(String socialId, OAuthProvider provider, MyUser myUser) {
-        this.socialIdPk = new SocialIdPk(socialId, provider);
+    private SocialId(String socialId, OAuthProvider provider, MyUser myUser) {
+        this.socialIdPk = SocialIdPk.of(socialId, provider);
         this.myUser = myUser;
     }
     public void socialConnectSetting(MyUser myUser){
-        this.connectAt = LocalDateTime.now();
+        this.connectedAt = LocalDateTime.now();
         this.myUser = myUser;
     }
     public void socialConnectSetting(){
-        this.connectAt = LocalDateTime.now();
+        this.connectedAt = LocalDateTime.now();
     }
 
 }

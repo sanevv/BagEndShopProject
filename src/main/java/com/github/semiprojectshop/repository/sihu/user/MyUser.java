@@ -5,6 +5,7 @@ import com.github.semiprojectshop.config.oauth.dto.userinfo.OAuthUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.SocialId;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class MyUser {
     @Column(length = 20)
     private MyUserStatus status;
 
+    @Setter
     private String profileImage;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,6 +47,7 @@ public class MyUser {
         myUser.userId = userId;
         return myUser;
     }
+
 
     public static MyUser fromOAuthUserInfo(OAuthUserInfo oAuthUserInfo) {
         MyUser myUser = new MyUser();
@@ -61,8 +64,15 @@ public class MyUser {
         myUser.zipCode = "000000";
         myUser.address = "임시 주소";
         myUser.roles = Roles.fromOnlyName(Roles.RoleName.ROLE_USER);
-
+        myUser.status = MyUserStatus.TEMPORARY;
 
         return myUser;
+    }
+    public void addSocialId(SocialId socialId){
+        if (this.socialIds == null) this.socialIds= List.of(socialId);
+        else this.socialIds.add(socialId);
+    }
+    public boolean isEnabled() {
+        return this.status == MyUserStatus.NORMAL;
     }
 }
