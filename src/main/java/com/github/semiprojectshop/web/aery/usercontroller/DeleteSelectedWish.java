@@ -1,8 +1,5 @@
 package com.github.semiprojectshop.web.aery.usercontroller;
 
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import com.github.semiprojectshop.repository.aery.user.model.WishDAO;
 import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.web.aery.commoncontroller.AbstractController;
@@ -12,7 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-public class WishOrder extends AbstractController {
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class DeleteSelectedWish extends AbstractController {
 
     private WishDAO wdao;
 
@@ -28,30 +31,34 @@ public class WishOrder extends AbstractController {
         HttpSession session = request.getSession();
         Object userObj = session.getAttribute("loginUser");
 
-        // 로그인하지 않은 경우
+        // 로그인 여부 확인
         if (userObj == null) {
             super.setRedirect(true);
             super.setViewPage(request.getContextPath() + "/test/login.up");
             return;
         }
 
-        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+        MemberVO loginUser = (MemberVO) userObj;
         int userId = loginUser.getUserId();
 
-        try {
-            int productId = Integer.parseInt(request.getParameter("productId"));
+        
+        // 선택된 상품 ID들 파라미터로 받기
+        String[] selectedProductIds = request.getParameterValues("productIds");
 
-            // 관심상품 주문 진행
-            int ordersId = wdao.createWishOrder(userId, productId);
-
-            // 주문 성공 시 주문 상세 페이지 이동
-            request.setAttribute("message", "주문이 정상적으로 처리되었습니다.");
-            request.setAttribute("loc", request.getContextPath() + "/"); // "/orderDetail.team1?ordersId=" + ordersId
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("message", "주문 처리에 실패했습니다.");
+        if (selectedProductIds == null || selectedProductIds.length == 0) {
+            request.setAttribute("message", "삭제할 상품을 선택해주세요.");
             request.setAttribute("loc", "javascript:history.back()");
+        } else {
+            List<String> productIdList = Arrays.asList(selectedProductIds);
+            int result = wdao.deleteSelectedWishes(userId, productIdList);
+
+            if (result > 0) {
+                request.setAttribute("message", "선택한 관심상품이 삭제되었습니다.");
+                request.setAttribute("loc", request.getContextPath() + "/wish/wishlist.up");
+            } else {
+                request.setAttribute("message", "관심상품 삭제에 실패했습니다.");
+                request.setAttribute("loc", "javascript:history.back()");
+            }
         }
 
         super.setRedirect(false);

@@ -4,14 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
-
-import com.github.semiprojectshop.repository.kyeongsoo.productDomain.ProductVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +33,7 @@ public class WishDAO_imple implements WishDAO {
 		}
 	}
 
+	/*
 	// 로그인한 사용자가 본인의 관심상품을 조회
 	@Override
 	public List<ProductVO> selectWishListByUser(String email) throws SQLException {
@@ -82,6 +80,7 @@ public class WishDAO_imple implements WishDAO {
 	    return list;
 	    
 	}// end of public List<ProductDetailVO> selectWishListByUserId(int userId) throws SQLException---------------
+	*/
 	
 	
 	// 사용자가 해당 상품을 관심상품에 등록했는지 확인
@@ -253,6 +252,13 @@ public class WishDAO_imple implements WishDAO {
 	    }
 
 	    return ordersId;
+	}
+
+	
+	// 관심상품에서 선택 상품 삭제
+	@Override
+	public int deleteSelectedWishes(int userId, List<String> productIdList) {
+		return 0;
 	}
 	
 }
