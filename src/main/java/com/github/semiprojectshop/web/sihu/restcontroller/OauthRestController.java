@@ -9,6 +9,7 @@ import com.github.semiprojectshop.web.sihu.dto.oauth.response.AuthResult;
 import com.github.semiprojectshop.web.sihu.dto.oauth.response.OAuthDtoInterface;
 import com.github.semiprojectshop.web.sihu.dto.oauth.response.OAuthSignUpDto;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class OauthRestController {
     private final OAuthProviderService oAuthProviderService;
     private final OAuthLoginService oAuthLoginService;
+    private final HttpSession session;
 
     @GetMapping("/{provider}/test")//테스트용 oAuthRequest 로 리다이렉션됨
     public ResponseEntity<Void> requestOAuthCodeUrlRedirect(@PathVariable OAuthProvider provider, HttpServletRequest httpServletRequest) {
@@ -87,6 +89,8 @@ public class OauthRestController {
 
     private ResponseEntity<CustomResponse<OAuthDtoInterface>> loginOAuth(OAuthLoginParams params) {
         AuthResult result = oAuthLoginService.loginOrCreateTempAccount(params);
+        if( result.getHttpStatus() == HttpStatus.OK)
+            session.setAttribute("loginUser", result.getResponse());
         CustomResponse<OAuthDtoInterface> response = CustomResponse
                 .of(result.getHttpStatus(), result.getMessage(), result.getResponse());
         return ResponseEntity
