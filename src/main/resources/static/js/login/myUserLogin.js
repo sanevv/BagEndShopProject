@@ -19,13 +19,13 @@ $(function(){
 
 function looglogInLocalStorage() {
 
-    if($('input#userEmail').val().trim() == ""){
+    if($('input#userEmail').val().trim() === ""){
         alert("아이디를 입력하세요.");
-        $('input#userEamil').val('').focus();
+        $('input#userEmail').val('').focus();
         return;
     }
 
-    if($('input#loginPwd').val().trim() == ""){
+    if($('input#loginPwd').val().trim() === ""){
         alert("비밀번호를 입력하세요.");
         $('input#loginPwd').val('').focus();
         return;

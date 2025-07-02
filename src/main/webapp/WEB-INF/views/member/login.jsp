@@ -20,7 +20,7 @@
             const loginUser = localStorage.getItem('checkSaveId');
 
             if(loginUser != null){
-                $('input#userEamil').val(loginUser);
+                $('input#userEmail').val(loginUser);
                 $('input#checkSaveId').prop('checked', true);
             }
 
