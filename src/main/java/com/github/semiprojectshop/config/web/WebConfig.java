@@ -29,9 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
         // 외부 업로드 폴더 매핑
         registry.addResourceHandler("/uploads/**")//예 /uploads/image.jpg 즉 /uploads/로 시작하는 URL 요청을 처리
                 .addResourceLocations(
-                        (endPath.startsWith("/") ?
-                                "file:" : "file:/") +
-                                this.endPath
+                        (endPath.startsWith("/") ? "file:" : "file:/")
+                                + this.endPath
                 ) // file:///은 시스템의 루트 경로를 뜻함 그이후 C:/upload/ 등등을 작성
                 .setCachePeriod(3600);
 
