@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 금액 초기화
     priceInit();
 
-
     // 초기 리뷰리스트 보여주기
     reviewListLoad(productId, 1);
 
@@ -22,7 +21,7 @@ reviewListLoad = (productId, page) => {
         .then(response => response.json())
         .then(data => {
 
-            reviewListCall(data.reviewList);
+            reviewListCall(data.reviewList, data.loginUserRoleId);
             reviewPaginationCall(data.currentPage, data.totalPages, productId);
 
         })
@@ -30,7 +29,7 @@ reviewListLoad = (productId, page) => {
 }
 
 // 리뷰리스트 그려주기
-reviewListCall = (reviewList) => {
+reviewListCall = (reviewList, loginUserRoleId) => {
 
     const reviewListMain = document.querySelector('#reviewList');
 
@@ -43,6 +42,7 @@ reviewListCall = (reviewList) => {
     let reviewListHTML = ``;
 
     reviewList.forEach(review => {
+        //console.log(review);
 
         const rating = Number(review.rating);
         const halfRating = rating / 2;
@@ -56,18 +56,29 @@ reviewListCall = (reviewList) => {
                                 <span class="name">작성자 ${review.userName}</span>
                                 <span class="date">${review.createdAt}</span>
                                 <span class="rating" data-rating="${review.rating}">별이 ${displayRating}개!!</span>
+                                <span class="comment">달린 코멘트 개수 표시할 예정</span>
                             </div>
                             `;
 
         // 로그인한 userid와 리뷰 작성한 userid가 같으면 보여줌
-        if(review.loginReviewUser){
+        if(review.loginReviewUser) {
 
-            reviewListHTML += ` <div class="review-buttons">
-                                        <button type="button" class="btn btn-review-update" onclick="isLoginCheck('update', ${review.reviewId})">수정하기</button>
-                                        <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button>
-                                    </div>
-                                    `;
+            reviewListHTML += `<div class="review-buttons">
+                                    <button type="button" class="btn btn-review-update" onclick="isLoginCheck('update', ${review.reviewId})">수정하기</button>
+                                    <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button>
+                                </div>
+                               `;
         }
+
+        // 로그인한 사람이 관리자면
+        if(loginUserRoleId === 1){
+        reviewListHTML += `<div class="review-buttons">
+                                <button type="button" class="btn btn-review-comment black" onclick="reviewAdminComment(${review.reviewId})">관리자 댓글쓰기</button>
+                                <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button>
+                            </div>
+                           `;
+        }
+
         reviewListHTML += `
                                 <a href="/review/detail/${productId}/${review.reviewId}" class="btn-review-detail"></a>
                             </div>
@@ -107,8 +118,6 @@ reviewPaginationCall = (currentPage, totalPages, productId) => {
         if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
             const active = i === currentPage ? 'active' : '';
             reviewListPaginationHTML += `<button class="page-btn ${active}" data-page="${i}">${i}</button>`;
-        } else if (Math.abs(i - currentPage) === 2) {
-            reviewListPaginationHTML += `<span>...</span>`;
         }
     }
 
@@ -146,7 +155,8 @@ window.isLoginCheck = (val, reviewId) => {
             break;
     }
     if(!isLogin) {
-        if (!confirm("리뷰를 "+msg+"하기 위해선 로그인이 필요합니다.\n로그인하시겠습니까?")) return;
+
+        if (!confirm("리뷰를 "+msg+"하기 위해선 \n 로그인이 필요합니다.")) return;
         location.href = '/test/login.up';
         return;
     }

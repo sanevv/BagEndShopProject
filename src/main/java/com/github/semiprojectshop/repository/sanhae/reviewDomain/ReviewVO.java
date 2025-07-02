@@ -27,6 +27,9 @@ public class ReviewVO {
     // 얘도 조인할거임
     private String userName; // 작성한 사용자이름
 
+    // 달린 코멘트 유무
+    boolean hasComment;
+
 
 
     // 사용자 이름 마스킹처리하기

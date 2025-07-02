@@ -159,13 +159,16 @@
     margin-top: 10px;
 }
 .review-buttons .btn {
-    width: 60px;
+    width: auto;
     border: solid 1px #000;
-    padding: 6px 0;
+    padding: 6px 8px;
     border-radius: 4px;
     font-size: 12px;
 }
-
+.review-buttons .btn.black {
+    background-color: #000;
+    color: #fff;
+}
 
 #pageBar {
     display: flex;
@@ -181,4 +184,18 @@
 #pageBar .page-btn.active {
     color: #000;
     font-weight: bold;
+}
+
+/* 관리자 답변 */
+#adminComments {
+    margin-bottom: 40px;
+}
+#adminComments .title {
+    font-size: 18px;
+    margin-bottom: 14px;
+}
+#adminComments .admin-contents {
+    background-color: #f8f8f8;
+    min-height: 200px;
+    padding: 20px;
 }

@@ -1,6 +1,7 @@
 package com.github.semiprojectshop.web.sanhae.review;
 
 import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
+import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewCommentVO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
 import com.github.semiprojectshop.repository.sanhae.reviewModel.ReviewDAO;
 import com.github.semiprojectshop.service.sihu.StorageService;
@@ -35,17 +36,21 @@ public class ReviewRestController {
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
         int loginUserId = (loginUser != null) ? loginUser.getUserId() : -1;
+        int loginUserRoleId = (loginUser != null) ? loginUser.getRoleId() : -1;
 
-
-        //System.out.println("loginUserId: " + loginUserId);
         List<ReviewVO> reviewList = rvDAO.reviewList(productId, page, sizePerPage);
         int totalPages = rvDAO.getTotalPage(productId, sizePerPage);
+
+        //int loginUserRoleId = rvDAO.getLoginUserId(loginUser.getRoleId());
+
+        //boolean hasComment = rvDAO.getReviewComment(reviewId);
 
         // 처음에 보여줄 리스트 넣어주기
         Map<String, Object> reviewMap = new HashMap<>();
         reviewMap.put("reviewList", reviewList);
         reviewMap.put("currentPage", page);
         reviewMap.put("totalPages", totalPages);
+        reviewMap.put("loginUserRoleId", loginUserRoleId);
 
 
         for (ReviewVO review : reviewList) {
@@ -60,29 +65,7 @@ public class ReviewRestController {
     // @RequestBody : HTTP 요청의 본문을 Java 객체로 변환해줌
     // @ResponseBody : 자바 객체를 JSON으로 변환해서 클라이언트에 던져줌
     // ==> @RestController 선언이 되어 있다면 생략가능
-//    @PostMapping("/write")
-//    public ReviewVO addReview(@RequestBody ReviewVO reviewVO, @RequestPart MultipartFile file) throws SQLException {
-//
-//        // addReview 메소드에서 처리한 결과 값을 ReviewVO insertReview 담아줌
-//        ReviewVO insertReview = rvDAO.addReview(reviewVO);
-//
-//        Path uploadDir = storageService.createFileDirectory("review", String.valueOf(reviewVO.getUserId()), String.valueOf(insertReview.getReviewId()));
-//
-//        System.out.println("uploadDir : " + uploadDir);
-//        System.out.println("file : " + file.isEmpty());
-//
-//        if (!file.isEmpty()) {
-//            String path = storageService.returnTheFilePathAfterTransfer(file, uploadDir);
-//            int reviewId = insertReview.getReviewId();
-//
-//            insertReview = rvDAO.addReviewImage(reviewId, path);
-//            //reviewVO.setReviewImagePath(path);
-//        }
-//
-//
-//        return insertReview;
-//    }
-
+    // MediaType.MULTIPART_FORM_DATA_VALUE 상수로 명시해주는게 좋음
     @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addReviewForm(
             @ModelAttribute ReviewVO reviewVO,
@@ -131,7 +114,7 @@ public class ReviewRestController {
         String loginUserId = String.valueOf(loginUser.getUserId());
         String reviewWriteUserId = rvDAO.getReviewWriteUserid(reviewVO.getReviewId());
 
-        if (!loginUserId.equals(reviewWriteUserId)) {
+        if (!loginUserId.equals(reviewWriteUserId) && loginUser.getRoleId() != 1) {
             return ResponseEntity.status(403).body("본인만 삭제할 수 있습니다.");
         }
 
@@ -200,7 +183,7 @@ public class ReviewRestController {
         return ResponseEntity.ok(updated);
     }
 
-
+    // 페이지네이션 관련 api
     @GetMapping("/pagination")
     public Map<String, Object> getReviewListPagination(@RequestParam("productId") int productId,
                                                        @RequestParam("page") int page,

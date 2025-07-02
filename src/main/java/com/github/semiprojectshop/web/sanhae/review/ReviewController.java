@@ -43,6 +43,7 @@ public class ReviewController {
         //System.out.println("등록한 리뷰이미지  : " + review.getReviewImagePath());
 
         model.addAttribute("reviewVO", review);
+        model.addAttribute("reviewId", reviewId);
         model.addAttribute("productImagePath", productImagePath);
 
 

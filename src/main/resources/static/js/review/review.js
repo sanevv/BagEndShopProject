@@ -76,6 +76,10 @@ reviewDelete = (reviewId, productId) => {
 
 }
 
+// 관리자가 댓글쓰는거
+reviewAdminComment = (reviewId) => {
+
+}
 
 const btnDeleteReview = document.querySelectorAll(".btn-review-delete");
 btnDeleteReview.forEach(btn => {
