@@ -1,8 +1,10 @@
 package com.github.semiprojectshop.repository.sihu.product;
 
 import com.github.semiprojectshop.repository.sihu.user.MyUser;
+import com.github.semiprojectshop.web.sihu.dto.product.ProductCreateRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +34,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Setter
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductImage> productImageList;
 
@@ -44,6 +47,21 @@ public class Product {
     public static Product onlyId(Long productId) {
         Product product = new Product();
         product.productId = productId;
+        return product;
+    }
+
+    public static Product fromRequest(ProductCreateRequest request){
+        Product product = new Product();
+        product.productName = request.getProductName();
+        product.category = Category.onlyId(request.getCategoryId());
+        product.stock = request.getStock();
+        product.price = request.getPrice();
+        product.productContents = request.getProductContents();
+        product.productInfo = request.getProductInfo();
+        product.productSize = request.getProductSize();
+        product.matter = request.getMatter();
+        product.createdAt = LocalDateTime.now();
+        product.productStatus = ProductStatus.NORMAL;
         return product;
     }
 

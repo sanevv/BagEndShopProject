@@ -14,9 +14,9 @@
     const provider = "${provider}"
 
     <%--const test = JSON.parse('${params}') 여기는 에러가 난다--%>
-<%--VM14:1  Uncaught SyntaxError: Unexpected token 'c', "com.github"... is not valid JSON
-    at JSON.parse (<anonymous>)
-    at callback?code=testtest:7:23--%>
+    <%--VM14:1  Uncaught SyntaxError: Unexpected token 'c', "com.github"... is not valid JSON
+        at JSON.parse (<anonymous>)
+        at callback?code=testtest:7:23--%>
 
     <%--console.log(typeof '${params}  '+'${params}')
     string 타입이고 객체 경로가찍힘 com.github.semiprojectshop.web.sihu.dto.oauth.request.KakaoLoginParams@5bf87b0--%>
@@ -45,17 +45,27 @@
             },
             body: JSON.stringify(params)
         });
+        const data = await response.json(); // 응답 데이터를 JSON으로 파싱
 
-        if (response.ok) {
-            const data = await response.json();
+        if (response.status === 200) {
+
             console.log('Login or Register successful:', data);
+            //로그인 성공후 부모창의 함수호출
+            if (window.opener && !window.opener.closed)
+                window.opener.handleLoginSuccess(data.success.responseData);
+            self.close();
             // Redirect or handle success
+        } else if (response.status === 201) {
+            console.log('User registered successfully:', data);
+            if (window.opener && !window.opener.closed)
+                window.opener.handleSignUpRequest(data.success.responseData);
+            self.close();
+            // Redirect to login or handle registration success
         } else {
             console.error('Login or Register failed:', response.statusText);
             // Handle error
         }
     })();
-
 
 
 </script>

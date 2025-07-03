@@ -52,7 +52,7 @@ public class WishJpaCustomImpl implements WishJpaCustom {
                                         .select(QProductImage.productImage.imagePath)
                                         .from(QProductImage.productImage)
                                         .where(QProductImage.productImage.product.productId.eq(QWish.wish.wishPk.product.productId)
-                                                .and(QProductImage.productImage.thumbnail.isTrue())).limit(1), "productImage"
+                                                .and(QProductImage.productImage.thumbnail.isTrue())).limit(1), "productThumbnailUrl"
                         )
                 ))
                 .from(QWish.wish)
