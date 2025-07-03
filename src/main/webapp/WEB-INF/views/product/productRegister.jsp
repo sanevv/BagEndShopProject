@@ -230,13 +230,10 @@ $(function() {
 				    	  processData:false,  // 파일 전송시 설정 
 		                  contentType:false,  // 파일 전송시 설정
 		                  dataType:"json",
-		                  success:function(json){
-		                	  console.log("~~~ 확인용 : ", JSON.stringify(json));
+		                  success:function(response){
+		                	  alert("들어왔어");
+		                		  //location.href="${pageContext.request.contextPath}/";  
 		                	  
-		                	  if(json.result == 1) {
-		                		  alert("성공");
-		                		  location.href="${pageContext.request.contextPath}";  
-		                	  }
 		                		  
 		                	  
 		                  },
