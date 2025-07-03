@@ -57,6 +57,48 @@ public class WishJpaCustomImpl implements WishJpaCustom {
                 ))
                 .from(QWish.wish)
                 .where(QWish.wish.wishPk.myUser.userId.eq(userId))
+                .orderBy(QWish.wish.createdAt.desc())
                 .fetch();
+    }
+
+    @Override
+    public List<WishResponse> findWishListPaging(long userId, int pageNo, int sizePerPage) {
+        int offset = (pageNo - 1) * sizePerPage;
+
+        return queryFactory
+            .select(Projections.fields(
+                WishResponse.class,
+                QWish.wish.wishPk.product.productId,
+                QWish.wish.wishPk.product.productName,
+                QWish.wish.wishPk.product.price.as("productPrice"),
+                ExpressionUtils.as(
+                    JPAExpressions
+                        .select(QProductImage.productImage.imagePath)
+                        .from(QProductImage.productImage)
+                        .where(
+                            QProductImage.productImage.product.productId
+                                .eq(QWish.wish.wishPk.product.productId)
+                                .and(QProductImage.productImage.thumbnail.isTrue())
+                        )
+                        .limit(1),
+                    "productThumbnailUrl"
+                )
+            ))
+            .from(QWish.wish)
+            .where(QWish.wish.wishPk.myUser.userId.eq(userId))
+            .orderBy(QWish.wish.createdAt.desc())
+            .offset(offset)
+            .limit(sizePerPage)
+            .fetch();
+    }
+
+    @Override
+    public int countWishByUserId(long userId) {
+        return queryFactory
+            .select(QWish.wish.count())
+            .from(QWish.wish)
+            .where(QWish.wish.wishPk.myUser.userId.eq(userId))
+            .fetchOne()
+            .intValue();
     }
 }
