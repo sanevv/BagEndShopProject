@@ -45,7 +45,6 @@
         })
 
 
-
     }) // end of $(function (){}
     //소셜로그인 요청 URL 생성
     async function requestAuthUrl(provider) {
@@ -57,6 +56,7 @@
 
         return response.data.success.responseData;
     }
+
     function requestOAuthLogin(authUrl) {
         // 새 창으로 인증 URL 열기
         const width = 600;
@@ -66,12 +66,27 @@
 
         window.open(authUrl, 'OAuth Login', `width=\${width},height=\${height},left=\${left},top=\${top}`);
     }
-    function handleLoginSuccess(responseData){
+
+    function handleLoginSuccess(responseData) {
         console.log(responseData);
         alert(`'\${responseData.name}'님 환영합니다.`);
         // 로그인 성공 후 페이지 이동
         location.href = '/';
 
+    }
+
+    async function handleSignUpRequest(responseData) {
+        try {
+            const response = await axios.post('/oauth/sign-up', responseData, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            document.open();
+            document.write(response.data);
+            document.close();
+        } catch (error) {
+            console.error('회원가입 요청 실패:', error);
+            alert('회원가입 요청에 실패했습니다. 다시 시도해주세요.');
+        }
     }
 
 </script>

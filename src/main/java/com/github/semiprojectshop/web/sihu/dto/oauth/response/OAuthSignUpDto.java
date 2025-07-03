@@ -1,6 +1,7 @@
 package com.github.semiprojectshop.web.sihu.dto.oauth.response;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.OAuthUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,6 +21,17 @@ public class OAuthSignUpDto implements OAuthDtoInterface{
     private String email;
     private String name;
     private String profileImageUrl;
+
+    //역직렬화 전용 필드
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String phoneNumber;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String zipCode;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String address;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String addressDetails;
+
 
     public static OAuthSignUpDto fromOAuthUserInfo (OAuthUserInfo oAuthUserInfo){
         OAuthSignUpDto oAuthSignUpDto = new OAuthSignUpDto();
