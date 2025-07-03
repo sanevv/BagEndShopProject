@@ -65,7 +65,7 @@
 <c:if test="${empty sessionScope.loginUser}">
     <div class="container mt-5 d-flex justify-content-center">
         <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
-            <form id="memberLoginFrm" action="/test/login.up" method="post">
+            <form id="memberLoginFrm" action="/api/member/login"  method="post">
                 <table class="table border-0 mb-0">
                     <tbody>
                     <tr>
@@ -105,7 +105,7 @@
 
                     <tr>
                         <td colspan="2" class="border-0">
-                            <button type="submit" id="btnSubmit" class="btn btn-dark w-100 mt-2">로그인</button>
+                            <button type="button" id="btnSubmit" class="btn btn-dark w-100 mt-2">로그인</button>
                         </td>
                     </tr>
                     </tbody>
