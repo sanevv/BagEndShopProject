@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.github.semiprojectshop.repository.kyeongsoo.productDomain.ProductVO;
 import com.github.semiprojectshop.repository.seungho.domain.NoticeVO;
 
 public interface NoticeDAO {
@@ -22,5 +23,7 @@ public interface NoticeDAO {
 	int updateNotice(Map<String, String> paraMap) throws SQLException;
 
 	List<NoticeVO> selectMainPageNotice() throws SQLException;
+
+
 
 }

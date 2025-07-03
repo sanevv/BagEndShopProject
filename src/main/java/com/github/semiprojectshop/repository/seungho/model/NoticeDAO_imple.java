@@ -11,14 +11,16 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
+
+import com.github.semiprojectshop.repository.kyeongsoo.productDomain.ProductVO;
 import com.github.semiprojectshop.repository.seungho.domain.NoticeVO;
 
 import lombok.RequiredArgsConstructor;
+import oracle.jdbc.OraclePreparedStatement;
 
 @Repository
 @RequiredArgsConstructor
 public class NoticeDAO_imple implements NoticeDAO {
-
 
 	private final DataSource ds;
 	private Connection conn;
@@ -106,10 +108,9 @@ public class NoticeDAO_imple implements NoticeDAO {
 				nvo.setUserid(rs.getString(2));
 				nvo.setTitle(rs.getString(3));
 				String contents = rs.getString(4);
-				if(contents.length() > 30) {
-					nvo.setContents(contents.substring(0, 30)+"...");
-				}
-				else {
+				if (contents.length() > 30) {
+					nvo.setContents(contents.substring(0, 30) + "...");
+				} else {
 					nvo.setContents(rs.getString(4));
 				}
 				nvo.setThumbnail(rs.getString(5));
@@ -148,29 +149,28 @@ public class NoticeDAO_imple implements NoticeDAO {
 
 	@Override
 	public int delete_notice(String deleteId) throws SQLException {
-		
+
 		int result = 0;
-		
+
 		try {
 			conn = ds.getConnection();
 			String sql = "delete from notice where notice_id = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, deleteId);
 			result = pstmt.executeUpdate();
-			
-			
-		}finally {
+
+		} finally {
 			close();
 		}
-		
+
 		return result;
 	}
 
 	@Override
 	public int insertNotice(Map<String, String> paramap) throws SQLException {
-		
+
 		int result = 0;
-		
+
 		try {
 			conn = ds.getConnection();
 			String sql = "insert into notice(user_id, title, contents, thumbnail) values(3, ?, ?, ?)";
@@ -179,13 +179,11 @@ public class NoticeDAO_imple implements NoticeDAO {
 			pstmt.setString(2, paramap.get("contents"));
 			pstmt.setString(3, paramap.get("thumbnail"));
 			result = pstmt.executeUpdate();
-			
-			
-		}
-		finally {
+
+		} finally {
 			close();
 		}
-		
+
 		return result;
 	}
 
@@ -193,7 +191,7 @@ public class NoticeDAO_imple implements NoticeDAO {
 	public int updateNotice(Map<String, String> paraMap) throws SQLException {
 
 		int result = 0;
-		
+
 		try {
 			conn = ds.getConnection();
 			String sql = "update notice set title = ?,contents = ?, thumbnail = ? where notice_id = ? ";
@@ -203,12 +201,11 @@ public class NoticeDAO_imple implements NoticeDAO {
 			pstmt.setString(3, paraMap.get("thumbnail"));
 			pstmt.setString(4, paraMap.get("notice_id"));
 			result = pstmt.executeUpdate();
-			
-			
-		}finally {
+
+		} finally {
 			close();
 		}
-		
+
 		return result;
 	}
 
@@ -217,26 +214,29 @@ public class NoticeDAO_imple implements NoticeDAO {
 		List<NoticeVO> noticeList = new ArrayList<>();
 		try {
 			conn = ds.getConnection();
-			
+
 			String sql = "select notice_id, title, thumbnail, created_at from( select * from notice order by created_at desc) where rownum <= 4";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				NoticeVO nvo = new NoticeVO();
 				nvo.setNotice_id(rs.getString(1));
 				nvo.setTitle(rs.getString(2));
 				nvo.setThumbnail(rs.getString(3));
-				
+
 				noticeList.add(nvo);
 			}
-			
-			
-		}finally {
+
+		} finally {
 			close();
 		}
-		
+
 		return noticeList;
 	}
 
+
+
+	
+	
 }
