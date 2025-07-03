@@ -20,6 +20,6 @@ public class ReviewCommentVO {
     private int reviewCommentId; // 댓글번호
     private int reviewId;          // 리뷰번호
     private int userId;            // 사용자번호
-    private String comment_contents; // 댓글내용
+    private String commentContents; // 댓글내용
 
 }

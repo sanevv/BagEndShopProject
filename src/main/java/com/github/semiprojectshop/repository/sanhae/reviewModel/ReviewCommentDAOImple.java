@@ -55,13 +55,75 @@ public class ReviewCommentDAOImple implements ReviewCommentDAO {
             if(rs.next()){
 
                 ReviewCommentVO rcVO = new ReviewCommentVO();
-                rcVO.setComment_contents(rs.getString("comment_contents"));
+                rcVO.setCommentContents(rs.getString("comment_contents"));
 
-                result = rcVO.getComment_contents();
+                result = rcVO.getCommentContents();
 
                 return result;
             }
 
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+
+        return result;
+    }
+
+
+    // 관리자 댓글 작성하기
+    @Override
+    public ReviewCommentVO addReviewComment(ReviewCommentVO rvcVO) {
+        try {
+            conn = ds.getConnection();
+
+            String sql = " INSERT INTO review_comment (user_id, review_id, comment_contents) " +
+                         " VALUES (?, ?, ?) ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, rvcVO.getUserId());
+            pstmt.setInt(2, rvcVO.getReviewId());
+            pstmt.setString(3, rvcVO.getCommentContents());
+
+            int result = pstmt.executeUpdate();
+
+            if(result > 0) {
+                return rvcVO;
+            }
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
+
+        return null;
+    }
+
+
+    // 관리자 댓글 수정하기
+    @Override
+    public int updateReviewComment(ReviewCommentVO rvcVO) {
+
+        int result = 0;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " UPDATE review_comment " +
+                         " SET comment_contents = ? " +
+                         " WHERE review_id =? AND review_comment_id = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, rvcVO.getCommentContents());
+            pstmt.setInt(2, rvcVO.getReviewId());
+            pstmt.setInt(3, rvcVO.getReviewCommentId());
+
+            result = pstmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();

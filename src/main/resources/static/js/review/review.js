@@ -77,7 +77,73 @@ reviewDelete = (reviewId, productId) => {
 }
 
 // 관리자가 댓글쓰는거
-reviewAdminComment = (reviewId) => {
+reviewCommentSubmit = (userId, reviewId, commentContents) => {
+    fetch('/api/comment/write', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userId: parseInt(userId),
+            reviewId: parseInt(reviewId),
+            commentContents: commentContents
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.success) {
+            alert('댓글이 등록되었습니다.');
+            // 모달 닫기
+            document.getElementById('reviewCommentModal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+
+            // 페이지 새로고침
+            location.reload();
+        } else {
+            alert('댓글 등록에 실패했습니다.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('댓글 등록 중 오류가 발생했습니다.');
+    });
+
+}
+
+// 관리자 댓글 수정하기
+reviewCommentUpdate = (userId, reviewId, reviewCommentId, commentContents) => {
+    fetch('/api/comment/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userId: parseInt(userId),
+            reviewId: parseInt(reviewId),
+            reviewCommentId: parseInt(reviewCommentId),
+            commentContents: commentContents
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                alert('댓글이 수정되었습니다.');
+                // 모달 닫기
+                document.getElementById('reviewCommentUpdateModal').style.display = 'none';
+                document.body.classList.remove('modal-open');
+
+                // 페이지 새로고침
+                location.reload();
+            } else {
+                alert('댓글 수정에 실패했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('댓글 등록 중 오류가 발생했습니다.');
+        });
 
 }
 

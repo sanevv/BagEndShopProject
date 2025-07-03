@@ -128,11 +128,12 @@
         fetch(`/api/comment/list?reviewId=${reviewId}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data.isComment);
+                //console.log(data.isComment);
                 if( !data.isComment ) {
                     adminComments.style.display = "none";
                     return;
                 }
+                console.log(data.commentContents);
                 adminComments.innerHTML = '<h3 class="title">관리자 답변</h3>' +
                                           '<p class="admin-contents">' + data.commentContents + '</p>';
 

@@ -11,7 +11,87 @@ document.addEventListener('DOMContentLoaded', () => {
     // 초기 리뷰리스트 보여주기
     reviewListLoad(productId, 1);
 
+
+    document.addEventListener('click', function(e) {
+
+
+        const btnReviewComment = e.target.closest('.btn-review-comment');
+        //const btnSubmit = e.target.closest('#btnCommentSubmit');
+        // 관리자 댓글 버튼 클릭한 경우
+        if (btnReviewComment) {
+            const reviewId = btnReviewComment.dataset.reviewid;
+            const userId = btnReviewComment.dataset.userid;
+
+            console.log('관리자 댓글 버튼 클릭:', btnReviewComment);
+            console.log('data-reviewId 값:', reviewId);
+
+            const btnCommentSubmit = document.querySelector('#btnCommentSubmit');
+            if (btnCommentSubmit) {
+                btnCommentSubmit.dataset.reviewid = reviewId;
+                btnCommentSubmit.dataset.userid = userId;
+                //console.log('가져왔나 comment 설정:', btnCommentSubmit.dataset.comment);
+            }
+        }
+
+        // 댓글 제출 버튼 클릭
+        if (e.target.closest('#btnCommentSubmit')) {
+            const reviewId = e.target.dataset.reviewid;
+            const userId = e.target.dataset.userid;
+            const commentContents = document.querySelector('#commentContents').value.trim();
+
+            if (!commentContents) {
+                alert('댓글 내용을 입력해주세요.');
+                return;
+            }
+
+            console.log("댓글 내용은요 : ", commentContents);
+
+            reviewCommentSubmit(userId, reviewId, commentContents);
+        }
+
+
+
+        const btnReviewCommentUpdate = e.target.closest('.btn-review-comment-update');
+        // 관리자 댓글 수정하기 버튼 클릭한 경우
+        if (btnReviewCommentUpdate) {
+            const reviewId = btnReviewCommentUpdate.dataset.reviewid;
+            const userId = btnReviewCommentUpdate.dataset.userid;
+            const commentId = btnReviewCommentUpdate.dataset.commentid;
+
+            console.log('관리자 댓글 수정하기 버튼 클릭:', btnReviewCommentUpdate);
+            console.log('data-reviewId 값:', reviewId);
+
+            const btnCommentUpdate = document.querySelector('#btnCommentUpdate');
+            if (btnCommentUpdate) {
+                btnCommentUpdate.dataset.reviewid = reviewId;
+                btnCommentUpdate.dataset.userid = userId;
+                btnCommentUpdate.dataset.commentid = commentId;
+            }
+        }
+
+        // 댓글 수정하기 버튼 클릭
+        if (e.target.closest('#btnCommentUpdate')) {
+            const reviewId = e.target.dataset.reviewid;
+            const userId = e.target.dataset.userid;
+            const commentId = e.target.dataset.commentid;
+            const commentContents = document.querySelector('#commentUpdateContents').value.trim();
+
+            if (!commentContents) {
+                alert('수정할 댓글 내용을 입력해주세요.');
+                return;
+            }
+
+            console.log("댓글 내용은요 : ", commentContents);
+
+            reviewCommentUpdate(userId, reviewId, commentId, commentContents);
+        }
+
+
+    });
+
 });
+
+
 
 
 
@@ -33,7 +113,6 @@ reviewListCall = (reviewList, loginUserRoleId) => {
 
     const reviewListMain = document.querySelector('#reviewList');
 
-
     if (!reviewList || reviewList.length === 0) {
         reviewListMain.innerHTML = `<li class="review-empty">등록된 후기가 없어요.... <br> 인기가 없네요</li>`;
         return;
@@ -42,11 +121,13 @@ reviewListCall = (reviewList, loginUserRoleId) => {
     let reviewListHTML = ``;
 
     reviewList.forEach(review => {
-        //console.log(review);
+        console.log(review);
 
         const rating = Number(review.rating);
         const halfRating = rating / 2;
         const displayRating = (halfRating % 1 === 0) ? halfRating : halfRating.toFixed(1);
+
+        const hasComment = (!review.comment) ? 0 : 1;
 
         reviewListHTML += `
                     <li class="review-item">
@@ -56,9 +137,17 @@ reviewListCall = (reviewList, loginUserRoleId) => {
                                 <span class="name">작성자 ${review.userName}</span>
                                 <span class="date">${review.createdAt}</span>
                                 <span class="rating" data-rating="${review.rating}">별이 ${displayRating}개!!</span>
-                                <span class="comment">달린 코멘트 개수 표시할 예정</span>
-                            </div>
-                            `;
+                                <span class="comment">달린 코멘트 : ${hasComment} 개</span> `;
+                                if(hasComment === 1){
+                                    reviewListHTML += `
+                                        <div class="admin-comment"> 
+                                            <p class="title">관리자 답변</p>
+                                            <p class="text">${review.commentContents}</p>
+                                        </div> 
+                                    `;
+                                }
+reviewListHTML += `    </div> `;
+
 
         // 로그인한 userid와 리뷰 작성한 userid가 같으면 보여줌
         if(review.loginReviewUser) {
@@ -70,13 +159,20 @@ reviewListCall = (reviewList, loginUserRoleId) => {
                                `;
         }
 
-        // 로그인한 사람이 관리자면
+        // 로그인한 사람이 관리자면 onclick="reviewAdminComment(${review.reviewId})"
         if(loginUserRoleId === 1){
-        reviewListHTML += `<div class="review-buttons">
-                                <button type="button" class="btn btn-review-comment black" onclick="reviewAdminComment(${review.reviewId})">관리자 댓글쓰기</button>
-                                <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button>
-                            </div>
-                           `;
+            reviewListHTML += `<div class="review-buttons">`;
+                                switch (hasComment) {
+                                    case 0:
+                                        reviewListHTML += `<button type="button" class="btn btn-review-comment black" data-toggle="modal" data-target="#reviewCommentModal" data-userid="${review.userId}" data-reviewid="${review.reviewId}">관리자 댓글 작성하기</button>`;
+                                        break;
+                                    case 1:
+                                        reviewListHTML += `<button type="button" class="btn btn-review-comment-update black" data-toggle="modal" data-target="#reviewCommentUpdateModal" data-userid="${review.userId}" data-reviewid="${review.reviewId}" data-commentid="${review.reviewCommentId}">관리자 댓글 수정하기</button>`;
+                                        break;
+                                }
+            reviewListHTML += `    <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button> 
+                                </div> `;
+
         }
 
         reviewListHTML += `
@@ -256,8 +352,12 @@ btnPlus.addEventListener('click', () => {
 
 
 
+// 바로구매하기 버튼 클릭 이벤트
 document.querySelector('#btnBuy').addEventListener('click', () => {
     requestOrderProducts([{ productId: productId, quantity: inpQuantity.value}]);
 });
+
+
+
 
 

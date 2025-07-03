@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/product")
@@ -32,7 +33,13 @@ public class ProductDetailController {
                         HttpSession session, Model model) throws SQLException {
 
 
-        ProductDetailVO prdVO = prdDAO.ProductDetail(productId);
+        // 상세페이지 정보 가져오기
+        ProductDetailVO prdVO = prdDAO.productDetail(productId);
+
+        // 해당 상품 추가이미지 가져오기
+        // List<ProductDetailVO> productAddImageList = prdDAO.getProductImageList(productId);
+
+
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
         //System.out.println("으아아아아아 : " + prdVO.getUserName());

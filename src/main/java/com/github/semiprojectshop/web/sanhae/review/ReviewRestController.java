@@ -35,15 +35,36 @@ public class ReviewRestController {
 
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
+        // 로그인한 유저 알아오기
         int loginUserId = (loginUser != null) ? loginUser.getUserId() : -1;
+        // 로그인한 유저의 등급 알아오기 : admin 체크 용도
         int loginUserRoleId = (loginUser != null) ? loginUser.getRoleId() : -1;
 
         List<ReviewVO> reviewList = rvDAO.reviewList(productId, page, sizePerPage);
         int totalPages = rvDAO.getTotalPage(productId, sizePerPage);
 
-        //int loginUserRoleId = rvDAO.getLoginUserId(loginUser.getRoleId());
 
-        //boolean hasComment = rvDAO.getReviewComment(reviewId);
+        for (ReviewVO review : reviewList) {
+            // 리뷰 작성자가 현재 로그인한 사람인지 확인하고 맞으면 true 아니면 false
+            review.setLoginReviewUser(review.getUserId() == loginUserId);
+
+            // 관리자 댓글 여부 가져오기
+            boolean isComment = rvDAO.getReviewComment(review.getReviewId());
+            review.setComment(isComment);
+
+            // 관리자 댓글이 있으면
+            if (isComment) {
+                ReviewCommentVO commentVO = rvDAO.getReviewCommentInfo(review.getReviewId());
+
+                if (commentVO != null) {
+                    review.setCommentContents(commentVO.getCommentContents());
+                    review.setReviewCommentId(commentVO.getReviewCommentId());
+                    
+                    System.out.println("commentContents : " + commentVO.getCommentContents());
+                    System.out.println("reviewCommentId : " + commentVO.getReviewCommentId());
+                }
+            }
+        }
 
         // 처음에 보여줄 리스트 넣어주기
         Map<String, Object> reviewMap = new HashMap<>();
@@ -51,12 +72,6 @@ public class ReviewRestController {
         reviewMap.put("currentPage", page);
         reviewMap.put("totalPages", totalPages);
         reviewMap.put("loginUserRoleId", loginUserRoleId);
-
-
-        for (ReviewVO review : reviewList) {
-            // 리뷰 작성자가 현재 로그인한 사람인지 확인하고 맞으면 true 아니면 false
-            review.setLoginReviewUser(review.getUserId() == loginUserId);
-        }
 
         return reviewMap;
     }
@@ -192,7 +207,7 @@ public class ReviewRestController {
                                                        HttpSession session) throws SQLException {
 
 
-        List<ReviewVO> reviewList = rvDAO.reviewList(productId, page, sizePerPage);
+        //List<ReviewVO> reviewList = rvDAO.reviewList(productId, page, sizePerPage);
 
         // 1페이지에 보여줄 개수
         sizePerPage = 5;

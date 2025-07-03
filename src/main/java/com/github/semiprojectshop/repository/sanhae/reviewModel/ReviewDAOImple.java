@@ -1,6 +1,7 @@
 package com.github.semiprojectshop.repository.sanhae.reviewModel;
 
 import com.github.semiprojectshop.repository.sanhae.productDetailDomain.ProductDetailVO;
+import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewCommentVO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -375,5 +376,75 @@ public class ReviewDAOImple implements ReviewDAO {
 
         return result;
     }
+
+    // 리뷰코멘트여부 가져오기
+    @Override
+    public boolean getReviewComment(int reviewId) {
+
+        boolean result = false;
+
+        try {
+
+
+            conn = ds.getConnection();
+
+            String sql = " SELECT RC.comment_contents " +
+                         " FROM review R JOIN review_comment RC " +
+                         " ON R.review_id = RC.review_id " +
+                         " WHERE RC.review_id = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reviewId);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                result = true;
+            }
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
+
+        return result;
+    }
+
+    // 리뷰코멘트 내용 가져오기
+    @Override
+    public ReviewCommentVO getReviewCommentInfo(int reviewId) {
+
+        ReviewCommentVO rvcVO = null;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " SELECT RC.comment_contents, RC.review_comment_id " +
+                         " FROM review R JOIN review_comment RC " +
+                         " ON R.review_id = RC.review_id " +
+                         " WHERE RC.review_id = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reviewId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                rvcVO = new ReviewCommentVO();
+                rvcVO.setReviewCommentId(rs.getInt("review_comment_id"));
+                rvcVO.setCommentContents(rs.getString("comment_contents"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+
+        return rvcVO;
+    }
+
+
 
 }

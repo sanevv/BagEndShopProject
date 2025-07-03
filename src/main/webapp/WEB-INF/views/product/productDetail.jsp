@@ -91,9 +91,57 @@
 		</div>
 	</div>
 
+
+	<!-- 관리자 댓글 작성하기 -->
+	<div class="modal fade" id="reviewCommentModal" tabindex="-1" aria-hidden="true">
+		<form id="reviewCommentForm" name="reviewCommentForm">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">관리자 댓글 작성하기</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<textarea id="commentContents" name="reviewCommentContents" placeholder="작성해주세요."></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+						<button type="button" id="btnCommentSubmit" class="btn btn-primary">작성완료</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<!-- 관리자 댓글 수정하기 -->
+	<div class="modal fade" id="reviewCommentUpdateModal" tabindex="-1" aria-hidden="true">
+		<form id="reviewCommentUpdateForm" name="reviewCommentUpdateForm">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">관리자 댓글 수정하기</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<textarea id="commentUpdateContents" name="reviewCommentContents" placeholder="작성해주세요."></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+						<button type="button" id="btnCommentUpdate" class="btn btn-primary">수정완료</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
 	<input type="hidden" name="reviewUserName" value="${prdVO.reviewUserName}">
 	<input type="hidden" name="userId" value="${userId}">
 	<input type="hidden" name="productId" value="${prdVO.productId}">
+
 </main>
 
 <script src="${pageContext.request.contextPath}/js/product/productDetail.js"></script>

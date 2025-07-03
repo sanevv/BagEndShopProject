@@ -27,10 +27,13 @@ public class ReviewVO {
     // 얘도 조인할거임
     private String userName; // 작성한 사용자이름
 
-    // 달린 코멘트 유무
-    boolean hasComment;
+    // 관리자 코멘트 유무
+    boolean isComment;
 
-
+    // 관리자 코멘트 내용
+    String commentContents;
+    // 관리자 코멘트 번호
+    int reviewCommentId;
 
     // 사용자 이름 마스킹처리하기
     public static String getMaskName(String userName) {

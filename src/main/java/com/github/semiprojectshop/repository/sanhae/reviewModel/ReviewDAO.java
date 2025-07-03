@@ -1,5 +1,6 @@
 package com.github.semiprojectshop.repository.sanhae.reviewModel;
 
+import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewCommentVO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
 
 import java.sql.SQLException;
@@ -38,4 +39,11 @@ public interface ReviewDAO {
 
     // 해당 상품리스트 토탈 페이지 합계 구하기
     int getTotalPage(int productId, int sizePerPage);
+
+    // 리뷰코멘트 여부 가져오기
+    boolean getReviewComment(int reviewId);
+
+    // 리뷰코멘트 내용 가져오기
+    ReviewCommentVO getReviewCommentInfo(int reviewId);
 }
+
