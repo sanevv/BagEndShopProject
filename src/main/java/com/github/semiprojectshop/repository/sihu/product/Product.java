@@ -50,8 +50,9 @@ public class Product {
         return product;
     }
 
-    public static Product fromRequest(ProductCreateRequest request){
+    public static Product fromRequest(ProductCreateRequest request, long userId){
         Product product = new Product();
+        product.myUser = MyUser.onlyId(userId);
         product.productName = request.getProductName();
         product.category = Category.onlyId(request.getCategoryId());
         product.stock = request.getStock();
