@@ -8,6 +8,14 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/review/review.css">
 
 <jsp:include page="../include/header.jsp"></jsp:include>
+
+<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
+	<form method="post" action="${pageContext.request.contextPath}/prod/update">
+		<button class="btn btn-sm" type="submit">수정하기</button>
+		<input type="hidden" name="productId"value="${prdVO.productId}">
+	</form>
+</c:if>
+
 <script>
 	// 로그인 유무
 	let isLogin = ${loginUser};

@@ -4,21 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
-import com.github.semiprojectshop.config.oauth.client.GithubApiClient;
-import com.github.semiprojectshop.repository.seungho.domain.CategoryVO;
+
+import com.github.semiprojectshop.repository.seungho.domain.ProductVO;
 
 import lombok.RequiredArgsConstructor;
-
 @Repository
 @RequiredArgsConstructor
-public class CategoryDAO_imple implements CategoryDAO {
-
+public class ProductDAO_imple implements ProductDAO {
 	private final DataSource ds;
 	private Connection conn;
 	private PreparedStatement pstmt;
@@ -44,34 +40,38 @@ public class CategoryDAO_imple implements CategoryDAO {
 			e.printStackTrace();
 		}
 	}// end of private void close()---------------
-	
-	
 	@Override
-	public List<CategoryVO> getCategoryInfo() throws SQLException {
-		
-		List<CategoryVO> cateList = new ArrayList<>();
-		
+	public ProductVO productDetailInfo(String productId) throws SQLException {
+			ProductVO pvo = new ProductVO();
 		try {
 			conn = ds.getConnection();
+			String sql = " select product_id, product_name, product_info, product_contents, price, stock, product_size, matter"
+					   + " from product "
+					   + " where product_id = ? "; 
 			
-			String sql = "select category_id, category_name from category";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, productId);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				CategoryVO cvo = new CategoryVO();
-				cvo.setCategory_id(rs.getString(1));
-				cvo.setCategory_name(rs.getString(2));
-				
-				cateList.add(cvo);
+			if(rs.next()) {
+				pvo.setProduct_id(rs.getLong(1));
+				pvo.setProduct_name(rs.getString(2));
+				pvo.setProduct_info(rs.getString(3));
+				pvo.setProduct_contents(rs.getString(4));
+				pvo.setPrice(rs.getLong(5));
+				pvo.setStock(rs.getLong(6));
+				pvo.setProduct_size(rs.getString(7));
+				pvo.setMetter(rs.getString(8));
 			}
-
+			
+			
 		}finally {
 			close();
-		}
+		} 
 		
 		
-		return cateList;
-	} // end of public List<CategoryVO> getCategoryInfo() throws SQLException {} ---
+		
+		return pvo;
+	}
 
 }

@@ -82,7 +82,7 @@ public class NoticeController {
 		
 		request.setAttribute("nvo", nvo);
 		//System.out.println(nvo);
-		return "product/NoticeUpdate";
+		return "notice/NoticeUpdate";
 	}
 	
 	@PostMapping("/delete")
@@ -120,7 +120,7 @@ public class NoticeController {
 	        return "redirect:/error/500";
 	    }
 
-	    return "product/Notice";
+	    return "notice/Notice";
 	}
 
 }

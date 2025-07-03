@@ -232,7 +232,7 @@ $(function() {
 		                  dataType:"json",
 		                  success:function(response){
 		                	  alert("들어왔어");
-		                		  //location.href="${pageContext.request.contextPath}/";  
+		                		  location.href="${pageContext.request.contextPath}/product/detail/"+response;  
 		                	  
 		                		  
 		                	  

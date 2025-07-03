@@ -67,7 +67,7 @@ public class NoticeWriteController {
 	@PostMapping("/write")
 	public String NoticeWrite(HttpServletRequest request) {
 
-		return "product/NoticeWrite";
+		return "notice/NoticeWrite";
 	}
 
 }
