@@ -54,8 +54,8 @@ public class ProductService {
     }
 
     @Transactional
-    public long createProduct(ProductCreateRequest request) {
-        Product product = Product.fromRequest(request);
+    public long createProduct(ProductCreateRequest request, long userId) {
+        Product product = Product.fromRequest(request, userId);
         productJpa.save(product);
         Path path = storageService.createFileDirectory("product", product.getProductId().toString());
         String mainImageUrl = storageService.returnTheFilePathAfterTransfer(request.getMainImage(), path, "승호메롱_");

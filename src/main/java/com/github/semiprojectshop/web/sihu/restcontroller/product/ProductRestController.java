@@ -63,7 +63,8 @@ public class ProductRestController {
                               @RequestParam String productSize,
                               @RequestParam String matter,
                               @RequestParam("pimage1") MultipartFile mainImage,
-                              @RequestParam("files") List<MultipartFile> files){
+                              @RequestParam("files") List<MultipartFile> files,
+                              HttpSession session) {
         ProductCreateRequest request = ProductCreateRequest.of(
                 categoryId,
                 productName,
@@ -78,7 +79,7 @@ public class ProductRestController {
         );
 
 
-        return productService.createProduct(request);
+        return productService.createProduct(request, 1L);
     }
 
 }

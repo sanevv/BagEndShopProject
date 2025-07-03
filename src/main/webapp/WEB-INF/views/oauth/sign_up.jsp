@@ -61,6 +61,13 @@
                 <input type="email" class="form-control" id="email" placeholder="이메일 입력">
                 <button type="button" class="btn btn-outline-secondary" id="checkEmailBtn">중복확인</button>
             </div>
+            <div style="display: none" id="verifyNumberBox">
+                <label for="email" class="form-label">인증번호</label>
+                <div class="input-group">
+                    <input type="email" class="form-control" id="verifyNumber" placeholder="인증번호 입력">
+                    <button type="button" class="btn btn-outline-secondary" id="verifyNumberBtn">인증받기</button>
+                </div>
+            </div>
         </div>
 
         <div class="mb-3 text-start">
@@ -132,7 +139,7 @@
 
     const emailInput = document.getElementById('email');
     const nameInput = document.getElementById('username');
-
+    const verifyNumberBox = document.getElementById('verifyNumberBox');
 
 
     function emailValidation(email) {
@@ -234,11 +241,6 @@
             })
         if (!emailSend)
             return;
-        // 이메일 인증 성공시
-        // 이메일인증번호 입력하는 인풋 태그생성
-
-
-
 
         //성공시
         emailInput.disabled = true;
@@ -247,6 +249,7 @@
         checkEmailBtn.classList.remove('btn-outline-secondary');
         checkEmailBtn.classList.add('btn-primary');
         checkEmailBtn.textContent = '사용가능';
+        verifyNumberBox.style.display = 'block'; // 인증번호 입력 박스 보이기
 
     });
 
