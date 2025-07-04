@@ -4,6 +4,15 @@
     // 로그인 여부 확인
     boolean isLoginJava = session.getAttribute("loginUser") != null;
 %>
+
+<script type="text/javascript">
+
+	const frm = document.prodRegisterFrm;
+	frm.method = "post";
+	frm.action = "prod/register";
+	frm.submit();
+
+</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +34,8 @@
     <script src="${pageContext.request.contextPath}/lib/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
 
     <div id="wrap">
         <!-- header -->
@@ -100,6 +111,13 @@
                             <li><a href="${pageContext.request.contextPath}/notice/list.one">승호바보</a></li>
                             <li><a href="productList.one">경수바보</a></li>
                             <li><a href="productList.one">애리천재</a></li>
+							<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
+							    <li>
+							        <form name="prodRegisterFrm" action="${pageContext.request.contextPath}/prod/register" method="post">
+							            <a><button type="submit" style="all:unset; cursor:pointer;">제품 등록</button></a>
+							        </form>
+							    </li>
+							</c:if>
                         </ul>
                     </div>
                 </div>

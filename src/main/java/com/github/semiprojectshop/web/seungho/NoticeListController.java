@@ -128,6 +128,6 @@ public class NoticeListController {
 		
 		
 		
-		return "product/NoticeList";
+		return "notice/NoticeList";
 	}
 }
