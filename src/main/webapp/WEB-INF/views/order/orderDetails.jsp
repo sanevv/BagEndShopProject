@@ -28,7 +28,7 @@
 
         <!-- 오른쪽 주문내역 폼 -->
         <div class="col-lg-9 col-md-8">
-            <div class="order-history" style="margin-top: 80px;">
+            <div class="order-history" style="margin-top: 50px;">
 
               <!-- 주문일자 -->
                 <c:if test="${empty requestScope.orderDetailsList}">

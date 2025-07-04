@@ -47,7 +47,7 @@ public class OrderDAOImple implements OrderDAO{
 
             conn = ds.getConnection();
 
-            String sql = " SELECT P.image_path, P.product_name, P.product_size, T.orders_id, T.orders_product_id, to_char(O.created_at, 'yyyy-mm-dd') as created_at, O.status, " +
+            String sql = " SELECT P.image_path, P.product_name, P.product_size, T.orders_id, p.product_id, to_char(O.created_at, 'yyyy-mm-dd') as created_at, O.status, " +
                     " T.at_price, T.at_discount_rate, T.review_id, T.QUANTITY " +
                     " FROM ( " +
                     "    SELECT image_path, product_name, product_size, P.product_id " +
@@ -72,7 +72,7 @@ public class OrderDAOImple implements OrderDAO{
                 oqVO.setProductName(rs.getString("product_name"));
                 oqVO.setProductSize(rs.getString("product_size"));
                 oqVO.setOrderId(rs.getInt("orders_id"));
-                oqVO.setOrdersProductId(rs.getInt("orders_product_id"));
+                oqVO.setOrdersProductId(rs.getInt("product_id"));
                 oqVO.setCreatedAt(rs.getString("created_at"));
                 oqVO.setStatus(rs.getString("status"));
                 oqVO.setAtPrice(rs.getInt("at_price"));
