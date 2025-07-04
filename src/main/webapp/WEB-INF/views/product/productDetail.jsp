@@ -10,7 +10,6 @@
 <jsp:include page="../include/header.jsp"></jsp:include>
 <script>
 	// 로그인 유무
-	let isLogin = ${loginUser};
 </script>
 <main id="main">
 	<div class="product-container">

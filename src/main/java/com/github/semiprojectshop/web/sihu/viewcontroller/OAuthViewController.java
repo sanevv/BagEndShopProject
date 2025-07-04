@@ -35,10 +35,11 @@ public class OAuthViewController {
         OAuthLoginParams params = OAuthLoginParams.fromCodeParams(codeParams, provider);
         model.addAttribute("params", params);
         model.addAttribute("provider", provider.name().toLowerCase());
+        model.addAttribute("providerValue", provider.getValue());
         return "oauth/callback";
     }
     @PostMapping("/sign-up")
-    public String oauthSignUpView(@RequestBody OAuthSignUpDto signUpDto, Model model) {
+    public String oauthSignUpView(@ModelAttribute OAuthSignUpDto signUpDto, Model model) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String signUpDtoJson = objectMapper.writeValueAsString(signUpDto);

@@ -2,6 +2,7 @@ package com.github.semiprojectshop.config.oauth.client;
 import com.github.semiprojectshop.config.oauth.dto.tokens.GoogleTokens;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.GoogleUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
+import com.github.semiprojectshop.service.sihu.StorageService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +28,8 @@ public class GoogleApiClient extends OAuthApiClient{
     @Value("${oauth.google.secret}")
     private String clientSecret;
 
-    public GoogleApiClient(RestTemplate restTemplate) {
-        super(restTemplate);
+    public GoogleApiClient(RestTemplate restTemplate, StorageService service) {
+        super(restTemplate, service);
     }
 
 

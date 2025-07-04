@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     // 로그인 여부 확인
-    boolean isLogin = session.getAttribute("loginUser") != null;
+    boolean isLoginJava = session.getAttribute("loginUser") != null;
 %>
 <!DOCTYPE html>
 <html>
@@ -79,10 +79,10 @@
                         <div class="navi-item">
                             <a href="${pageContext.request.contextPath}/cart">
                                 <span class="count cart-count">
-                                    <c:if test="<%= !isLogin %>">
+                                    <c:if test="<%= !isLoginJava %>">
                                         <span class="basket-count">0</span>
                                     </c:if>
-                                    <c:if test="<%= isLogin %>">
+                                    <c:if test="<%= isLoginJava %>">
                                         <span class="basket-count"></span>
                                     </c:if>
 
@@ -110,7 +110,7 @@
         </header>
         <!-- //header -->
         <script defer>//
-            const isLogin = <%= isLogin %>;
+            const isLogin = <%= isLoginJava %>;
             function showCartCount() {
                 axios.get('/api/cart/count')
                     .then(response => {

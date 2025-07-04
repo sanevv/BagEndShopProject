@@ -6,18 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<jsp:include page="./include/header.jsp"/>
 <div class="container">
     <p class="h2 text-center mt-4">장애발생</p>
     <img src="<%= request.getContextPath()%>/images/error.gif" class="img-fluid"/> <%-- 반응형 이미지 --%>
     <p class="h4 text-primary mt-3">빠른 복구를 위해 최선을 다하겠습니다.</p>
 </div>
 
-</body>
+
 <script>
     const message = "<%=request.getAttribute("message") == null ? "" : request.getAttribute("message")%>";
     // 페이지가 로드되면 자동으로 실행되는 함수
@@ -32,4 +28,4 @@
 
     });
 </script>
-</html>
+<jsp:include page="./include/footer.jsp"/>

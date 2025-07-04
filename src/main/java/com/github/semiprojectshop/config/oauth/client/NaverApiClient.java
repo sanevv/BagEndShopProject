@@ -2,6 +2,7 @@ package com.github.semiprojectshop.config.oauth.client;
 import com.github.semiprojectshop.config.oauth.dto.tokens.NaverTokens;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.NaverUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
+import com.github.semiprojectshop.service.sihu.StorageService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +28,8 @@ public class NaverApiClient extends OAuthApiClient {
     @Value("${oauth.naver.secret}")
     private String clientSecret;
 
-    public NaverApiClient(RestTemplate restTemplate) {
-        super(restTemplate);
+    public NaverApiClient(RestTemplate restTemplate, StorageService service) {
+        super(restTemplate, service);
     }
 
 

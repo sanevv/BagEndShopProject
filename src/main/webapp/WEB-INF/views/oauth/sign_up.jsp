@@ -58,13 +58,13 @@
         <div class="mb-3 mt-5 text-start">
             <label for="email" class="form-label">이메일</label>
             <div class="input-group">
-                <input type="email" class="form-control" id="email" placeholder="이메일 입력">
+                <input type="email" class="form-control" name="email" id="email" placeholder="이메일 입력">
                 <button type="button" class="btn btn-outline-secondary" id="checkEmailBtn">중복확인</button>
             </div>
             <div style="display: none" id="verifyNumberBox">
-                <label for="email" class="form-label">인증번호</label>
+                <label for="verifyNumber" class="form-label">인증번호</label>
                 <div class="input-group">
-                    <input type="email" class="form-control" id="verifyNumber" placeholder="인증번호 입력">
+                    <input type="text" class="form-control" id="verifyNumber" placeholder="인증번호 입력">
                     <button type="button" class="btn btn-outline-secondary" id="verifyNumberBtn">인증받기</button>
                 </div>
             </div>
@@ -74,10 +74,28 @@
             <label for="username" class="form-label">이름</label>
             <input type="text" class="form-control" id="username" placeholder="이름 입력">
         </div>
+<%--        <div class="mb-3 text-start">--%>
+<%--            <label for="phone" class="form-label">전화번호</label>--%>
+<%--            <input type="tel" class="form-control" id="phone" placeholder="전화번호 입력">--%>
+<%--        </div>--%>
+
         <div class="mb-3 text-start">
             <label for="phone" class="form-label">전화번호</label>
-            <input type="tel" class="form-control" id="phone" placeholder="전화번호 입력">
+            <div class="input-group">
+                <input type="tel" class="form-control" id="phone" placeholder="전화번호 입력">
+                <button type="button" class="btn btn-outline-secondary" id="checkPhoneBtn">중복확인</button>
+            </div>
+            <div style="display: none" id="verifyPhoneBox">
+                <label for="verifyPhoneNumber" class="form-label">인증번호</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="verifyPhoneNumber" placeholder="인증번호 입력">
+                    <button type="button" class="btn btn-outline-secondary" id="verifyPhoneBtn">인증받기</button>
+                    <button type="button" class="btn btn-outline-danger" id="reenterPhoneBtn" style="margin-left: 5px;">번호 다시입력</button>
+                </div>
+            </div>
         </div>
+
+
         <div style="margin: 50px 0;">
             <div class="mb-1 text-start">
                 <label for="zipcode" class="form-label">우편번호</label>
@@ -108,11 +126,11 @@
             </div>
             <div class="form-text">이미지 파일(jpg, png 등)을 선택하세요.</div>
         </div>
-        <button type="submit" class="btn btn-dark w-100">회원가입</button>
+        <button type="button" class="btn btn-dark w-100" id="signUpBtn">회원가입</button>
     </form>
 
     <div class="mt-3">
-        <a href="/login" class="text-decoration-none">이미 계정이 있으신가요? 로그인</a>
+        <a href="${pageContext.request.contextPath}/test/login.up" class="text-decoration-none">이미 계정이 있으신가요? 로그인</a>
     </div>
 </div>
 
@@ -123,23 +141,391 @@
 <link rel="stylesheet" type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-<script>
+<script defer>
+    let isEmailValid = false;
+    let isPhoneValid = false;
+
     const signUpDto = JSON.parse('${signUpDto}'.replace(/&quot;/g,'"'));
     const providerConstant = '${provider}';
     const socialId = signUpDto.socialId;
-    const email = signUpDto.email;
+    const emailOriginal = signUpDto.email;
     const name = signUpDto.name;
     const profileImageUrl = signUpDto.profileImageUrl;
+    console.log(socialId);
+    if(!socialId){
+        swal({
+            title: "오류",
+            text: "잘못된 접근입니다.",
+            icon: "error",
+            button: "확인"
+        }).then(() => {
+            window.location.href = '/';
+        });
+    }
 
 
-    console.log(signUpDto);
-    console.log(signUpDto.email);
-    console.log(profileImageUrl);
 
-
+    const checkEmailBtn = document.getElementById('checkEmailBtn');
     const emailInput = document.getElementById('email');
     const nameInput = document.getElementById('username');
     const verifyNumberBox = document.getElementById('verifyNumberBox');
+    if(providerConstant!=="TWITTER"){
+        isEmailValid = true;
+        emailInput.value= emailOriginal;
+        emailInput.disabled = true;
+        checkEmailBtn.disabled = true;
+        //버튼 색 푸른색으로 변경
+        checkEmailBtn.classList.remove('btn-outline-secondary');
+        checkEmailBtn.classList.add('btn-primary');
+        checkEmailBtn.textContent = '사용가능';
+    }
+
+
+    nameInput.value = name;
+    // 프로필 이미지 미리보기
+    const profilePreview = document.getElementById('profilePreview');
+    if (profileImageUrl) {
+        profilePreview.src = profileImageUrl;
+    } else {
+        profilePreview.src = 'https://www.svgrepo.com/show/343494/profile-user-account.svg';
+    }
+    //프로필 이미지 인풋에 값 설정
+    // const profileImageInput = document.getElementById('profileImage');
+    // if (profileImageUrl) {
+    //     const blob = new Blob([profileImageUrl], { type: 'image/jpeg' });
+    //     const file = new File([blob], 'profile.jpg', { type: 'image/jpeg' });
+    //     const dataTransfer = new DataTransfer();
+    //     dataTransfer.items.add(file);
+    //     profileImageInput.files = dataTransfer.files;
+    // }
+    const verifyNumberBtn = document.getElementById('verifyNumberBtn');
+    verifyNumberBtn.addEventListener('click', async function () {
+        const verifyNumber = document.getElementById('verifyNumber').value.trim();
+        if (!verifyNumber) {
+            //sweetAlert
+            swal({
+                title: "인증번호를 입력해주세요",
+                text: "인증번호를 입력해야 합니다.",
+                icon: "warning",
+                button: "확인"
+            });
+            return;
+        }
+
+        // 실제로는 axios로 서버에 인증번호 확인 요청
+        const isVerified = await axios.get('/api/mail/verify', {
+            params: {
+                email: emailInput.value,
+                code: verifyNumber
+            }
+        })
+            .then(response => {
+                if (response.data) {
+                    swal({
+                        title: "인증 성공",
+                        text: "이메일 인증이 완료되었습니다.",
+                        icon: "success",
+                        button: "확인"
+                    });
+                    return true;
+                } else {
+                    swal({
+                        title: "인증 실패",
+                        text: "인증번호가 올바르지 않습니다. 다시 시도해주세요.",
+                        icon: "error",
+                        button: "확인"
+                    });
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.error('인증 요청 실패:', error);
+                swal({
+                    title: "오류 발생",
+                    text: "인증 요청에 실패했습니다. 나중에 다시 시도해주세요.",
+                    icon: "error",
+                    button: "확인"
+                });
+                return false;
+            });
+
+        if (isVerified) {
+            isEmailValid = true; // 인증 성공시 유효성 검사 통과
+            // 인증 성공시
+            verifyNumberBox.style.display = 'none'; // 인증번호 입력 박스 숨기기
+        }
+    });
+
+    const checkPhoneBtn = document.getElementById('checkPhoneBtn');
+    const phoneInput = document.getElementById('phone');
+    const phoneVerifyInput = document.getElementById('verifyPhoneNumber');
+    const verifyPhoneBtn = document.getElementById('verifyPhoneBtn');
+    const verifyPhoneBox = document.getElementById('verifyPhoneBox');
+
+    verifyPhoneBtn.addEventListener('click',(e)=>{
+        const phoneVerifyNumber = phoneVerifyInput.value.trim();
+        if (!phoneVerifyNumber) {
+            //sweetAlert
+            swal({
+                title: "인증번호를 입력해주세요",
+                text: "인증번호를 입력해야 합니다.",
+                icon: "warning",
+                button: "확인"
+            });
+            return;
+        }
+        //axios로 인증번호 확인 요청
+        axios.get('/api/phone/verify', {
+            params: {
+                phoneNumber: phoneInput.value,
+                code: phoneVerifyNumber
+            }
+        })
+            .then(response => {
+                if (response.data) {
+                    swal({
+                        title: "인증 성공",
+                        text: "전화번호 인증이 완료되었습니다.",
+                        icon: "success",
+                        button: "확인"
+                    });
+                    isPhoneValid = true; // 인증 성공시 유효성 검사 통과
+                    verifyPhoneBox.style.display = 'none'; // 인증번호 입력 박스 숨기기
+                } else {
+                    swal({
+                        title: "인증 실패",
+                        text: "인증번호가 올바르지 않습니다. 다시 시도해주세요.",
+                        icon: "error",
+                        button: "확인"
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('인증 요청 실패:', error);
+                swal({
+                    title: "오류 발생",
+                    text: "인증 요청에 실패했습니다. 나중에 다시 시도해주세요.",
+                    icon: "error",
+                    button: "확인"
+                });
+            });
+
+    })
+
+
+    //핸드폰중복확인 체크 버튼
+    checkPhoneBtn.addEventListener('click', async function (){
+        const phoneValue = phoneInput.value.trim();
+        if (!phoneValue) {
+            //sweetAlert
+            swal({
+                title: "전화번호를 입력해주세요",
+                text: "전화번호를 입력해야 합니다.",
+                icon: "warning",
+                button: "확인"
+            });
+            return;
+        }
+
+        // 전화번호 형식 간단한 정규식 검사
+        const phonePattern = /^01\d - \d{4} - \d{4}$/;
+        if (!phonePattern.test(phoneValue)) {
+            //sweetAlert
+            swal({
+                title: "전화번호 형식이 올바르지 않습니다",
+                text: "올바른 전화번호를 입력해주세요.",
+                icon: "error",
+                button: "확인"
+            });
+            return;
+        }
+
+
+        const isNotExist = await axios.get('/api/oauth/exist-phone', {
+            params: { phone: phoneValue }
+        })
+            .then(response => {
+                if (response.data) {
+                    // 전화번호가 사용 가능
+                    swal({
+                        title: "사용 가능한 전화번호입니다",
+                        text: "이 전화번호를 사용해 회원가입을 진행하세요.",
+                        icon: "success",
+                        button: "확인"
+                    });
+                } else {
+                    // 전화번호가 이미 사용 중
+                    swal({
+                        title: "이미 사용 중인 전화번호입니다",
+                        text: "다른 전화번호를 입력해주시거나 비밀번호 찾기를 이용해주세요.",
+                        icon: "error",
+                        button: "확인"
+                    });
+                }
+                return response.data; // true or false
+            })
+            .catch(error => {
+                console.error('중복확인 요청 실패:', error);
+                swal({
+                    title: "오류 발생",
+                    text: "중복확인 요청에 실패했습니다. 나중에 다시 시도해주세요.",
+                    icon: "error",
+                    button: "확인"
+                });
+                return false;
+            });
+
+        if(!isNotExist)
+            return;
+
+        // 전화번호 인증 요청 바디에담아
+        const phoneSend = await axios.post('/api/phone/send',
+            {phoneNumber: phoneValue}
+        )
+            .then(response => {
+                if (response.data) {
+                    swal({
+                        title: "인증 번호가 발송되었습니다.",
+                        text: "전화번호를 확인하고 인증을 완료해주세요.",
+                        icon: "success",
+                        button: "확인"
+                    });
+                } else {
+                    swal({
+                        title: "인증 번호 발송 실패",
+                        text: "전화번호를 확인해주세요.",
+                        icon: "error",
+                        button: "확인"
+                    });
+                }
+                return response.data; // true or false
+    }).catch(error=>{
+                console.error('인증 요청 실패:', error);
+                swal({
+                    title: "오류 발생",
+                    text: "인증문자 발송 요청에 실패했습니다. 나중에 다시 시도해주세요.",
+                    icon: "error",
+                    button: "확인"
+                });
+                return false;
+    })
+        if (!phoneSend)
+            return;
+
+        verifyPhoneBox.style.display = 'block'; // 인증번호 입력 박스 보이기
+
+
+        //성공시
+        phoneInput.disabled = true;
+        checkPhoneBtn.disabled = true;
+        //버튼 색 푸른색으로 변경
+        checkPhoneBtn.classList.remove('btn-outline-secondary');
+        checkPhoneBtn.classList.add('btn-primary');
+        checkPhoneBtn.textContent = '사용가능';
+    });
+    const reenterPhoneBtn = document.getElementById('reenterPhoneBtn');
+    reenterPhoneBtn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        phoneInput.disabled = false;
+        checkPhoneBtn.disabled = false;
+        checkPhoneBtn.classList.remove('btn-primary');
+        checkPhoneBtn.classList.add('btn-outline-secondary');
+        checkPhoneBtn.textContent = '중복확인';
+        verifyPhoneBox.style.display = 'none'; // 인증번호 입력 박스 숨기기
+        phoneInput.value = '';
+        phoneVerifyInput.value = '';
+        isPhoneValid = false; // 인증번호 입력 박스가 숨겨지면 유효성 검사 실패
+    })
+
+
+
+    function verifyPhone(phoneValue){
+
+    }
+
+    const signUpBtn = document.getElementById('signUpBtn');
+    signUpBtn.addEventListener('click', (e)=>{
+        //||!isPhoneValid 나주엥 이거 추가해야됨
+        if(!isEmailValid){
+            swal({
+                title: "회원가입 실패",
+                text: "이메일 인증 또는 전화번호 인증이 완료되지 않았습니다.",
+                icon: "error",
+                button: "확인"
+            });
+            return;
+        }
+        const email = emailInput.value.trim();
+        const name = nameInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const address = document.getElementById('address').value.trim();
+        const addressDetails = document.getElementById('addressDetails').value.trim();
+        const zipcode = document.getElementById('zipcode').value.trim();
+        const profileImageFile = document.getElementById('profileImage').files[0];
+
+
+        if (!email || !name || !phone || !address || !addressDetails || !zipcode) {
+            swal({
+                title: "입력되지 않은 필수 값이 있습니다.",
+                text: "모든 필드를 올바르게 입력해주세요.",
+                icon: "error",
+                button: "확인"
+            });
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('name', name);
+        formData.append('phoneNumber', phone);
+        formData.append('address', address);
+        formData.append('addressDetails', addressDetails);
+        formData.append('zipCode', zipcode);
+        formData.append('profileImageUrl', profileImageUrl);
+        formData.append('provider', signUpDto.provider);
+        formData.append('socialId', socialId);
+        if (profileImageFile) {
+            formData.append('profileImageFile', profileImageFile);
+        }
+
+        axios.post('/api/oauth/sign-up', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(response=>{
+            console.log(response);
+            if (response.data.success) {
+                swal({
+                    title: "회원가입 성공",
+                    text: "회원가입이 완료되었습니다. 로그인 페이지로 이동 합니다.",
+                    icon: "success",
+                    button: "확인"
+                }, function () {
+                    // 회원가입 성공 후 로그인 페이지로 이동
+                    window.location.href = '/test/login.up';
+                });
+            } else {
+                swal({
+                    title: "회원가입 실패",
+                    text: response.data.message || "알 수 없는 오류가 발생했습니다.",
+                    icon: "error",
+                    button: "확인"
+                });
+            }
+        }).catch(error => {
+            console.error('회원가입 요청 실패:', error);
+            swal({
+                title: "오류 발생",
+                text: "회원가입 요청에 실패했습니다. 나중에 다시 시도해주세요.",
+                icon: "error",
+                button: "확인"
+            });
+        });
+
+    })
+
+
+
 
 
     function emailValidation(email) {
@@ -169,24 +555,26 @@
         return true;
     }
 
-    const checkEmailBtn = document.getElementById('checkEmailBtn');
     checkEmailBtn.addEventListener('click', async function () {
         const email = emailInput.value.trim();
         if (!emailValidation(email))
             return;
 
-        // 실제로는 axios로 서버에 중복확인 요청
-        const isNotExist = await axios.get(`/api/member/exist-email?email=\${encodeURIComponent(email)}`)
+        const isNotExist = await axios.get('/api/member/exist-email', {
+            params: { email: email }
+        })
             .then(response => {
                 if (response.data) {
                     // 이메일이 사용 가능
                     swal({
                         title: "사용 가능한 이메일입니다",
-                        text: "이 이메일을 사용해 회원가입을 진행하세요.",
+                        text: "이 이메일을 사용해 회원가입을 진행하세요.\n해당 이메일로 인증번호를 발송합니다.",
                         icon: "success",
                         button: "확인"
                     });
+                    verifyNumberBox.style.display = 'block'; // 인증번호 입력 박스 보이기
                 } else {
+
                     // 이메일이 이미 사용 중
                     swal({
                         title: "이미 사용 중인 이메일입니다",
@@ -211,12 +599,16 @@
             return;
 
         // 이메일 인증 요청
-        const emailSend = await axios.post('/api/mail/send?\${email}')
+        const emailSend = await axios.post('/api/mail/send',{},{
+            params: {
+                email: email
+            }
+        })
             .then(response =>{
                 if (response.data){
                     swal({
                         title: "인증 메일이 발송되었습니다",
-                        text: "이메일을 확인하고 인증을 완료해주세요.",
+                        text: "이메일을 확인하고 10분안에 인증을 완료해주세요.",
                         icon: "success",
                         button: "확인"
                     });
@@ -249,10 +641,8 @@
         checkEmailBtn.classList.remove('btn-outline-secondary');
         checkEmailBtn.classList.add('btn-primary');
         checkEmailBtn.textContent = '사용가능';
-        verifyNumberBox.style.display = 'block'; // 인증번호 입력 박스 보이기
 
     });
-
 
     phoneInput.addEventListener('input', function (e) {
         let value = e.target.value.replace(/\D/g, ''); // 숫자만 남김
@@ -333,7 +723,7 @@
                     const detailInput = document.getElementById("addressDetails")
                     if (detailInput.value !== extraAddr)
                         detailInput.value = extraAddr ?
-                            (detailInput.value ? detailInput.value + ' ' + extraAddr : extraAddr) :
+                            (detailInput.value ? extraAddr + ' ' +detailInput.value  : extraAddr) :
                             detailInput.value;
 
 

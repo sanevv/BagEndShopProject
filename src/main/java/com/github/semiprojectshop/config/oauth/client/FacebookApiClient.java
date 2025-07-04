@@ -4,6 +4,7 @@ import com.github.semiprojectshop.config.oauth.dto.tokens.OAuthTokens;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.FacebookUserInfo;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.OAuthUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
+import com.github.semiprojectshop.service.sihu.StorageService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,8 +27,8 @@ public class FacebookApiClient extends OAuthApiClient {
     private String clientSecret;
 
 
-    public FacebookApiClient(RestTemplate restTemplate) {
-        super(restTemplate);
+    public FacebookApiClient(RestTemplate restTemplate, StorageService service) {
+        super(restTemplate, service);
     }
 
     @Override

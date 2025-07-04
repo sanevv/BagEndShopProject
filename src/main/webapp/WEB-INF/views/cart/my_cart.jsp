@@ -10,17 +10,16 @@
 <script src="<%=request.getContextPath()%>/js/cart/myCart.js" defer></script>
 
 <%
-    boolean isLogin = session.getAttribute("loginUser") != null;
     String message = "장바구니는 로그인 후 이용 가능합니다.";
 %>
-<script>
-    <%--if (!<%=isLogin%>) {--%>
-    <%--    alert("<%=message%>");--%>
-    <%--    location.href = "<%=request.getContextPath()%>/test/login.up";--%>
-    <%--}--%>
-</script>
 
 <jsp:include page="../include/header.jsp"/>
+<script>
+    if (!isLogin) {
+        alert("<%=message%>");
+        location.href = "<%=request.getContextPath()%>/test/login.up";
+    }
+</script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/cart/style.css"/>
 <div class="container">
     <div class="row">

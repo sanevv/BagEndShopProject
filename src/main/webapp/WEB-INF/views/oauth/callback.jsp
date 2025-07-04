@@ -6,12 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%
     ObjectMapper mapper = new ObjectMapper();
     String paramsJson = mapper.writeValueAsString(request.getAttribute("params"));
 %>
 <script>
     const provider = "${provider}"
+    const providerValue ="${providerValue}";
 
     <%--const test = JSON.parse('${params}') 여기는 에러가 난다--%>
     <%--VM14:1  Uncaught SyntaxError: Unexpected token 'c', "com.github"... is not valid JSON
@@ -48,11 +50,11 @@
         const data = await response.json(); // 응답 데이터를 JSON으로 파싱
 
         if (response.status === 200) {
-
+            const isConnection = response.headers.get('X-Is-Connection') === 'true';
             console.log('Login or Register successful:', data);
             //로그인 성공후 부모창의 함수호출
             if (window.opener && !window.opener.closed)
-                window.opener.handleLoginSuccess(data.success.responseData);
+                window.opener.handleLoginSuccess(isConnection, data.success.responseData, providerValue);
             self.close();
             // Redirect or handle success
         } else if (response.status === 201) {

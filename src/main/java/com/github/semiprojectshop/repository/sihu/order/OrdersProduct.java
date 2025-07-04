@@ -31,11 +31,14 @@ public class OrdersProduct {
 
     private Long atPrice;
 
+    private long quantity;
+
     public static OrdersProduct fromPaymentsRequest(PaymentsRequest paymentsRequest){
         OrdersProduct ordersProduct = new OrdersProduct();
         ordersProduct.product = Product.onlyId(paymentsRequest.getProductId());
         ordersProduct.atPrice = paymentsRequest.getAtPrice();
         ordersProduct.atDiscountRate = paymentsRequest.getAtDiscountRate();
+        ordersProduct.quantity = paymentsRequest.getQuantity();
         return ordersProduct;
 
     }

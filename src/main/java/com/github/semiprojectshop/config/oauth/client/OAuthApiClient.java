@@ -2,20 +2,23 @@ package com.github.semiprojectshop.config.oauth.client;
 import com.github.semiprojectshop.config.oauth.dto.tokens.OAuthTokens;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.OAuthUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
+import com.github.semiprojectshop.service.sihu.StorageService;
 import com.github.semiprojectshop.web.sihu.dto.oauth.request.OAuthLoginParams;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.nio.file.Path;
 
 @RequiredArgsConstructor
 public abstract class OAuthApiClient {
     @Getter(value = AccessLevel.PROTECTED)
     private final RestTemplate restTemplate;
+
+    private final StorageService storage;
 
     public OAuthTokens requestAccessToken(OAuthLoginParams params) {
         String url = this.getAuthUrl()+this.getAuthEndPoint();

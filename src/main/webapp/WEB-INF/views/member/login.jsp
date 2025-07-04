@@ -10,6 +10,10 @@
 
 
 <jsp:include page="../include/header.jsp"/>
+<%--스왈--%>
+<link rel="stylesheet" type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/login/oauth.css"/>
 
@@ -67,26 +71,50 @@
         window.open(authUrl, 'OAuth Login', `width=\${width},height=\${height},left=\${left},top=\${top}`);
     }
 
-    function handleLoginSuccess(responseData) {
-        console.log(responseData);
-        alert(`'\${responseData.name}'님 환영합니다.`);
-        // 로그인 성공 후 페이지 이동
-        location.href = '/';
+    function handleLoginSuccess(isConnection, responseData, providerValue) {
+
+        if (isConnection) {
+            swal({
+                title: '환영합니다, \${responseData.name}님!',
+                text: `계정에 \${providerValue} 로그인이 연동 되었습니다.`,
+                icon: 'success',
+                button: '확인'
+            }, function () {
+                // 확인 버튼 클릭 후 실행
+                location.href = '/';
+            });
+        } else {
+            swal({
+                title: '로그인 성공',
+                text: `환영합니다, \${responseData.name}님!`,
+                icon: 'success',
+                button: '확인'
+            }, function () {
+                location.href = '/';
+            })
+        }
 
     }
 
     async function handleSignUpRequest(responseData) {
-        try {
-            const response = await axios.post('/oauth/sign-up', responseData, {
-                headers: { 'Content-Type': 'application/json' }
-            });
-            document.open();
-            document.write(response.data);
-            document.close();
-        } catch (error) {
-            console.error('회원가입 요청 실패:', error);
-            alert('회원가입 요청에 실패했습니다. 다시 시도해주세요.');
+        console.log(responseData)
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `${pageContext.request.contextPath}/oauth/sign-up`;
+
+        for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = responseData[key];
+                form.appendChild(input);
+            }
         }
+
+
+        document.body.appendChild(form);
+        form.submit();
     }
 
 </script>
