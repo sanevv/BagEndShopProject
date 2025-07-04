@@ -1,12 +1,9 @@
 package com.github.semiprojectshop.web.aery.productsearchcontroller;
 
-import java.util.List;
-
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.github.semiprojectshop.repository.kyeongsoo.model.DaoCustom;
-import com.github.semiprojectshop.repository.kyeongsoo.productDomain.ProductVO;
 import com.github.semiprojectshop.web.aery.commoncontroller.AbstractController;
 
 import jakarta.servlet.ServletContext;
