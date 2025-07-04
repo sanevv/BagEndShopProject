@@ -4,17 +4,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
-
+import com.github.semiprojectshop.config.oauth.client.GithubApiClient;
 import com.github.semiprojectshop.repository.seungho.domain.ProductVO;
 
 import lombok.RequiredArgsConstructor;
+
 @Repository
 @RequiredArgsConstructor
 public class ProductDAO_imple implements ProductDAO {
+
+    
 	private final DataSource ds;
 	private Connection conn;
 	private PreparedStatement pstmt;
@@ -73,5 +79,95 @@ public class ProductDAO_imple implements ProductDAO {
 		
 		return pvo;
 	}
+	@Override
+	public List<String> getImgPath(String productId) throws SQLException {
+			List<String> imgPath = new ArrayList<>();
+		try {
+			conn = ds.getConnection();
+			String sql = "select image_path from product_image where product_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, productId);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				imgPath.add(rs.getString(1));
+				
+			}
+			
+			
+		}finally {
+			close();
+		}
+		
+		
+		return imgPath;
+	}
+	@Override
+	public int deleteImg(Map<String, Object> paramap) throws SQLException {
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "delete from product_image where image_path = ? and product_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String) paramap.get("filename"));
+			pstmt.setString(2, (String) paramap.get("product_id"));
+			n = pstmt.executeUpdate();
+			
+			
+			
+		}finally {
+			close();
+		}
+		
+		
+		
+		return n;
+	}
+	@Override
+	public int updateProduct(ProductVO pvo) throws SQLException {
+		
+		int n = 0;
+		try {
+			
+			conn = ds.getConnection();
+			String sql = "update product set product_name = ?, product_size = ?, matter = ?, stock = ?, price = ?, product_info = ?, product_contents = ?, category_id = ? where product_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pvo.getProduct_name());
+			pstmt.setString(2, pvo.getProduct_size());
+			pstmt.setString(3, pvo.getMetter());
+			pstmt.setLong(4, pvo.getStock());
+			pstmt.setLong(5, pvo.getPrice());
+			pstmt.setString(6, pvo.getProduct_info());
+			pstmt.setString(7, pvo.getProduct_contents());
+			pstmt.setString(8, pvo.getCategory_id());
+			pstmt.setLong(9, pvo.getProduct_id());
+			
+			n = pstmt.executeUpdate();
+
+		}finally {
+			close();
+		}
+		
+		return n;
+	}
+	
+	
+	// 업데이트한 정보 DB에 업데이트
+	/*
+	 * @Override public int insertImg(Map<String, Object> paramap) throws
+	 * SQLException { int n = 0;
+	 * 
+	 * try { conn = ds.getConnection(); List<String> files = (List<String>)
+	 * paramap.get("files"); for(int i = 0; i < files.size();i++) { String sql =
+	 * "insert into product_image(product_id, image_path, thumbnail) values(?, ?, 0)"
+	 * ; pstmt = conn.prepareStatement(sql);
+	 * 
+	 * }
+	 * 
+	 * }
+	 * 
+	 * 
+	 * return n; }
+	 */
 
 }
