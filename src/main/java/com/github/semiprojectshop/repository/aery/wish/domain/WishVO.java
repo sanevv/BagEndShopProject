@@ -1,4 +1,4 @@
-package com.github.semiprojectshop.repository.aery.user.domain;
+package com.github.semiprojectshop.repository.aery.wish.domain;
 
 public class WishVO {
 

@@ -67,15 +67,15 @@
                     </div>
                     <div class="side-navi navi-list">
                         <div class="navi-item search-item">
-                            <button type="button" class="btn-search"><img
-                                    src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg"
-                                    alt="" class="max"></button>
+                            <button type="button" class="btn-search">
+                            	<img src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg"alt="" class="max">
+                            </button>
                             <div class="search-form">
-                                <form>
-                                    <input type="search" class="inp-search" placeholder="검색어를 입력해주세요"/>
-                                </form>
-                            </div>
-                        </div>
+                                <form action="${pageContext.request.contextPath}/searchResult.team1" method="get">
+						            <input type="search" class="inp-search" name="keyword" placeholder="검색어를 입력해주세요"/>
+						        </form>
+						    </div>
+						</div>
                         <div class="navi-item">
                             <a href="${pageContext.request.contextPath}/cart">
                                 <span class="count cart-count">

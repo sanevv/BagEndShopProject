@@ -8,4 +8,8 @@ public interface WishJpaCustom {
     long steamingProductByUserId(long productId, long loginUserId);
 
     List<WishResponse> findMyWishListByUserId(long userId);
+
+	List<WishResponse> findWishListPaging(long userId, int pageNo, int sizePerPage);
+
+	int countWishByUserId(long userId);
 }
