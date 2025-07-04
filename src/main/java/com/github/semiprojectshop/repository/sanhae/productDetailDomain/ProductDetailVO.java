@@ -3,6 +3,8 @@ package com.github.semiprojectshop.repository.sanhae.productDetailDomain;
 import com.github.semiprojectshop.config.DiscountConstants;
 import lombok.*;
 
+import java.util.List;
+
 
 @Getter
 @Setter

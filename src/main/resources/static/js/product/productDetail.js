@@ -11,9 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 초기 리뷰리스트 보여주기
     reviewListLoad(productId, 1);
 
-
     document.addEventListener('click', function(e) {
-
 
         const btnReviewComment = e.target.closest('.btn-review-comment');
         //const btnSubmit = e.target.closest('#btnCommentSubmit');
@@ -252,7 +250,7 @@ window.isLoginCheck = (val, reviewId) => {
     }
     if(!isLogin) {
 
-        if (!confirm("리뷰를 "+msg+"하기 위해선 \n 로그인이 필요합니다.")) return;
+        if (!confirm("리뷰를 "+msg+"하기 위해선 \n로그인이 필요합니다.\n로그인 하러 가시겠습니까?")) return;
         location.href = '/test/login.up';
         return;
     }

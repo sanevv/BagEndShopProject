@@ -88,28 +88,26 @@ public class ProductDetailDAOImple implements ProductDetailDAO {
     @Override
     public List<ProductDetailVO> getProductImageList(int productId) {
 
-        List<ProductDetailVO> productImageList = null;
+        List<ProductDetailVO> productImageList = new ArrayList<>();
 
         try {
             conn = ds.getConnection();
 
-            String sql = " SELECT image_path " +
-                         " FROM product_image " +
-                         " WHERE product_id = ? AND thumbnail = 0 ";
+            String sql = " SELECT PI.image_path AS productAddImagePath " +
+                         " FROM product P JOIN product_image PI " +
+                         " ON P.product_id = PI.product_id " +
+                         " WHERE P.product_id = ? and PI.thumbnail = 0";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, productId);
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                if(productImageList == null) {
-                    ProductDetailVO prdVO = new ProductDetailVO();
 
-                    prdVO.setProductAddImagePath(rs.getString("image_path"));
-                    productImageList = new ArrayList<>();
-                    productImageList.add(prdVO);
+                ProductDetailVO prdVO = new ProductDetailVO();
+                prdVO.setProductAddImagePath(rs.getString("productAddImagePath"));
 
-                }
+                productImageList.add(prdVO);
             }
 
         }

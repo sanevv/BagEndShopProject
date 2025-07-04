@@ -10,27 +10,26 @@
 </script>
 
 
-<div class="header">
-    <div class="categories">
-        <div class="category" data-category="all">ALL</div>
-        <div class="category" data-category="messenger">MESSENGER</div>
-        <div class="category" data-category="cross">CROSS</div>
-        <div class="category" data-category="backpack">BACKPACK</div>
-    </div>
-    <div class="sort-box">
-        <label>
-            <select>
-                <option data-sort="">SORT BY</option>
-                <option data-sort="newest">신상품</option>
-                <option data-sort="price_asc">낮은가격</option>
-                <option data-sort="price_desc">높은가격</option>
-            </select>
-        </label>
-    </div>
-</div>
-
 <!-- main contents -->
 <main id="main">
+    <div class="header">
+        <div class="categories">
+            <div class="category" data-category="all">ALL</div>
+            <div class="category" data-category="messenger">MESSENGER</div>
+            <div class="category" data-category="cross">CROSS</div>
+            <div class="category" data-category="backpack">BACKPACK</div>
+        </div>
+        <div class="sort-box">
+            <label>
+                <select>
+                    <option data-sort="">SORT BY</option>
+                    <option data-sort="newest">신상품</option>
+                    <option data-sort="price_asc">낮은가격</option>
+                    <option data-sort="price_desc">높은가격</option>
+                </select>
+            </label>
+        </div>
+    </div>
     <div class="inner">
 <%--        <h2 class="">zz</h2>--%>
         <ul class="product-list type-4" id="productList">

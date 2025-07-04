@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,12 +38,17 @@ public class ProductDetailController {
         ProductDetailVO prdVO = prdDAO.productDetail(productId);
 
         // 해당 상품 추가이미지 가져오기
-        // List<ProductDetailVO> productAddImageList = prdDAO.getProductImageList(productId);
+        List<ProductDetailVO> productAddImageList = prdDAO.getProductImageList(productId);
 
+        System.out.println("productAddImageList.size() : " + productAddImageList.size());
+
+        for (ProductDetailVO productAddImage : productAddImageList) {
+            prdVO.setProductAddImagePath(productAddImage.getProductAddImagePath());
+
+            //System.out.println("setProductAddImagePath : " + prdVO.getProductAddImagePath());
+        }
 
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-
-        //System.out.println("으아아아아아 : " + prdVO.getUserName());
 
         if (loginUser != null) {
             int userId = loginUser.getUserId(); // 로그인한 사용자 ID
@@ -53,9 +59,9 @@ public class ProductDetailController {
         //System.out.println("확인용 : " + product.getProductName());
 
         // JSP + Servlet 에서 사용하는 Request.setAttribute와 같은 듯?
-
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("prdVO", prdVO);
+        model.addAttribute("productAddImageList", productAddImageList);
 
 
         return "product/productDetail";

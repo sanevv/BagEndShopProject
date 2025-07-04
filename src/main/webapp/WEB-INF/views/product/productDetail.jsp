@@ -14,12 +14,14 @@
 		<div class="product-banner-top">
 			<c:if test="${not empty prdVO.productImagePath}">
 				<div class="product-banner-container">
-					<div class="thumbnails-img">
-						<span class="thumb active"><img src="${prdVO.productImagePath}" alt="${prdVO.productName} 이미지"/></span>
-						<span class="thumb"><img src="${pageContext.request.contextPath}/images/product/5/5-1.png" alt=""></span>
-						<span class="thumb"><img src="${pageContext.request.contextPath}/images/product/5/5-2.png" alt=""></span>
-						<span class="thumb"><img src="${pageContext.request.contextPath}/images/product/5/5-3.png" alt=""></span>
-					</div>
+					<c:if test="${not empty productAddImageList and productAddImageList.size() > 1}">
+						<div class="thumbnails-img">
+							<span class="thumb active"><img src="${prdVO.productImagePath}" alt="${prdVO.productName} 대표 이미지"/></span>
+							<c:forEach var="item" items="${productAddImageList}">
+								<span class="thumb"><img src="${item.productAddImagePath}" alt="${prdVO.productName} 추가 이미지"></span>
+							</c:forEach>
+						</div>
+					</c:if>
 					<div class="representative-img">
 						<button class="slide-btn prev" onclick="backimg()">&#10094;</button>
 						<img id="mainImage" src="${prdVO.productImagePath}" alt="${prdVO.productName} 이미지"/>
@@ -149,25 +151,38 @@
 <script src="${pageContext.request.contextPath}/js/cart/myCart.js"></script>
 <script>
 
-	const imgList = [
-		"${prdVO.productImagePath}",
-		"${pageContext.request.contextPath}/images/product/5/5-1.png",
-		"${pageContext.request.contextPath}/images/product/5/5-2.png",
-		"${pageContext.request.contextPath}/images/product/5/5-3.png"
-	];
+	const productTumbnails = document.querySelectorAll(".thumb");
+	const btnSlide = document.querySelectorAll(".slide-btn");
 
+	let productTumbnailsList = [];
 	let currentIndex = 0;
+
+	if(productTumbnails.length < 1) {
+		btnSlide.forEach(btn => btn.style.display = "none");
+	}
+	else {
+		productTumbnails.forEach((thumb, i) => {
+			productTumbnailsList.push(thumb.img);
+			thumb.addEventListener("click", () => {
+				showImg(i);
+			});
+		})
+	}
 
 	function showImg(index) {
 		const img = document.getElementById("mainImage");
-		img.src = imgList[index];
+
+		if(productTumbnailsList.length < 1) return;
+
+		//img.src = productTumbnailsList[index];
+		//console.log(productTumbnailsList[index]);
 		currentIndex = index;
 
 		// 썸네일에 active 클래스 관리
-		const thumbnails = document.querySelectorAll(".thumb");
-		thumbnails.forEach((thumb, i) => {
+		productTumbnails.forEach((thumb, i) => {
 			if (i === index) {
 				thumb.classList.add("active");
+				img.src = thumb.children[0].src;
 			} else {
 				thumb.classList.remove("active");
 			}
@@ -180,13 +195,13 @@
 			showImg(currentIndex);
 		}
 		else{
-			currentIndex = imgList.length-1;
+			currentIndex = productTumbnailsList.length-1;
 			showImg(currentIndex);
 		}
 	}
 
 	function nextimg() {
-		if(currentIndex+1 < imgList.length) {
+		if(currentIndex+1 < productTumbnailsList.length) {
 			currentIndex += 1;
 			showImg(currentIndex);
 		}
