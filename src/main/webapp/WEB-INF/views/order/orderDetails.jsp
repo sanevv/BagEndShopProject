@@ -11,6 +11,7 @@
 
 
 <jsp:include page="../include/header.jsp"/>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/order/orderDetails.js"/>
 
 <script type="text/javascript">
 
@@ -55,7 +56,7 @@
                                                 <div class="text-muted small">${product.productSize}</div>
                                                 <div class="fw-bold mt-2" style="text-decoration: line-through;">${product.atPrice}원</div>
                                                 <div class="fw-bold mt-2">
-                                                    <fmt:formatNumber value="${product.atPrice * product.atDiscountRate}" type="number" maxFractionDigits="0" />원
+                                                    <fmt:formatNumber value="${product.atPrice * product.atDiscountRate}" type="number" maxFractionDigits="0" />원&nbsp;&nbsp;${product.quantity}개
                                                 </div>
 
                                                 <c:choose>
@@ -67,15 +68,17 @@
                                                   </c:when>
                                                 </c:choose>
 
+                                                <c:choose>
+                                                    <c:when test="${order.status == 'DELIVERY' || order.status == 'COMPLETED'}">
+                                                        <div class="mt-2">
+                                                            <a href="${pageContext.request.contextPath}/review/write?productId=${product.orderProductId}"
+                                                               style="color: black; text-decoration: none;">
+                                                                후기작성
+                                                            </a>
+                                                        </div>
+                                                    </c:when>
+                                                </c:choose>
 
-                                            <div class="mt-2">
-                                                <a href="${pageContext.request.contextPath}/review/write?productId=${product.orderProductId}"
-                                                   style="color: black; text-decoration: none;">
-                                                  후기작성
-                                                </a>
-
-
-                                            </div>
                                           </div>
                                       </div>
                                   </div>

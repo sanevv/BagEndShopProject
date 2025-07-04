@@ -21,4 +21,5 @@ public class OrderQueryVO {
     private int reviewId;
     private int atPrice;
     private double atDiscountRate;
+    private int quantity;
 }

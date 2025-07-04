@@ -19,5 +19,6 @@ public class OrdersProductVO {
     private String thumbnailPath;
     private String productName;
     private String productSize;
+    private int quantity;
 
 }

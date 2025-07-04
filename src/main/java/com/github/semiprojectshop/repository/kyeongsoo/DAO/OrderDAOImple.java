@@ -48,7 +48,7 @@ public class OrderDAOImple implements OrderDAO{
             conn = ds.getConnection();
 
             String sql = " SELECT P.image_path, P.product_name, P.product_size, T.orders_id, T.orders_product_id, to_char(O.created_at, 'yyyy-mm-dd') as created_at, O.status, " +
-                    " T.at_price, T.at_discount_rate, T.review_id " +
+                    " T.at_price, T.at_discount_rate, T.review_id, T.QUANTITY " +
                     " FROM ( " +
                     "    SELECT image_path, product_name, product_size, P.product_id " +
                     "    FROM product P  " +
@@ -78,6 +78,7 @@ public class OrderDAOImple implements OrderDAO{
                 oqVO.setAtPrice(rs.getInt("at_price"));
                 oqVO.setAtDiscountRate(rs.getDouble("at_discount_rate"));
                 oqVO.setReviewId(rs.getInt("review_id"));
+                oqVO.setQuantity(rs.getInt("QUANTITY"));
 
                 orderQueryList.add(oqVO);
 
@@ -97,6 +98,7 @@ public class OrderDAOImple implements OrderDAO{
                 ordersProductVO.setReviewId(orderQuery.getReviewId());
                 ordersProductVO.setAtDiscountRate(orderQuery.getAtDiscountRate());
                 ordersProductVO.setProductSize(orderQuery.getProductSize());
+                ordersProductVO.setQuantity(orderQuery.getQuantity());
 
                 if(or == null) {
                     // 처음들어온 주문값일땐 새로운 OrderVO 생성
