@@ -177,7 +177,7 @@ reviewListHTML += `    </div> `;
                                 <a href="/review/detail/${productId}/${review.reviewId}" class="btn-review-detail"></a>
                             </div>
                         <div class="image">
-                            <img src="${review.productImagePath}" alt="상품 대표이미지" />
+                            <img src="${review.productImagePath}" alt="상품 대표이미지" onerror="this.src='/images/error/zz.png' " />
                         </div>
                     </li>
                 `;
@@ -254,6 +254,7 @@ window.isLoginCheck = (val, reviewId) => {
         location.href = '/test/login.up';
         return;
     }
+
 
     location.href = url;
 }

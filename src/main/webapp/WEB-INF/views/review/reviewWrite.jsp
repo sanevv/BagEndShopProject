@@ -28,7 +28,7 @@
                             <th>구매한 상품</th>
                             <td>
                                 <div class="image">
-                                    <img src="${pageContext.request.contextPath}${productImagePath}" alt="내가 주문한 상품의 대표 이미지">
+                                    <img src="${pageContext.request.contextPath}${productImagePath}" onerror="this.src='/images/error/zz.png' " alt="내가 주문한 상품의 대표 이미지">
                                 </div>
                             </td>
                         </tr>
@@ -41,7 +41,7 @@
                         <tr>
                             <th>평점</th>
                             <td>
-                                <div class="star">
+                                <div class="star" contenteditable="true">
                                     <label class="star-box">
                                         <input type="radio" name="star" id="">
                                         <span class="star-img"><span class="blind">별 1개</span></span>

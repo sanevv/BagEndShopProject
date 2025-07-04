@@ -23,7 +23,7 @@
                             <th>구매한 상품</th>
                             <td>
                                 <div class="image">
-                                    <img src="${pageContext.request.contextPath}${productImagePath}" alt="내가 주문한 상품의 대표 이미지">
+                                    <img src="${pageContext.request.contextPath}${productImagePath}" onerror="this.src='/images/error/zz.png' " alt="내가 주문한 상품의 대표 이미지">
                                 </div>
                             </td>
                         </tr>

@@ -445,6 +445,37 @@ public class ReviewDAOImple implements ReviewDAO {
         return rvcVO;
     }
 
+    // 상품 구매를 한 사람인지 알아오기
+    @Override
+    public boolean getIsBuy(int userId) {
+
+        boolean result = false;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " SELECT O.user_id, OP.product_id, OP.orders_id, O.status " +
+                         " FROM orders_product OP " +
+                         " JOIN product P ON OP.product_id = P.product_id " +
+                         " JOIN orders O ON OP.orders_id = O.orders_id " +
+                         " WHERE O.status not in ('READY') and O.user_id = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                result = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+
+        return result;
+    }
 
 
 }

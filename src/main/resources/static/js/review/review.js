@@ -13,6 +13,18 @@ reviewSubmit = () => {
     const form = document.forms['reviewWriteForm'];
     const productId = new URLSearchParams(window.location.search).get("productId");
 
+    if( form.reviewContents.value.trim() == "" ){
+        alert("리뷰 내용을 입력해주세요.");
+        form.reviewContents.focus();
+        return;
+    }
+
+    if (form.rating.value == 0) {
+        alert("리뷰에 대한 평점을 선택해주세요.");
+        document.querySelector('.star').focus();
+        return;
+    }
+
     const formData = new FormData();
     formData.append("userId", form.userId.value);
     formData.append("productId", productId);
@@ -33,8 +45,8 @@ reviewSubmit = () => {
         location.href = `/product/detail/${productId}`;
     })
     .catch(err => {
-        console.error("리뷰 등록 실패", err);
-        alert('리뷰 등록 중 오류가 발생했습니다.');
+        //console.error("리뷰 등록 실패", err);
+        alert("오류"+ err.message);
     });
 
 }

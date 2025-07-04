@@ -45,5 +45,8 @@ public interface ReviewDAO {
 
     // 리뷰코멘트 내용 가져오기
     ReviewCommentVO getReviewCommentInfo(int reviewId);
+
+    // 상품 구매를 한 사람인지 알아오기
+    boolean getIsBuy(int userId);
 }
 

@@ -11,10 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
 
@@ -50,6 +47,10 @@ public class ReviewController {
 
         return "review/reviewDetail";
     }
+//    @GetMapping("/write")
+//    public String getReviewReg() {
+//        return "redirect:/";
+//    }
     @GetMapping("/write")
     public String reviewReg(@RequestParam("productId") int productId,  HttpSession session, Model model){
 

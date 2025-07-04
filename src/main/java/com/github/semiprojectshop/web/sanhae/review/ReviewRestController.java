@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 @RestController // 포스트맨으로 JSON값을 확인하고 싶을 때
 @RequestMapping("/api/review")
 @RequiredArgsConstructor // final이 붙은 필드를 생성자(Constructor)를 자동으로 생성해줌
@@ -47,6 +49,7 @@ public class ReviewRestController {
         for (ReviewVO review : reviewList) {
             // 리뷰 작성자가 현재 로그인한 사람인지 확인하고 맞으면 true 아니면 false
             review.setLoginReviewUser(review.getUserId() == loginUserId);
+            review.setUserName( ReviewVO.getMaskName(review.getUserName()) );
 
             // 관리자 댓글 여부 가져오기
             boolean isComment = rvDAO.getReviewComment(review.getReviewId());
@@ -59,7 +62,7 @@ public class ReviewRestController {
                 if (commentVO != null) {
                     review.setCommentContents(commentVO.getCommentContents());
                     review.setReviewCommentId(commentVO.getReviewCommentId());
-                    
+
                     System.out.println("commentContents : " + commentVO.getCommentContents());
                     System.out.println("reviewCommentId : " + commentVO.getReviewCommentId());
                 }
@@ -81,12 +84,35 @@ public class ReviewRestController {
     // @ResponseBody : 자바 객체를 JSON으로 변환해서 클라이언트에 던져줌
     // ==> @RestController 선언이 되어 있다면 생략가능
     // MediaType.MULTIPART_FORM_DATA_VALUE 상수로 명시해주는게 좋음
+    // @ModelAttribute 은 클라이언트에서 넘어온 form 값을 자바 객체로 자동 바인딩해준다.
     @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addReviewForm(
             @ModelAttribute ReviewVO reviewVO,
-            @RequestPart(value = "file", required = false) MultipartFile file)  {
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            HttpSession session)  {
 
         try {
+
+            MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+            if (loginUser == null) {
+                return ResponseEntity.status(401).body("로그인이 필요합니다.");
+            }
+
+            boolean isBuyUser = rvDAO.getIsBuy(loginUser.getUserId());
+
+            System.out.println("isBuyUser : " + isBuyUser);
+
+            if (!isBuyUser) {
+                return ResponseEntity.status(403).body("리뷰는 구매한 사람만 가능합니다.");
+            }
+
+            System.out.println("loginUser.getUserId() : " + loginUser.getUserId());
+
+
+            if(reviewVO.getReviewContents() == null || reviewVO.getReviewContents().trim().isEmpty()) {
+                return ResponseEntity.status(BAD_REQUEST).body("내용을 등록해주세요!");
+            }
 
             String path = "";
             Path uploadDir = storageService.createFileDirectory("review",
@@ -94,17 +120,19 @@ public class ReviewRestController {
                     String.valueOf(reviewVO.getProductId()));
 
             if (file != null && !file.isEmpty()) {
-
                 path = storageService.returnTheFilePathAfterTransfer(file, uploadDir);
             }
 
             ReviewVO insertReview = rvDAO.addReview(reviewVO, path);
 
+            Map<String, Object> reviewMap = new HashMap<>();
+            reviewMap.put("review", insertReview);
+            reviewMap.put("isBuyUser", isBuyUser);
 
-            return ResponseEntity.ok(insertReview);
+            return ResponseEntity.ok(reviewMap);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return ResponseEntity.status(500).body("리뷰 저장 중 오류 발생");
         }
 

@@ -2,24 +2,37 @@
 
 /* 메인페이지 : 메인배너 */
 .main-banner {
-    background-color: #f8f8f8;
+
 }
 #mainBanner {
     max-height: 500px;
-    background-color: #f8f8f8;
+
+}
+.main-banner .swiper-button-next,
+.main-banner .swiper-button-prev {
+    color: #000;
 }
 .main-banner .banner-img {
-    max-height: 400px;
-    height: 100%;
+    padding-bottom: 100%;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
+    background-size: cover;
+}
+.main-banner .banner-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 .main-banner .product-name {
-    text-align: center;
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
     font-size: 1.5rem;
+    line-height: 1.3;
     font-weight: bold;
-    margin-top: 2rem;
+    color: #fff;
+    z-index: 10;
 }
 
 .main-banner .product-link {
@@ -29,6 +42,7 @@
     bottom: 0;
     left: 0;
     z-index: 2;
+    background: linear-gradient(rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.5) 100%);
 }
 
 

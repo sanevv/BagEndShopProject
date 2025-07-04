@@ -32,6 +32,7 @@ public class ReviewVO {
 
     // 관리자 코멘트 내용
     String commentContents;
+
     // 관리자 코멘트 번호
     int reviewCommentId;
 
