@@ -38,7 +38,7 @@ public class ProductDetailDAOImple implements ProductDetailDAO {
 
     // 프론트에서 가져온 ProductId로 상세페이지 보여주기
     @Override
-    public ProductDetailVO ProductDetail(int productId) throws SQLException {
+    public ProductDetailVO productDetail(int productId) throws SQLException {
 
         ProductDetailVO prdVO = null;
 
@@ -82,5 +82,42 @@ public class ProductDetailDAOImple implements ProductDetailDAO {
         }
 
         return prdVO;
+    }
+
+
+    @Override
+    public List<ProductDetailVO> getProductImageList(int productId) {
+
+        List<ProductDetailVO> productImageList = new ArrayList<>();
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " SELECT PI.image_path AS productAddImagePath " +
+                         " FROM product P JOIN product_image PI " +
+                         " ON P.product_id = PI.product_id " +
+                         " WHERE P.product_id = ? and PI.thumbnail = 0";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, productId);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                ProductDetailVO prdVO = new ProductDetailVO();
+                prdVO.setProductAddImagePath(rs.getString("productAddImagePath"));
+
+                productImageList.add(prdVO);
+            }
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
+
+        return productImageList;
     }
 }

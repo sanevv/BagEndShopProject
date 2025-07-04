@@ -10,51 +10,44 @@ starBox.forEach((star, idx) => {
 // 리뷰 작성 폼에서 데이터를 수집해서 fetch로 서버에 POST 전송하기
 reviewSubmit = () => {
 
-    const params = new URLSearchParams(window.location.search);
-    const productId = params.get("productId");
+    const form = document.forms['reviewWriteForm'];
+    const productId = new URLSearchParams(window.location.search).get("productId");
 
-    const form2 = document.forms['reviewWriteForm']; // 폼 요소
+    if( form.reviewContents.value.trim() == "" ){
+        alert("리뷰 내용을 입력해주세요.");
+        form.reviewContents.focus();
+        return;
+    }
+
+    if (form.rating.value == 0) {
+        alert("리뷰에 대한 평점을 선택해주세요.");
+        document.querySelector('.star').focus();
+        return;
+    }
 
     const formData = new FormData();
-    formData.append("userId", form2.userId.value);
+    formData.append("userId", form.userId.value);
     formData.append("productId", productId);
-    formData.append("reviewContents", form2.reviewContents.value);
+    formData.append("reviewContents", form.reviewContents.value);
     formData.append("rating", rating.value);
-    formData.append("file", form2.reviewImageFile.files[0]);
+    formData.append("file", form.reviewImageFile.files[0]);
 
-    const form = document.reviewWriteForm;
-    const reviewData = {
-        userId: form.userId.value,
-        productId: productId,
-        reviewContents: form.reviewContents.value,
-        rating: rating.value,
-        reviewImagePath: form.reviewImageFile.value
-    };
+    console.log("formData : ", form.reviewImageFile.files[0]);
 
     fetch('/api/review/write', {
         method: 'POST',
-        body: formData // Content-Type 설정 → 자동 처리됨
+        body: formData // Content-Type 자동 설정 (multipart/form-data)
     })
     .then(res => res.json())
     .then(data => {
         console.log("리뷰 등록 성공", data);
         alert('리뷰가 등록되었습니다!');
         location.href = `/product/detail/${productId}`;
+    })
+    .catch(err => {
+        //console.error("리뷰 등록 실패", err);
+        alert("오류"+ err.message);
     });
-
-    // fetch('/api/review/write', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(reviewData)
-    //
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     console.log(data);
-    //     alert('리뷰가 등록되었습니다!');
-    //     location.href = `/product/detail/${productId}`;
-    //     // 페이지 새로고침 없이 리뷰 목록 업데이트
-    // });
 
 }
 
@@ -95,14 +88,82 @@ reviewDelete = (reviewId, productId) => {
 
 }
 
+// 관리자가 댓글쓰는거
+reviewCommentSubmit = (userId, reviewId, commentContents) => {
+    fetch('/api/comment/write', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userId: parseInt(userId),
+            reviewId: parseInt(reviewId),
+            commentContents: commentContents
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.success) {
+            alert('댓글이 등록되었습니다.');
+            // 모달 닫기
+            document.getElementById('reviewCommentModal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+
+            // 페이지 새로고침
+            location.reload();
+        } else {
+            alert('댓글 등록에 실패했습니다.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('댓글 등록 중 오류가 발생했습니다.');
+    });
+
+}
+
+// 관리자 댓글 수정하기
+reviewCommentUpdate = (userId, reviewId, reviewCommentId, commentContents) => {
+    fetch('/api/comment/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userId: parseInt(userId),
+            reviewId: parseInt(reviewId),
+            reviewCommentId: parseInt(reviewCommentId),
+            commentContents: commentContents
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                alert('댓글이 수정되었습니다.');
+                // 모달 닫기
+                document.getElementById('reviewCommentUpdateModal').style.display = 'none';
+                document.body.classList.remove('modal-open');
+
+                // 페이지 새로고침
+                location.reload();
+            } else {
+                alert('댓글 수정에 실패했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('댓글 등록 중 오류가 발생했습니다.');
+        });
+
+}
 
 const btnDeleteReview = document.querySelectorAll(".btn-review-delete");
 btnDeleteReview.forEach(btn => {
     btn.addEventListener("click", reviewDelete);
 })
-//
-// const btnUpdateReview = document.querySelector("#btnUpdateReview");
-// btnUpdateReview.addEventListener("click", reviewUpdate);
+
 
 
 

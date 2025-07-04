@@ -5,9 +5,12 @@
    ========================== */
 
 .product-info-container .inner {
+    display: flex;
+    justify-content: space-between;
     max-width: 1200px;
     margin: 120px auto 200px;
     font-size: 0;
+    padding:0;
 }
 
 /* 상풍상세페이지 : 상단 배너 */
@@ -65,7 +68,7 @@
 
 .product-detail-info {
     display: inline-block;
-    width: calc(100% - 280px);
+    width: calc(100% - 300px);
     vertical-align: top;
     font-size: 15px;
     line-height: 2;

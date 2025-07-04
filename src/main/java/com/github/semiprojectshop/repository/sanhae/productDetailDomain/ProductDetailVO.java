@@ -3,6 +3,8 @@ package com.github.semiprojectshop.repository.sanhae.productDetailDomain;
 import com.github.semiprojectshop.config.DiscountConstants;
 import lombok.*;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -25,6 +27,7 @@ public class ProductDetailVO {
 
     // product_image 테이블 조인해서 사용할거임
     private String productImagePath; // 대표이미지 경로
+    private String productAddImagePath; // 추가이미지 경로
 
     // review 작성자 이름 가져올거임
     private String reviewUserName; // 작성자 이름
