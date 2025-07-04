@@ -49,13 +49,13 @@
                         </button>
                         <div class="navi-item">
                             <c:if test="${empty sessionScope.loginUser}">
-                                <a href="/test/login.up" id="login-status">
+                                <a href="${pageContext.request.contextPath}/test/login.up" id="login-status">
                                     <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg"
                                          alt="마이페이지 아이콘"/>
                                 </a>
                             </c:if>
                             <c:if test="${not empty sessionScope.loginUser}">
-                                <a href="/test/memberOneChange" id="login-status">
+                                <a href="${pageContext.request.contextPath}/orderShow/orderDetails" id="login-status">
                                     <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg"
                                          alt="마이페이지 아이콘"/>
                                 </a>
