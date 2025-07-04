@@ -2,8 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     // 로그인 여부 확인
-    boolean isLogin = session.getAttribute("loginUser") != null;
+    boolean isLoginJava = session.getAttribute("loginUser") != null;
 %>
+
+<script type="text/javascript">
+
+	const frm = document.prodRegisterFrm;
+	frm.method = "post";
+	frm.action = "prod/register";
+	frm.submit();
+
+</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +34,8 @@
     <script src="${pageContext.request.contextPath}/lib/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
 
     <div id="wrap">
         <!-- header -->
@@ -49,13 +60,13 @@
                         </button>
                         <div class="navi-item">
                             <c:if test="${empty sessionScope.loginUser}">
-                                <a href="/test/login.up" id="login-status">
+                                <a href="${pageContext.request.contextPath}/test/login.up" id="login-status">
                                     <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg"
                                          alt="마이페이지 아이콘"/>
                                 </a>
                             </c:if>
                             <c:if test="${not empty sessionScope.loginUser}">
-                                <a href="/test/memberOneChange" id="login-status">
+                                <a href="${pageContext.request.contextPath}/orderShow/orderDetails" id="login-status">
                                     <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_account.svg"
                                          alt="마이페이지 아이콘"/>
                                 </a>
@@ -67,22 +78,22 @@
                     </div>
                     <div class="side-navi navi-list">
                         <div class="navi-item search-item">
-                            <button type="button" class="btn-search"><img
-                                    src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg"
-                                    alt="" class="max"></button>
+                            <button type="button" class="btn-search">
+                            	<img src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg"alt="" class="max">
+                            </button>
                             <div class="search-form">
-                                <form>
-                                    <input type="search" class="inp-search" placeholder="검색어를 입력해주세요"/>
-                                </form>
-                            </div>
-                        </div>
+                                <form action="${pageContext.request.contextPath}/searchResult.team1" method="get">
+						            <input type="search" class="inp-search" name="keyword" placeholder="검색어를 입력해주세요"/>
+						        </form>
+						    </div>
+						</div>
                         <div class="navi-item">
                             <a href="${pageContext.request.contextPath}/cart">
                                 <span class="count cart-count">
-                                    <c:if test="<%= !isLogin %>">
+                                    <c:if test="<%= !isLoginJava %>">
                                         <span class="basket-count">0</span>
                                     </c:if>
-                                    <c:if test="<%= isLogin %>">
+                                    <c:if test="<%= isLoginJava %>">
                                         <span class="basket-count"></span>
                                     </c:if>
 
@@ -100,6 +111,13 @@
                             <li><a href="${pageContext.request.contextPath}/notice/list.one">승호바보</a></li>
                             <li><a href="productList.one">경수바보</a></li>
                             <li><a href="productList.one">애리천재</a></li>
+							<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
+							    <li>
+							        <form name="prodRegisterFrm" action="${pageContext.request.contextPath}/prod/register" method="post">
+							            <a><button type="submit" style="all:unset; cursor:pointer;">제품 등록</button></a>
+							        </form>
+							    </li>
+							</c:if>
                         </ul>
                     </div>
                 </div>
@@ -110,7 +128,7 @@
         </header>
         <!-- //header -->
         <script defer>//
-            const isLogin = <%= isLogin %>;
+            const isLogin = <%= isLoginJava %>;
             function showCartCount() {
                 axios.get('/api/cart/count')
                     .then(response => {

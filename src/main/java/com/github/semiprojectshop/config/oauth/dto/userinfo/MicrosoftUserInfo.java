@@ -30,7 +30,9 @@ public class MicrosoftUserInfo implements OAuthUserInfo {
 
     @Override
     public String getProfileImg() {
-        return this.picture;
+//        return this.picture;
+        return null; //위의 값은 요청보낼 api 경로이다. 따로 요청을보내서 파일을 서버에저장해야됨
+        //MicrosoftApiClient 주석 메서드 참고
     }
 
     @Override

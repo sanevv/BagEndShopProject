@@ -4,6 +4,7 @@ import com.github.semiprojectshop.config.oauth.dto.tokens.TwitterTokens;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.OAuthUserInfo;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.TwitterUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
+import com.github.semiprojectshop.service.sihu.StorageService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +28,8 @@ public class TwitterApiClient extends OAuthApiClient{
     @Value("${oauth.twitter.secret}")
     private String clientSecret;
 
-    public TwitterApiClient(RestTemplate restTemplate) {
-        super(restTemplate);
+    public TwitterApiClient(RestTemplate restTemplate, StorageService service) {
+        super(restTemplate, service);
     }
 
     @Override

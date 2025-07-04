@@ -3,7 +3,9 @@ package com.github.semiprojectshop.repository.sihu.user;
 import com.github.semiprojectshop.config.module.converter.MyUserStatusConverter;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.OAuthUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.SocialId;
+import com.github.semiprojectshop.web.sihu.dto.oauth.response.OAuthSignUpDto;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
@@ -74,5 +76,17 @@ public class MyUser {
     }
     public boolean isEnabled() {
         return this.status == MyUserStatus.NORMAL;
+    }
+
+    public void modifyOauthSignUp(OAuthSignUpDto oAuthSignUpDto) {
+        this.email = oAuthSignUpDto.getEmail();
+        this.name = oAuthSignUpDto.getName();
+        this.phoneNumber = oAuthSignUpDto.getPhoneNumber();
+        this.zipCode = oAuthSignUpDto.getZipCode();
+        this.address = oAuthSignUpDto.getAddress();
+        this.addressDetails = oAuthSignUpDto.getAddressDetails();
+        if(oAuthSignUpDto.getProfileImageUrl() != null)
+            this.profileImage = oAuthSignUpDto.getProfileImageUrl();
+        this.status = MyUserStatus.NORMAL; // 상태를 NORMAL로 변경
     }
 }

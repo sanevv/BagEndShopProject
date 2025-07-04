@@ -42,11 +42,18 @@ public class NoticeController {
 		String title = request.getParameter("title");
 		String contents = request.getParameter("contents");
 		String notice_id =request.getParameter("notice_id");
+		String prevThumbnail = request.getParameter("prevThumbnail");  // 기존 썸네일 받아오기
+		String imagePath = null;	
+		
 		int result = 0;
 		Map<String, Object> json = new HashMap<>();
-		
-		Path uploadDir = storageService.createFileDirectory("notice", title);
-		String imagePath = storageService.returnTheFilePathAfterTransfer(thumbnail, uploadDir);
+	
+	    if (thumbnail != null && !thumbnail.isEmpty()) {
+	        Path uploadDir = storageService.createFileDirectory("notice", title);
+	        imagePath = storageService.returnTheFilePathAfterTransfer(thumbnail, uploadDir);
+	    } else {
+	        imagePath = prevThumbnail;  // 새 이미지 없으면 기존 이미지 유지
+	    }
 		//System.out.println(title + contents + notice_id);
 		Map<String, String> paraMap = new HashMap<>();
 		
@@ -75,7 +82,7 @@ public class NoticeController {
 		
 		request.setAttribute("nvo", nvo);
 		//System.out.println(nvo);
-		return "product/NoticeUpdate";
+		return "notice/NoticeUpdate";
 	}
 	
 	@PostMapping("/delete")
@@ -113,7 +120,7 @@ public class NoticeController {
 	        return "redirect:/error/500";
 	    }
 
-	    return "product/Notice";
+	    return "notice/Notice";
 	}
 
 }

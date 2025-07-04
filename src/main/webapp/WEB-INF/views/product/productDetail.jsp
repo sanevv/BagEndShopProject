@@ -8,21 +8,27 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/review/review.css">
 
 <jsp:include page="../include/header.jsp"></jsp:include>
-<script>
-	// 로그인 유무
-	let isLogin = ${loginUser};
-</script>
+
+<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
+	<form method="post" action="${pageContext.request.contextPath}/prod/update">
+		<button class="btn btn-sm" type="submit">수정하기</button>
+		<input type="hidden" name="productId"value="${prdVO.productId}">
+	</form>
+</c:if>
+
 <main id="main">
 	<div class="product-container">
 		<div class="product-banner-top">
 			<c:if test="${not empty prdVO.productImagePath}">
 				<div class="product-banner-container">
-					<div class="thumbnails-img">
-						<span class="thumb active"><img src="${prdVO.productImagePath}" alt="${prdVO.productName} 이미지"/></span>
-						<span class="thumb"><img src="${pageContext.request.contextPath}/images/product/5/5-1.png" alt=""></span>
-						<span class="thumb"><img src="${pageContext.request.contextPath}/images/product/5/5-2.png" alt=""></span>
-						<span class="thumb"><img src="${pageContext.request.contextPath}/images/product/5/5-3.png" alt=""></span>
-					</div>
+					<c:if test="${not empty productAddImageList and productAddImageList.size() > 1}">
+						<div class="thumbnails-img">
+							<span class="thumb active"><img src="${prdVO.productImagePath}" alt="${prdVO.productName} 대표 이미지"/></span>
+							<c:forEach var="item" items="${productAddImageList}">
+								<span class="thumb"><img src="${item.productAddImagePath}" alt="${prdVO.productName} 추가 이미지"></span>
+							</c:forEach>
+						</div>
+					</c:if>
 					<div class="representative-img">
 						<button class="slide-btn prev" onclick="backimg()">&#10094;</button>
 						<img id="mainImage" src="${prdVO.productImagePath}" alt="${prdVO.productName} 이미지"/>
@@ -79,6 +85,7 @@
 				<div class="review-body">
 					<ul id="reviewList" class="review-list"></ul>
 				</div>
+				<div class="review-footer" id="pageBar"></div>
 			</div>
 			<!-- //리뷰 -->
 
@@ -93,9 +100,57 @@
 		</div>
 	</div>
 
+
+	<!-- 관리자 댓글 작성하기 -->
+	<div class="modal fade" id="reviewCommentModal" tabindex="-1" aria-hidden="true">
+		<form id="reviewCommentForm" name="reviewCommentForm">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">관리자 댓글 작성하기</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<textarea id="commentContents" name="reviewCommentContents" placeholder="작성해주세요."></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+						<button type="button" id="btnCommentSubmit" class="btn btn-primary">작성완료</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<!-- 관리자 댓글 수정하기 -->
+	<div class="modal fade" id="reviewCommentUpdateModal" tabindex="-1" aria-hidden="true">
+		<form id="reviewCommentUpdateForm" name="reviewCommentUpdateForm">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">관리자 댓글 수정하기</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<textarea id="commentUpdateContents" name="reviewCommentContents" placeholder="작성해주세요."></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+						<button type="button" id="btnCommentUpdate" class="btn btn-primary">수정완료</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
 	<input type="hidden" name="reviewUserName" value="${prdVO.reviewUserName}">
 	<input type="hidden" name="userId" value="${userId}">
 	<input type="hidden" name="productId" value="${prdVO.productId}">
+
 </main>
 
 <script src="${pageContext.request.contextPath}/js/product/productDetail.js"></script>
@@ -103,25 +158,38 @@
 <script src="${pageContext.request.contextPath}/js/cart/myCart.js"></script>
 <script>
 
-	const imgList = [
-		"${prdVO.productImagePath}",
-		"${pageContext.request.contextPath}/images/product/5/5-1.png",
-		"${pageContext.request.contextPath}/images/product/5/5-2.png",
-		"${pageContext.request.contextPath}/images/product/5/5-3.png"
-	];
+	const productTumbnails = document.querySelectorAll(".thumb");
+	const btnSlide = document.querySelectorAll(".slide-btn");
 
+	let productTumbnailsList = [];
 	let currentIndex = 0;
+
+	if(productTumbnails.length < 1) {
+		btnSlide.forEach(btn => btn.style.display = "none");
+	}
+	else {
+		productTumbnails.forEach((thumb, i) => {
+			productTumbnailsList.push(thumb.img);
+			thumb.addEventListener("click", () => {
+				showImg(i);
+			});
+		})
+	}
 
 	function showImg(index) {
 		const img = document.getElementById("mainImage");
-		img.src = imgList[index];
+
+		if(productTumbnailsList.length < 1) return;
+
+		//img.src = productTumbnailsList[index];
+		//console.log(productTumbnailsList[index]);
 		currentIndex = index;
 
 		// 썸네일에 active 클래스 관리
-		const thumbnails = document.querySelectorAll(".thumb");
-		thumbnails.forEach((thumb, i) => {
+		productTumbnails.forEach((thumb, i) => {
 			if (i === index) {
 				thumb.classList.add("active");
+				img.src = thumb.children[0].src;
 			} else {
 				thumb.classList.remove("active");
 			}
@@ -134,13 +202,13 @@
 			showImg(currentIndex);
 		}
 		else{
-			currentIndex = imgList.length-1;
+			currentIndex = productTumbnailsList.length-1;
 			showImg(currentIndex);
 		}
 	}
 
 	function nextimg() {
-		if(currentIndex+1 < imgList.length) {
+		if(currentIndex+1 < productTumbnailsList.length) {
 			currentIndex += 1;
 			showImg(currentIndex);
 		}

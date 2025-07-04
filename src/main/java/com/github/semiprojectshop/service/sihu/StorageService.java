@@ -80,8 +80,10 @@ public class StorageService {
         Path destination = uploadDir.resolve(prefix + originalFileName);
         saveFile(file, destination);
         return createWebPath(destination);
-
     }
+
+
+
 
     /**
      * 파일 앞에 붙일 단어가 없을때. 그냥 원본파일명으로 저장된다.
@@ -93,6 +95,30 @@ public class StorageService {
     private void saveFile(MultipartFile file, Path destination) {
         try {
             file.transferTo(destination.toFile());
+        } catch (IOException e) {
+            log.error("파일 저장 중 오류 발생: {}", e.getMessage(), e);
+            throw CustomMyException.fromMessage("파일 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
+    }
+
+
+    /**
+     * byte[] 파일을 저장하는 메소드
+     */
+    public String returnTheFilePathAfterTransfer(byte[] file, Path uploadDir, String fileName) {
+
+//        String originalFileName = Objects.requireNonNull(file.());
+        Path destination = uploadDir.resolve(fileName + ".jpg");
+        saveFile(file, destination);
+        return createWebPath(destination);
+    }
+    /**
+        * byte[] 파일을 저장하는 메소드
+     */
+    private void saveFile(byte[] file, Path destination) {
+        try {
+            Files.write(destination, file);
+            log.info("파일이 성공적으로 저장되었습니다: {}", destination);
         } catch (IOException e) {
             log.error("파일 저장 중 오류 발생: {}", e.getMessage(), e);
             throw CustomMyException.fromMessage("파일 저장 중 오류가 발생했습니다. 다시 시도해주세요.");

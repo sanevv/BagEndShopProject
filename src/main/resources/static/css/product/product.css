@@ -14,13 +14,21 @@
     position: relative;
     width: 25%;
 }
-.product-list .product-img {
+.product-list li .product-img {
     position: relative;
     width: 100%;
+    border-top: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
+    border-left: solid 1px #ddd;
 }
-
-.product-list li:not(:last-child) .product-img{
-    border-right: 1px solid #ddd;
+.product-list li:last-child .product-img {
+    border-right: solid 1px #ddd;
+}
+.product-list .product-back-img {
+    padding-top: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .product-list .product-img img {
@@ -129,9 +137,17 @@
 }
 
 
+@media screen and (min-width: 1025px){
+    .product-list li:nth-child(4n) .product-img{
+        border-right: solid 1px #ddd;
+    }
+}
 @media screen and (max-width: 1024px){
     .product-list.type-4 li {
         width: 50%;
+    }
+    .product-list li:nth-child(2n) .product-img {
+        border-right: solid 1px #ddd;
     }
 }
 
@@ -141,8 +157,9 @@
     align-items: center;
     justify-content: center;
     padding: 20px 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: solid 1px #eee;
     position: relative;
+    margin: 2.5rem 0;
 }
 
 /* 카테고리 영역 */

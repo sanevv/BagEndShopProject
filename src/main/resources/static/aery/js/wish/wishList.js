@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             const productId = button.getAttribute('data-id');
             if (!confirm('해당 상품을 주문하시겠습니까?')) return;
-            location.href = `/wishOrder.team1?productId=${productId}`;
+            location.href = `/wishToOrder.team1?productId=${productId}`;
         });
     });
 

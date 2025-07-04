@@ -38,5 +38,10 @@ public class Category {
             }
         };
     }
+    public static Category onlyId(Long categoryId) {
+        Category category = new Category();
+        category.categoryId = categoryId;
+        return category;
+    }
 
 }

@@ -1,15 +1,16 @@
 package com.github.semiprojectshop.web.sihu.viewcontroller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
+import com.github.semiprojectshop.service.sihu.exceptions.CustomMyException;
 import com.github.semiprojectshop.web.sihu.dto.oauth.request.OAuthCodeParams;
 import com.github.semiprojectshop.web.sihu.dto.oauth.request.OAuthLoginParams;
+import com.github.semiprojectshop.web.sihu.dto.oauth.response.OAuthSignUpDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Controller
@@ -34,9 +35,28 @@ public class OAuthViewController {
         OAuthLoginParams params = OAuthLoginParams.fromCodeParams(codeParams, provider);
         model.addAttribute("params", params);
         model.addAttribute("provider", provider.name().toLowerCase());
+        model.addAttribute("providerValue", provider.getValue());
         return "oauth/callback";
+    }
+    @PostMapping("/sign-up")
+    public String oauthSignUpView(@ModelAttribute OAuthSignUpDto signUpDto, Model model) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String signUpDtoJson = objectMapper.writeValueAsString(signUpDto);
+            model.addAttribute("signUpDto", signUpDtoJson);
+        } catch (JsonProcessingException e) {
+            throw CustomMyException.fromMessage(e.getMessage());
+        }
 
+//        model.addAttribute("signUpDto", signUpDto);
+        model.addAttribute("provider", signUpDto.getProvider().name());
+        model.addAttribute("cart", "나 카트얌");
+        return "oauth/sign_up";
 
-
+    }
+    @GetMapping("/oauth-test")
+    public String test(Model model){
+        model.addAttribute("cart", "나 카트얌");
+        return "oauth/sign_up";
     }
 }

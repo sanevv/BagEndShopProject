@@ -23,7 +23,7 @@
                             <th>구매한 상품</th>
                             <td>
                                 <div class="image">
-                                    <img src="${pageContext.request.contextPath}${productImagePath}" alt="내가 주문한 상품의 대표 이미지">
+                                    <img src="${pageContext.request.contextPath}${productImagePath}" onerror="this.src='/images/error/zz.png' " alt="내가 주문한 상품의 대표 이미지">
                                 </div>
                             </td>
                         </tr>
@@ -93,6 +93,10 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <%-- 관리자 답변 --%>
+                <div id="adminComments"></div>
+
                 <button type="button" class="btn-review-write" onclick="history.back()">목록으로 돌아가기</button>
             </div>
         </div>
@@ -112,7 +116,32 @@
 
         $starBox.eq(Number(ratingVal - 1)).trigger("click");
 
+
+        reviewCommentList();
     });
+
+    reviewCommentList = () => {
+
+        const adminComments = document.querySelector('#adminComments');
+
+
+        fetch(`/api/comment/list?reviewId=${reviewId}`)
+            .then(response => response.json())
+            .then(data => {
+                //console.log(data.isComment);
+                if( !data.isComment ) {
+                    adminComments.style.display = "none";
+                    return;
+                }
+                console.log(data.commentContents);
+                adminComments.innerHTML = '<h3 class="title">관리자 답변</h3>' +
+                                          '<p class="admin-contents">' + data.commentContents + '</p>';
+
+            })
+
+            .catch(error => console.error("API 호출 실패:", error));
+
+    }
 </script>
 
 

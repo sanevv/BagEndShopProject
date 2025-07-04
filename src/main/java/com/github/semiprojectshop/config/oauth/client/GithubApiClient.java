@@ -5,6 +5,7 @@ import com.github.semiprojectshop.config.oauth.dto.userinfo.GithubEmail;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.GithubUserInfo;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.OAuthUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
+import com.github.semiprojectshop.service.sihu.StorageService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,8 +38,8 @@ public class GithubApiClient extends OAuthApiClient {
     private String clientSecret;
 
 
-    public GithubApiClient(RestTemplate restTemplate) {
-        super(restTemplate);
+    public GithubApiClient(RestTemplate restTemplate, StorageService service) {
+        super(restTemplate, service);
     }
 
     @Override

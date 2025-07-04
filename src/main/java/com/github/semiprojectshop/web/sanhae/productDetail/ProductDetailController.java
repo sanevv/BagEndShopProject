@@ -11,8 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/product")
@@ -25,13 +28,27 @@ public class ProductDetailController {
     // {productId} 는 경로 변수임
     @GetMapping("/detail/{productId}")
     // Model model은 Spring 에서 제공하는 View(jsp)페이지로 데이터를 전달에 필요한 인터페이스 객체이다.
-    public String detail(@PathVariable int productId, HttpSession session, Model model) throws SQLException {
+    public String detail(@PathVariable int productId,
+                         @RequestParam(value = "page", defaultValue = "1") int page,
+                         @RequestParam(value = "sizePerPage", defaultValue = "5") int sizePerPage,
+                        HttpSession session, Model model) throws SQLException {
 
 
-        ProductDetailVO prdVO = prdDAO.ProductDetail(productId);
+        // 상세페이지 정보 가져오기
+        ProductDetailVO prdVO = prdDAO.productDetail(productId);
+
+        // 해당 상품 추가이미지 가져오기
+        List<ProductDetailVO> productAddImageList = prdDAO.getProductImageList(productId);
+
+        System.out.println("productAddImageList.size() : " + productAddImageList.size());
+
+        for (ProductDetailVO productAddImage : productAddImageList) {
+            prdVO.setProductAddImagePath(productAddImage.getProductAddImagePath());
+
+            //System.out.println("setProductAddImagePath : " + prdVO.getProductAddImagePath());
+        }
+
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-
-        //System.out.println("으아아아아아 : " + prdVO.getUserName());
 
         if (loginUser != null) {
             int userId = loginUser.getUserId(); // 로그인한 사용자 ID
@@ -42,9 +59,9 @@ public class ProductDetailController {
         //System.out.println("확인용 : " + product.getProductName());
 
         // JSP + Servlet 에서 사용하는 Request.setAttribute와 같은 듯?
-
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("prdVO", prdVO);
+        model.addAttribute("productAddImageList", productAddImageList);
 
 
         return "product/productDetail";

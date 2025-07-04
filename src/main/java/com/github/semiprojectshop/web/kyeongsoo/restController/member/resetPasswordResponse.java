@@ -1,8 +1,11 @@
 package com.github.semiprojectshop.web.kyeongsoo.restController.member;
 
+import com.github.semiprojectshop.config.encryption.Sha256;
 import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.kyeongsoo.memberModel.MemberDAO;
+import com.github.semiprojectshop.repository.sihu.user.MyUser;
 import com.github.semiprojectshop.repository.sihu.user.MyUserJpa;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +30,7 @@ public class resetPasswordResponse {
     }
     @GetMapping("/exist-pwd")
     public boolean existPassword(@RequestParam String password) {
-        return !myUserJpa.existsByPassword(password);
+        return !myUserJpa.existsByPasswordAndEmail(password, "email");
     }
 
     @PutMapping("/resetPassword")
@@ -72,7 +75,7 @@ public class resetPasswordResponse {
         return isUpdated;
     }
 
-    @PostMapping("memberOneChange")
+    @PostMapping("/memberOneChange")
     public boolean memberOneChage(@RequestParam String email,
                                   @RequestParam String password,
                                   @RequestParam String name,
@@ -108,11 +111,28 @@ public class resetPasswordResponse {
         return isUpdated;
     }
 
-    @PostMapping("login")
-    public boolean login(@RequestParam String userEmail, @RequestParam String loginPwd) throws SQLException {
+    @PostMapping("/login")
+    public boolean login(@RequestParam(required = false) String userEmail, @RequestParam(required = false, value = "loginPwd") String loginPwd, HttpSession session) throws SQLException {
+        MyUser myUser = myUserJpa.findByEmailFetchJoin(userEmail);
+        String passwordEncrypted = Sha256.encrypt(loginPwd);
+        if (myUser == null || !myUser.getPassword().equals(passwordEncrypted)) return false;
+
+        MemberVO loginUser = new MemberVO();
+        loginUser.setEmail(myUser.getEmail());
+        loginUser.setRoleId(Math.toIntExact(myUser.getRoles().getRoleId()));
+        loginUser.setPhoneNumber(myUser.getPhoneNumber());
+        loginUser.setName(myUser.getName());
+        loginUser.setZipCode(myUser.getZipCode());
+        loginUser.setAddress(myUser.getAddress());
+        loginUser.setAddressDetails(myUser.getAddressDetails());
+        loginUser.setRegisterAt(myUser.getRegisterAt().toString());
+        loginUser.setUserId(Math.toIntExact(myUser.getUserId()));
+        // 로그인 성공 시 세션에 사용자 정보 저장
+
+        session.setAttribute("loginUser", loginUser);
 
 
-        return myUserJpa.existsByEmail(userEmail) && myUserJpa.existsByPassword(loginPwd);
+        return true;
     }
 
 

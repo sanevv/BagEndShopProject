@@ -10,6 +10,10 @@
 
 
 <jsp:include page="../include/header.jsp"/>
+<%--스왈--%>
+<link rel="stylesheet" type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/login/oauth.css"/>
 
@@ -24,8 +28,8 @@
 
             const loginUser = localStorage.getItem('checkSaveId');
 
-            if (loginUser != null) {
-                $('input#userEamil').val(loginUser);
+            if(loginUser != null){
+                $('input#userEmail').val(loginUser);
                 $('input#checkSaveId').prop('checked', true);
             }
 
@@ -34,38 +38,91 @@
 
         //소셜로그인버튼 이벤트등록
         const socialButtons = document.querySelectorAll('.social-btn');
-        console.log('내려옴')
         socialButtons.forEach(button => {
-            console.log('포이치들옴')
             button.addEventListener('click', async function () {
                     console.log('이벤트발생')
                     const provider = this.getAttribute('data-provider');
                     const authUrl = await requestAuthUrl(provider);
-                    console.log(authUrl);
+                    requestOAuthLogin(authUrl);
                 }
             )
         })
-        //소셜로그인 요청 URL 생성
-        requestAuthUrl = async (provider) => {
-            const apiUrl = `${pageContext.request.contextPath}/api/oauth/\${provider}/authorize`;
-
-            const response = await axios.get(apiUrl);
-            if (!response.ok)
-                throw new Error(`Error fetching auth URL: \${response.statusText}`);
-
-            return response.data.success.responseData;
-        }
-
 
 
     }) // end of $(function (){}
+    //소셜로그인 요청 URL 생성
+    async function requestAuthUrl(provider) {
+        const apiUrl = `${pageContext.request.contextPath}/api/oauth/\${provider}/authorize`;
+        await console.log(apiUrl);
+        const response = await axios.get(apiUrl);
+        if (response.status !== 200)
+            throw new Error(`Error fetching auth URL: \${response.statusText}`);
+
+        return response.data.success.responseData;
+    }
+
+    function requestOAuthLogin(authUrl) {
+        // 새 창으로 인증 URL 열기
+        const width = 600;
+        const height = 700;
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+
+        window.open(authUrl, 'OAuth Login', `width=\${width},height=\${height},left=\${left},top=\${top}`);
+    }
+
+    function handleLoginSuccess(isConnection, responseData, providerValue) {
+
+        if (isConnection) {
+            swal({
+                title: '환영합니다, \${responseData.name}님!',
+                text: `계정에 \${providerValue} 로그인이 연동 되었습니다.`,
+                icon: 'success',
+                button: '확인'
+            }, function () {
+                // 확인 버튼 클릭 후 실행
+                location.href = '/';
+            });
+        } else {
+            swal({
+                title: '로그인 성공',
+                text: `환영합니다, \${responseData.name}님!`,
+                icon: 'success',
+                button: '확인'
+            }, function () {
+                location.href = '/';
+            })
+        }
+
+    }
+
+    async function handleSignUpRequest(responseData) {
+        console.log(responseData)
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `${pageContext.request.contextPath}/oauth/sign-up`;
+
+        for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = responseData[key];
+                form.appendChild(input);
+            }
+        }
+
+
+        document.body.appendChild(form);
+        form.submit();
+    }
 
 </script>
 
 <c:if test="${empty sessionScope.loginUser}">
     <div class="container mt-5 d-flex justify-content-center">
         <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
-            <form id="memberLoginFrm" action="/test/login.up" method="post">
+            <form id="memberLoginFrm" action="/api/member/login"  method="post">
                 <table class="table border-0 mb-0">
                     <tbody>
                     <tr>
@@ -73,8 +130,7 @@
                             <label for="userEmail" class="form-label mb-0">아이디</label>
                         </th>
                         <td class="border-0">
-                            <input id="userEmail" name="userEmail" type="text" class="form-control"
-                                   placeholder="아이디를 입력하세요"/>
+                            <input id="userEmail" name="userEmail" type="text" class="form-control" placeholder="아이디를 입력하세요" />
                         </td>
                     </tr>
 
@@ -83,8 +139,7 @@
                             <label for="loginPwd" class="form-label mb-0">비밀번호</label>
                         </th>
                         <td class="border-0">
-                            <input id="loginPwd" name="pwd" type="password" class="form-control"
-                                   placeholder="비밀번호를 입력하세요"/>
+                            <input id="loginPwd" name="pwd" type="password" class="form-control" placeholder="비밀번호를 입력하세요" />
                         </td>
                     </tr>
 
@@ -107,7 +162,7 @@
 
                     <tr>
                         <td colspan="2" class="border-0">
-                            <button type="submit" id="btnSubmit" class="btn btn-dark w-100 mt-2">로그인</button>
+                            <button type="button" id="btnSubmit" class="btn btn-dark w-100 mt-2">로그인</button>
                         </td>
                     </tr>
                     </tbody>

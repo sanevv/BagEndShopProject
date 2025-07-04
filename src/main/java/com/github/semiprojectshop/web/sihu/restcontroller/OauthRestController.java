@@ -1,6 +1,9 @@
 package com.github.semiprojectshop.web.sihu.restcontroller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
+import com.github.semiprojectshop.service.sihu.exceptions.CustomMyException;
 import com.github.semiprojectshop.service.sihu.oauth.OAuthLoginService;
 import com.github.semiprojectshop.service.sihu.oauth.OAuthProviderService;
 import com.github.semiprojectshop.web.sihu.dto.CustomResponse;
@@ -9,12 +12,15 @@ import com.github.semiprojectshop.web.sihu.dto.oauth.response.AuthResult;
 import com.github.semiprojectshop.web.sihu.dto.oauth.response.OAuthDtoInterface;
 import com.github.semiprojectshop.web.sihu.dto.oauth.response.OAuthSignUpDto;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping("/api/oauth")
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class OauthRestController {
     private final OAuthProviderService oAuthProviderService;
     private final OAuthLoginService oAuthLoginService;
+    private final HttpSession session;
 
     @GetMapping("/{provider}/test")//테스트용 oAuthRequest 로 리다이렉션됨
     public ResponseEntity<Void> requestOAuthCodeUrlRedirect(@PathVariable OAuthProvider provider, HttpServletRequest httpServletRequest) {
@@ -87,12 +94,43 @@ public class OauthRestController {
 
     private ResponseEntity<CustomResponse<OAuthDtoInterface>> loginOAuth(OAuthLoginParams params) {
         AuthResult result = oAuthLoginService.loginOrCreateTempAccount(params);
+        if( result.getHttpStatus() == HttpStatus.OK)
+            session.setAttribute("loginUser", result.getResponse());
         CustomResponse<OAuthDtoInterface> response = CustomResponse
                 .of(result.getHttpStatus(), result.getMessage(), result.getResponse());
         return ResponseEntity
                 .status(response.getHttpStatus())
+                .header("X-Is-Connection", String.valueOf(result.isConnection()))
                 .body(response);
     }
+    @PostMapping("/sign-up")
+    public ResponseEntity<CustomResponse<Void>> oAuthSignUp(@ModelAttribute @Valid OAuthSignUpDto oAuthSignUpDto) {
+        oAuthSignUpDto.phoneNumberReplace();
+        oAuthLoginService.signUp(oAuthSignUpDto);
+        CustomResponse<Void> signUpResponse = CustomResponse
+                .emptyData(HttpStatus.CREATED, "회원가입 완료");
+        return ResponseEntity.status(signUpResponse.getHttpStatus())
+                .body(signUpResponse);
+    }
+//    @PostMapping("/sign-up")
+//    public boolean oauthSignUpView(@RequestBody OAuthSignUpDto signUpDto, RedirectAttributes redirectAttributes) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        //    redirectAttributes.addFlashAttribute("user", userDto);
+//        try {
+//            String signUpDtoJson = objectMapper.writeValueAsString(signUpDto);
+//            redirectAttributes.addFlashAttribute("signUpDto", signUpDtoJson);
+//        } catch (JsonProcessingException e) {
+//            throw CustomMyException.fromMessage(e.getMessage());
+//        }
+//
+////        model.addAttribute("signUpDto", signUpDto);
+//        redirectAttributes.addFlashAttribute("provider", signUpDto.getProvider().name());
+//        redirectAttributes.addFlashAttribute("cart", "나 카트얌");
+//
+//
+//        return true;
+//
+//    }
 
 
 //    @PostMapping("/sign-up")
@@ -104,5 +142,9 @@ public class OauthRestController {
 //                .status(signUpResponse.getHttpStatus())
 //                .body(signUpResponse);
 //    }
+    @GetMapping("/exist-phone")
+    public boolean existPhone(@RequestParam String phone) {
+        return !oAuthLoginService.existsByPhoneNumber(phone);
+    }
 
 }

@@ -6,17 +6,19 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%
     ObjectMapper mapper = new ObjectMapper();
     String paramsJson = mapper.writeValueAsString(request.getAttribute("params"));
 %>
 <script>
     const provider = "${provider}"
+    const providerValue ="${providerValue}";
 
     <%--const test = JSON.parse('${params}') 여기는 에러가 난다--%>
-<%--VM14:1  Uncaught SyntaxError: Unexpected token 'c', "com.github"... is not valid JSON
-    at JSON.parse (<anonymous>)
-    at callback?code=testtest:7:23--%>
+    <%--VM14:1  Uncaught SyntaxError: Unexpected token 'c', "com.github"... is not valid JSON
+        at JSON.parse (<anonymous>)
+        at callback?code=testtest:7:23--%>
 
     <%--console.log(typeof '${params}  '+'${params}')
     string 타입이고 객체 경로가찍힘 com.github.semiprojectshop.web.sihu.dto.oauth.request.KakaoLoginParams@5bf87b0--%>
@@ -48,20 +50,24 @@
         const data = await response.json(); // 응답 데이터를 JSON으로 파싱
 
         if (response.status === 200) {
-
+            const isConnection = response.headers.get('X-Is-Connection') === 'true';
             console.log('Login or Register successful:', data);
+            //로그인 성공후 부모창의 함수호출
+            if (window.opener && !window.opener.closed)
+                window.opener.handleLoginSuccess(isConnection, data.success.responseData, providerValue);
+            self.close();
             // Redirect or handle success
         } else if (response.status === 201) {
             console.log('User registered successfully:', data);
+            if (window.opener && !window.opener.closed)
+                window.opener.handleSignUpRequest(data.success.responseData);
+            self.close();
             // Redirect to login or handle registration success
-        }
-
-        else {
+        } else {
             console.error('Login or Register failed:', response.statusText);
             // Handle error
         }
     })();
-
 
 
 </script>

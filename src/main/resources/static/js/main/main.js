@@ -31,9 +31,10 @@ fetch("/api/product/main")
                     ? "url("+item.thumbnail+")"
                     : "url(/images/error/product_empty.png)";
 
+
                 bannerHTML += `
                     <div class="swiper-slide">
-                        <div class="banner-img" style="background-image: ${imgUrl};"></div>
+                        <div class="banner-img" style="background-image: ${imgUrl}"></div>
                         <p class="product-name">${item.productName}</p>
                         <a class="product-link" href="/product/detail/${item.productId}"></a>
                     </div>
@@ -52,7 +53,7 @@ fetch("/api/product/main")
 mainBanner = () => {
     new Swiper(".main-banner", {
         slidesPerView: 3,
-        spaceBetween: 30,
+        spaceBetween: 0,
         pagination: {
             el: ".swiper-pagination",
             clickable: true,

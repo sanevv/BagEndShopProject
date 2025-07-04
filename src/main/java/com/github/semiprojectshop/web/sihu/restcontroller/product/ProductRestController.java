@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +52,34 @@ public class ProductRestController {
         productService.steamingProduct(productId, loginUserId);
         return CustomResponse.ofOk("상품 찜하기 성공", "찜하기가 완료되었습니다.");
 
+    }
+    @PostMapping
+    public long createProduct(@RequestParam("fk_cnum") long categoryId,
+                              @RequestParam("product_name") String productName,
+                              @RequestParam("stock") long stock,
+                              @RequestParam("price") long price,
+                              @RequestParam("product_contents") String productContents,
+                              @RequestParam String productInfo,
+                              @RequestParam String productSize,
+                              @RequestParam String matter,
+                              @RequestParam("pimage1") MultipartFile mainImage,
+                              @RequestParam("files") List<MultipartFile> files,
+                              HttpSession session) {
+        ProductCreateRequest request = ProductCreateRequest.of(
+                categoryId,
+                productName,
+                stock,
+                price,
+                productContents,
+                mainImage,
+                files,
+                productInfo,
+                productSize,
+                matter
+        );
+        
+
+        return productService.createProduct(request, 1L);
     }
 
 }

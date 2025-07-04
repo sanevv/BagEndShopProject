@@ -20,22 +20,14 @@ reviewUpdate = () => {
     if (!confirm('정말 이 리뷰를 수정하시겠습니까?')) return;
 
 
-
-    const form = document.reviewUpdateForm;
-    const reviewData = {
-        reviewId: form.reviewId.value,
-        userId: form.userId.value,
-        productId: productId,
-        reviewContents: form.reviewContents.value,
-        rating: rating.value,
-        reviewImagePath: form.reviewImageFile.files[0]
-    };
-
-    const form2 = document.forms['reviewUpdateForm']; // 폼 요소
+    const form = document.forms['reviewUpdateForm']; // 폼 요소
     const formData = new FormData();
-    formData.append("reviewContents", form2.reviewContents.value);
+    formData.append("userId", form.userId.value);
+    formData.append("reviewId", form.reviewId.value);
+    formData.append("productId", productId);
+    formData.append("reviewContents", form.reviewContents.value);
     formData.append("rating", rating.value);
-    formData.append("file", form2.reviewImageFile.files[0]);
+    formData.append("file", form.reviewImageFile.files[0]);
 
     fetch('/api/review/update', {
         method: 'POST',
@@ -48,9 +40,11 @@ reviewUpdate = () => {
         location.href = `/product/detail/${productId}`;
     })
     .catch(error => {
-        console.log(error);
+        //console.log(error);
+
         console.error('삭제 중 오류 발생:', error.message);
-        alert('서버 또는 네트워크 오류입니다.');
+        //alert('서버 또는 네트워크 오류입니다.');
+        alert(error.message);
     });
     // fetch('/api/review/update', {
     //     method: 'POST',

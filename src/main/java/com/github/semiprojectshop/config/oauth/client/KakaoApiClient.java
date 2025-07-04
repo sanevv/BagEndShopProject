@@ -2,6 +2,7 @@ package com.github.semiprojectshop.config.oauth.client;
 import com.github.semiprojectshop.config.oauth.dto.tokens.KakaoTokens;
 import com.github.semiprojectshop.config.oauth.dto.userinfo.KakaoUserInfo;
 import com.github.semiprojectshop.repository.sihu.social.OAuthProvider;
+import com.github.semiprojectshop.service.sihu.StorageService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,8 +27,8 @@ public class KakaoApiClient extends OAuthApiClient {
     @Value("${oauth.kakao.secret}")
     private String clientSecret;
 
-    public KakaoApiClient(RestTemplate restTemplate) {
-        super(restTemplate);
+    public KakaoApiClient(RestTemplate restTemplate, StorageService service) {
+        super(restTemplate, service);
     }
 
 
