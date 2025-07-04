@@ -53,7 +53,7 @@ fetch("/api/product/main")
 mainBanner = () => {
     new Swiper(".main-banner", {
         slidesPerView: 3,
-        spaceBetween: 30,
+        spaceBetween: 0,
         pagination: {
             el: ".swiper-pagination",
             clickable: true,
