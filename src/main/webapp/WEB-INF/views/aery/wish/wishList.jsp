@@ -114,14 +114,14 @@
     }
 </script>
 
-<div class="wishlist-container">
+<div class="wishlist-container container">
     <!-- 좌측 마이페이지 메뉴 -->
     <div class="mypageMenu">
         <jsp:include page="../../include/mypageMenu.jsp" />
     </div>
 
     <!-- 관심상품 리스트 -->
-    <div class="wish-content" style="margin-top:75px;">
+    <div class="wish-content" style="margin-top: 50px;">
         <div class="wishlist-header">
             <h4 class="wish-title" style="padding-left: 20px;">관심 상품</h4>
         </div>

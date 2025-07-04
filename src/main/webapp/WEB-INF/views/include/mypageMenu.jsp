@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
-
-
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/mypageMenu.css">
 
 <script type="text/javascript">
@@ -16,10 +14,9 @@
 </script>
 
 
-
-<div class="container mt-5" style="width: 900px; ">
+<div class="sidebar-block" style="width: 900px; margin-top: 50px;">
     <div class="row">
-		<div class="sidebar col-lg-3 col-md-4 pt-4">
+		<div class="sidebar col-lg-3 col-md-4">
 
 		    <!-- 회원 간단 정보 -->
 		    <div class="userinfo">
