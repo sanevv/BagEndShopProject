@@ -1,16 +1,13 @@
 @charset "UTF-8";
 
 /* 메인페이지 : 메인배너 */
-.main-banner {
 
-}
 #mainBanner {
-    max-height: 500px;
-
+    height: auto;
 }
 .main-banner .swiper-button-next,
 .main-banner .swiper-button-prev {
-    color: #000;
+    color: #fff;
 }
 .main-banner .banner-img {
     padding-bottom: 100%;

@@ -135,7 +135,8 @@ public class ReviewDAOImple implements ReviewDAO {
         try {
             conn = ds.getConnection();
 
-            String sql = " SELECT image_path FROM product_image WHERE product_id = ? and thumbnail = 1 ";
+            String sql = " SELECT image_path " +
+                         " FROM product_image WHERE product_id = ? and thumbnail = 1 ";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, productId);
