@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductDAO_imple implements ProductDAO {
 
-    
+    private final GithubApiClient githubApiClient;
 	private final DataSource ds;
 	private Connection conn;
 	private PreparedStatement pstmt;
@@ -153,21 +153,25 @@ public class ProductDAO_imple implements ProductDAO {
 	
 	
 	// 업데이트한 정보 DB에 업데이트
-	/*
-	 * @Override public int insertImg(Map<String, Object> paramap) throws
-	 * SQLException { int n = 0;
-	 * 
-	 * try { conn = ds.getConnection(); List<String> files = (List<String>)
-	 * paramap.get("files"); for(int i = 0; i < files.size();i++) { String sql =
-	 * "insert into product_image(product_id, image_path, thumbnail) values(?, ?, 0)"
-	 * ; pstmt = conn.prepareStatement(sql);
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 * 
-	 * return n; }
-	 */
+	@Override
+	public int insertImg(Map<String, Object> paramap) throws SQLException {
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			List<String> files = (List<String>) paramap.get("files");
+			for(int i = 0; i < files.size();i++) {
+			String sql = "insert into product_image(product_id, image_path, thumbnail) values(?, ?, 0)";
+			pstmt = conn.prepareStatement(sql);
+			
+			}
+			
+		}finally {
+			close();
+		}
+		
+		
+		return n;
+	}
 
 }

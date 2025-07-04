@@ -106,9 +106,9 @@ public class NoticeController {
 	@GetMapping("/detail.one")
 	public String notice(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginUser");
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
-		request.setAttribute("loginuser", loginuser);
+		request.setAttribute("loginUser", loginUser);
 	    String notice_id = request.getParameter("notice_id");
 
 	    try {

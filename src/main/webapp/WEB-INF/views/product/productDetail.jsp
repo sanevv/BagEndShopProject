@@ -9,14 +9,15 @@
 
 <jsp:include page="../include/header.jsp"></jsp:include>
 
-<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
-	<form method="post" action="${pageContext.request.contextPath}/prod/update">
-		<button class="btn btn-sm" type="submit">수정하기</button>
-		<input type="hidden" name="productId"value="${prdVO.productId}">
-	</form>
-</c:if>
+
 
 <main id="main">
+	<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
+		<form method="post" action="${pageContext.request.contextPath}/prod/update">
+			<button class="btn btn-sm" type="submit">수정하기</button>
+			<input type="hidden" name="productId"value="${prdVO.productId}">
+		</form>
+	</c:if>
 	<div class="product-container">
 		<div class="product-banner-top">
 			<c:if test="${not empty prdVO.productImagePath}">

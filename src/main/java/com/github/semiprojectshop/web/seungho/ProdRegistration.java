@@ -2,6 +2,7 @@ package com.github.semiprojectshop.web.seungho;
 
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,21 +111,22 @@ public class ProdRegistration {
 		System.out.println(files);
 		System.out.println("확인용"+pvo.getProduct_id());
 		String product_id = String.valueOf(pvo.getProduct_id());
-		
+		List<String> imgPath = new ArrayList<>();
 		Path uploadDir = storageService.createFileDirectory("product", product_id);
 		for(MultipartFile mf : files) {
-		String imagePath = storageService.returnTheFilePathAfterTransfer(mf, uploadDir);
+			String imagePath = storageService.returnTheFilePathAfterTransfer(mf, uploadDir);
+			imgPath.add(imagePath);
 		}
 		Map<String, Object> paramap = new HashMap<>();
 		paramap.put("product_id", pvo.getProduct_id());
 		paramap.put("thumbnailImg", thumbnailImg);
-
+		paramap.put("imgPath", imgPath);
 
 		try {
 			// int result = pdao.insertImg(paramap);
 			
 			int n = pdao.updateProduct(pvo);
-			
+			int result = pdao.insertImg(paramap);
 			JSONObject jsobj = new JSONObject();
 			jsobj.put("n", n);
 			
