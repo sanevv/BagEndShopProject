@@ -32,13 +32,17 @@ public class OrderService {
                 .toList();
         Orders orders = Orders.fromMyUserAndOrders(myUser,ordersProducts);
         Orders savedOrder = ordersJpa.save(orders);
-        long totalPrice = paymentsRequests.stream()
-                .mapToLong(PaymentsRequest::getAtPrice)
+//        long totalPrice = paymentsRequests.stream()
+//                .mapToLong(PaymentsRequest::getAtPrice)
+//                .sum();
+        long totalDiscountRate = paymentsRequests.stream()
+                .mapToLong(request->
+                    (long) (request.getAtPrice() * (1 - request.getAtDiscountRate())))
                 .sum();
         long totalQuantity = paymentsRequests.stream()
                 .mapToLong(PaymentsRequest::getQuantity)
                 .sum();
-        return PaymentResponse.of(savedOrder.getOrdersId(),productCartIds,totalPrice, totalQuantity);
+        return PaymentResponse.of(savedOrder.getOrdersId(), productCartIds, totalDiscountRate, totalQuantity);
 
 
     }
