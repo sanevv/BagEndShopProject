@@ -399,14 +399,16 @@
             <jsp:include page="../include/mypageMenu.jsp"/>
         </div>
 
+		
         <!-- 오른쪽 회원가입 폼 -->
         <div class="col-lg-9 col-md-8">
-            <div class="p-3 ">
-                <div class="container mt-5" style="border: solid 0px red;">
+                <div class="container"">
                     <div class="row" id="registerRow">
-                        <div class="col-12 col-md-5 mx-auto" style="max-width: 600px;">
+                        <div class="wish-content col-lg-9 col-md-8" style="margin-top: 50px;">
+                        	<div class="memberOneChange-header" style="display: flex; justify-content: space-between; margin-bottom: 35px;">
+					            <h4 class="memberOneChange-title" style="font-size: 24px; font-weight: bold;">내 정보 수정하기</h4>
+					        </div>
                             <form name="registerFrm">
-                                <h2 class="mb-4">내 정보 수정하기</h2>
                                 <table id="tblMemberRegister">
                                     <tbody>
 
@@ -605,6 +607,5 @@
         </div>
 
     </div>
-</div>
 
 <jsp:include page="../include/footer.jsp"/>

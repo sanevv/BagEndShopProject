@@ -37,5 +37,8 @@ public interface WishDAO {
 
 	// 관심상품 총 개수 조회
 	int getTotalWishCount(String email) throws SQLException;
+
+	// 관심상품으로 등록했는지에 따라 토글 등록 또는 해제
+	boolean toggleWish(Map<String, Object> paramMap) throws SQLException;
 	
 }

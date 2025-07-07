@@ -25,10 +25,14 @@
         <div class="col-lg-3 col-md-4">
           <jsp:include page="../include/mypageMenu.jsp"/>
         </div>
-
+        
         <!-- 오른쪽 주문내역 폼 -->
         <div class="col-lg-9 col-md-8">
             <div class="order-history" style="margin-top: 50px;">
+            
+            <div class="order-history-header" style="display: flex; justify-content: space-between; margin-bottom: 35px;">
+	            <h4 class="order-history-title" style="font-size: 24px; font-weight: bold;">주문 내역</h4>
+	        </div>
 
               <!-- 주문일자 -->
                 <c:if test="${empty requestScope.orderDetailsList}">
