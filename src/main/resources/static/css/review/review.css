@@ -157,6 +157,8 @@
 }
 
 .review-buttons {
+    display: flex;
+    gap: 0 6px;
     position: relative;
     z-index: 1;
     margin-top: 10px;
@@ -171,6 +173,11 @@
 .review-buttons .btn.black {
     background-color: #000;
     color: #fff;
+}
+.review-buttons .btn.red {
+    background-color: red;
+    color: #fff;
+    border: solid 1px red;
 }
 
 #pageBar {

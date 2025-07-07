@@ -15,4 +15,9 @@ public class ExceptionRestControllerAdvice {
     public Map<String, Object> handleCustomException(CustomMyException e) {
         return Map.of("message", e.getMessage());
     }
+
+
+
 }
+
+

@@ -170,6 +170,9 @@
     background: #111;
     color: #fff;
 }
+.product-buttons .btn-buy:hover {
+    color: #fff;
+}
 
 
 /* 상품 상세 설명 이미지 */

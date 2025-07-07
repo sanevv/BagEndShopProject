@@ -13,7 +13,7 @@ reviewSubmit = () => {
     const form = document.forms['reviewWriteForm'];
     const productId = new URLSearchParams(window.location.search).get("productId");
 
-    if( form.reviewContents.value.trim() == "" ){
+    if( form.reviewContents.value.trim() === "" ){
         alert("리뷰 내용을 입력해주세요.");
         form.reviewContents.focus();
         return;
@@ -32,22 +32,30 @@ reviewSubmit = () => {
     formData.append("rating", rating.value);
     formData.append("file", form.reviewImageFile.files[0]);
 
-    console.log("formData : ", form.reviewImageFile.files[0]);
-
     fetch('/api/review/write', {
         method: 'POST',
-        body: formData // Content-Type 자동 설정 (multipart/form-data)
+        body: formData
     })
-    .then(res => res.json())
-    .then(data => {
-        console.log("리뷰 등록 성공", data);
-        alert('리뷰가 등록되었습니다!');
-        location.href = `/product/detail/${productId}`;
-    })
-    .catch(err => {
-        //console.error("리뷰 등록 실패", err);
-        alert("오류"+ err.message);
-    });
+        .then(res => {
+            if (!res.ok) {
+                return res.json().then(error => {
+                    // 백에서 fromMessage로 담은 값이 나옴
+                    alert(error.message);
+                    throw new Error("서버 오류 응답: " + error.message);
+                });
+            }
+
+            return res.json();
+        })
+        .then(data => {
+            alert("리뷰가 등록되었습니다!");
+            location.href = `/product/detail/${productId}`;
+        })
+        .catch(err => {
+            console.error(err);
+            history.back();
+        });
+
 
 }
 
@@ -105,7 +113,7 @@ reviewCommentSubmit = (userId, reviewId, commentContents) => {
     .then(data => {
         console.log(data);
         if (data.success) {
-            alert('댓글이 등록되었습니다.');
+            alert('관리자 댓글이 등록되었습니다.');
             // 모달 닫기
             document.getElementById('reviewCommentModal').style.display = 'none';
             document.body.classList.remove('modal-open');
@@ -113,12 +121,12 @@ reviewCommentSubmit = (userId, reviewId, commentContents) => {
             // 페이지 새로고침
             location.reload();
         } else {
-            alert('댓글 등록에 실패했습니다.');
+            alert('관리자 댓글 등록에 실패했습니다.');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('댓글 등록 중 오류가 발생했습니다.');
+        alert('관리자 댓글 등록 중 오류가 발생했습니다.');
     });
 
 }
@@ -141,7 +149,7 @@ reviewCommentUpdate = (userId, reviewId, reviewCommentId, commentContents) => {
         .then(data => {
             console.log(data);
             if (data.success) {
-                alert('댓글이 수정되었습니다.');
+                alert('관리자 댓글이 수정되었습니다.');
                 // 모달 닫기
                 document.getElementById('reviewCommentUpdateModal').style.display = 'none';
                 document.body.classList.remove('modal-open');
@@ -149,14 +157,46 @@ reviewCommentUpdate = (userId, reviewId, reviewCommentId, commentContents) => {
                 // 페이지 새로고침
                 location.reload();
             } else {
-                alert('댓글 수정에 실패했습니다.');
+                alert('관리자 댓글 수정에 실패했습니다.');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('댓글 등록 중 오류가 발생했습니다.');
+            alert('관리자 댓글 등록 중 오류가 발생했습니다.');
         });
 
+}
+
+// 관리자 댓글 삭제하기
+reviewCommentDelete = (reviewId) => {
+
+    if(!confirm("관리자 댓글을 삭제하시겠습니까?")) return;
+
+    fetch('/api/comment/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            reviewId: parseInt(reviewId),
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if(!data.success){
+                return alert('댓글 삭제에 실패했습니다.');
+            }
+
+            alert('관리자 댓글이 삭제 되었습니다.');
+            // 페이지 새로고침
+            location.reload();
+
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('관리자 댓글 삭제 중 오류가 발생했습니다.');
+        });
 }
 
 const btnDeleteReview = document.querySelectorAll(".btn-review-delete");

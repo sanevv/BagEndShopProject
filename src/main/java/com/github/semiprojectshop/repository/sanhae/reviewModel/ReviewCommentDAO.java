@@ -15,4 +15,7 @@ public interface ReviewCommentDAO {
 
     // 관리자 댓글 수정하기
     int updateReviewComment(ReviewCommentVO rvcVO);
+
+    // 관리자 댓글 삭제하기
+    ReviewCommentVO deleteReviewComment(int reviewId);
 }
