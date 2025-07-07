@@ -48,5 +48,8 @@ public interface ReviewDAO {
 
     // 상품 구매를 한 사람인지 알아오기
     boolean getIsBuy(int userId);
+
+    // 리뷰를 작성한 사용자인지 체크하기
+    boolean getIsWriteReview(int userId, int productId);
 }
 

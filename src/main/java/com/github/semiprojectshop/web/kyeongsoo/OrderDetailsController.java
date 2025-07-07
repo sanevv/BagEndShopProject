@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,40 +32,38 @@ public class OrderDetailsController {
 
     @GetMapping("/orderDetails")
     public String orderDetails(HttpServletRequest request) throws SQLException {
-
         HttpSession session = request.getSession();
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-        String userid = String.valueOf(loginUser.getUserId());
 
-        // 주문 상세 정보 조회(이미지, 상품명, 가격 등)
-        List<OrderVO> orderDetailsList = orderDAO.getOrderDetails(userid);
+        if (loginUser == null) {
+            return "redirect:/login"; // 로그인 안된 경우
+        }
 
-        request.setAttribute("orderDetailsList", orderDetailsList);
+        String roleId = String.valueOf(loginUser.getRoleId());
+        request.setAttribute("roleId", roleId);
 
-
-        
+        if ("1".equals(roleId)) { // 관리자
+            // 모든 회원 주문 정보 조회
+            List<OrderVO> orderDetailsAdminList = orderDAO.getAllOrderDetails();
+            request.setAttribute("orderDetailsAdminList", orderDetailsAdminList);
+            request.setAttribute("isAdmin", true);
+        } else { // 일반 회원
+            String userid = String.valueOf(loginUser.getUserId());
+            List<OrderVO> orderDetailsList = orderDAO.getOrderDetails(userid);
+            request.setAttribute("orderDetailsList", orderDetailsList);
+            request.setAttribute("isAdmin", false);
+        }
 
         return "order/orderDetails";
     }
 
+    @PostMapping("/updateStatus")
+    public int updateStatus(@RequestParam String status,
+                            @RequestParam int orderId) throws SQLException {
 
+        int n = 0;
+
+        n = orderDAO.updateOrderStatus(orderId, status);
+        return n;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

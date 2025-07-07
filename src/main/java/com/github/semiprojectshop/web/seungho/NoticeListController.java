@@ -31,7 +31,7 @@ public class NoticeListController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginUser");
 
-		request.setAttribute("loginuser", loginuser);
+		request.setAttribute("loginUser", loginuser);
 		String ctxPath = request.getContextPath();
 		
 		String sizePerPage = "8";

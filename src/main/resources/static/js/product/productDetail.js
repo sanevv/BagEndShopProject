@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const reviewId = btnReviewComment.dataset.reviewid;
             const userId = btnReviewComment.dataset.userid;
 
-            console.log('관리자 댓글 버튼 클릭:', btnReviewComment);
-            console.log('data-reviewId 값:', reviewId);
+            //console.log('관리자 댓글 버튼 클릭:', btnReviewComment);
+            //console.log('data-reviewId 값:', reviewId);
 
             const btnCommentSubmit = document.querySelector('#btnCommentSubmit');
             if (btnCommentSubmit) {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            console.log("댓글 내용은요 : ", commentContents);
+            //console.log("댓글 내용은요 : ", commentContents);
 
             reviewCommentSubmit(userId, reviewId, commentContents);
         }
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            console.log("댓글 내용은요 : ", commentContents);
+            //console.log("댓글 내용은요 : ", commentContents);
 
             reviewCommentUpdate(userId, reviewId, commentId, commentContents);
         }
@@ -88,10 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
-
-
-
-
 
 // 리뷰리스트 보여주기
 reviewListLoad = (productId, page) => {
@@ -166,9 +162,10 @@ reviewListHTML += `    </div> `;
                                         break;
                                     case 1:
                                         reviewListHTML += `<button type="button" class="btn btn-review-comment-update black" data-toggle="modal" data-target="#reviewCommentUpdateModal" data-userid="${review.userId}" data-reviewid="${review.reviewId}" data-commentid="${review.reviewCommentId}">관리자 댓글 수정하기</button>`;
+                                        reviewListHTML += `<button type="button" class="btn btn-review-comment-delete red" onclick="reviewCommentDelete(${review.reviewId})">관리자 댓글 삭제하기</button>`;
                                         break;
                                 }
-            reviewListHTML += `    <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">삭제하기</button> 
+            reviewListHTML += `    <button type="button" class="btn btn-review-delete" onclick="reviewDelete(${review.reviewId}, ${review.productId})">해당 리뷰 삭제하기</button> 
                                 </div> `;
 
         }
@@ -355,8 +352,3 @@ btnPlus.addEventListener('click', () => {
 document.querySelector('#btnBuy').addEventListener('click', () => {
     requestOrderProducts([{ productId: productId, quantity: inpQuantity.value}]);
 });
-
-
-
-
-

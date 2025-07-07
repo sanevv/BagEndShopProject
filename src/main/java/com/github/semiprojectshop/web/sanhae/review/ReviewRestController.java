@@ -4,6 +4,9 @@ import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewCommentVO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
 import com.github.semiprojectshop.repository.sanhae.reviewModel.ReviewDAO;
+import com.github.semiprojectshop.service.sanhae.exeptions.BadSanHaeException;
+import com.github.semiprojectshop.service.sanhae.exeptions.ForbiddenSanHaeException;
+import com.github.semiprojectshop.service.sanhae.exeptions.UnauthorizedSanHaeException;
 import com.github.semiprojectshop.service.sihu.StorageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -85,33 +88,38 @@ public class ReviewRestController {
     // ==> @RestController 선언이 되어 있다면 생략가능
     // MediaType.MULTIPART_FORM_DATA_VALUE 상수로 명시해주는게 좋음
     // @ModelAttribute 은 클라이언트에서 넘어온 form 값을 자바 객체로 자동 바인딩해준다.
-    @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addReviewForm(
             @ModelAttribute ReviewVO reviewVO,
             @RequestPart(value = "file", required = false) MultipartFile file,
-            HttpSession session)  {
-
-        try {
+            HttpSession session )  {
 
             MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
             if (loginUser == null) {
-                return ResponseEntity.status(401).body("로그인이 필요합니다.");
+                throw UnauthorizedSanHaeException.fromMessage("로그인이 필요합니다.");
+                //return ResponseEntity.status(401).body("로그인이 필요합니다.");
             }
-
-            boolean isBuyUser = rvDAO.getIsBuy(loginUser.getUserId());
-
-            System.out.println("isBuyUser : " + isBuyUser);
-
-            if (!isBuyUser) {
-                return ResponseEntity.status(403).body("리뷰는 구매한 사람만 가능합니다.");
-            }
-
-            System.out.println("loginUser.getUserId() : " + loginUser.getUserId());
-
 
             if(reviewVO.getReviewContents() == null || reviewVO.getReviewContents().trim().isEmpty()) {
-                return ResponseEntity.status(BAD_REQUEST).body("내용을 등록해주세요!");
+                //return ResponseEntity.status(BAD_REQUEST).body("내용을 등록해주세요!");
+                throw BadSanHaeException.fromMessage("내용을 등록해주세요!");
+            }
+
+            // 구매한 사용자인지 체크하기
+            boolean isBuyUser = rvDAO.getIsBuy(loginUser.getUserId());
+
+            // 리뷰를 작성한 사용자인지 체크하기
+            boolean isWriteReview = rvDAO.getIsWriteReview(loginUser.getUserId(), reviewVO.getProductId());
+
+            if (!isBuyUser) {
+                throw ForbiddenSanHaeException.fromMessage("리뷰는 구매한 사람만 가능합니다.");
+                //return ResponseEntity.status(403).body("리뷰는 구매한 사람만 가능합니다.");
+            }
+
+            if (isWriteReview) {
+                throw ForbiddenSanHaeException.fromMessage("리뷰는 한 번만 작성 가능합니다.");
+                //return ResponseEntity.status(403).body("리뷰는 한 번만 작성 가능합니다.");
             }
 
             String path = "";
@@ -128,13 +136,9 @@ public class ReviewRestController {
             Map<String, Object> reviewMap = new HashMap<>();
             reviewMap.put("review", insertReview);
             reviewMap.put("isBuyUser", isBuyUser);
+            reviewMap.put("isWriteReview", isWriteReview);
 
             return ResponseEntity.ok(reviewMap);
-
-        } catch (Exception e) {
-            //e.printStackTrace();
-            return ResponseEntity.status(500).body("리뷰 저장 중 오류 발생");
-        }
 
     }
 
@@ -150,21 +154,23 @@ public class ReviewRestController {
 
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
-        if(loginUser == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        if (loginUser == null) {
+            throw UnauthorizedSanHaeException.fromMessage("로그인이 필요합니다.");
+            //return ResponseEntity.status(401).body("로그인이 필요합니다.");
         }
 
         String loginUserId = String.valueOf(loginUser.getUserId());
         String reviewWriteUserId = rvDAO.getReviewWriteUserid(reviewVO.getReviewId());
 
+        // 로그인한 계정이 관리자가 아니고 리뷰 작성자가 아닌 경우
         if (!loginUserId.equals(reviewWriteUserId) && loginUser.getRoleId() != 1) {
-            return ResponseEntity.status(403).body("본인만 삭제할 수 있습니다.");
+            throw ForbiddenSanHaeException.fromMessage("본인만 삭제할 수 있습니다.");
         }
 
         ReviewVO deleted = rvDAO.deleteReview(reviewVO);
 
         if (deleted == null) {
-            return ResponseEntity.status(500).body("리뷰 삭제에 실패했습니다.");
+            throw BadSanHaeException.fromMessage("리뷰 삭제에 실패했습니다.");
         }
 
         return ResponseEntity.ok(deleted);
@@ -181,7 +187,8 @@ public class ReviewRestController {
         // 로그인 확인
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         if (loginUser == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+            throw UnauthorizedSanHaeException.fromMessage("로그인이 필요합니다.");
+            //return ResponseEntity.status(401).body("로그인이 필요합니다.");
         }
 
         String loginUserId = String.valueOf(loginUser.getUserId());
@@ -194,8 +201,9 @@ public class ReviewRestController {
         System.out.println("loginUserId : " + loginUserId);
         System.out.println("reviewWriteUserId : " + reviewWriteUserId);
 
+        // 로그인한 사용자가 리뷰 작성자가 아닐 경우
         if (!loginUserId.equals(reviewWriteUserId)) {
-            return ResponseEntity.status(403).body("본인만 수정할 수 있습니다.");
+            throw ForbiddenSanHaeException.fromMessage("본인만 수정할 수 있습니다.");
         }
 
         String reviewImgPath = null;
@@ -220,7 +228,8 @@ public class ReviewRestController {
         int updated = rvDAO.updateReview(reviewVO, reviewImgPath);
 
         if (updated < 1) {
-            return ResponseEntity.status(500).body("리뷰 수정 실패");
+            //return ResponseEntity.status(500).body("리뷰 수정 실패");
+            throw BadSanHaeException.fromMessage("리뷰 수정 실패!");
         }
 
         return ResponseEntity.ok(updated);

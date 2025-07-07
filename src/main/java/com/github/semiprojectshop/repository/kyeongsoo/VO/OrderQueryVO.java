@@ -22,4 +22,6 @@ public class OrderQueryVO {
     private int atPrice;
     private double atDiscountRate;
     private int quantity;
+    private String name;
+    private int userId;
 }
