@@ -133,6 +133,7 @@ textarea {
 $(function() {
     $('span.error').hide();
 	let file_arr = [];
+	let file_arr_copy = [];
     // 수량 스피너
     $("input#spinnerPqty").spinner({
         spin: function(event, ui) {
@@ -205,6 +206,11 @@ $(function() {
 
             }
             file_arr_copy = file_arr;
+            
+            if (typeof file_arr_copy === "undefined") {
+                file_arr_copy = [];
+            }
+
         });
     
     	$(document).on('click','span.delete',function(e){
@@ -214,11 +220,10 @@ $(function() {
     		
     		if(type === 'existing'){
     			
-    			console.log("이미있던이미지" + filename);
     			$.ajax({
     				url:"${pageContext.request.contextPath}/prod/deleteimg",
     				type:"post",
-    				data:{"filename":filename},
+    				data:{"filename":filename, "product_id":"${pvo.product_id}"},
     				dataType:"json",
     				success:function(json){
     	    			$(e.target).parent().remove();
@@ -241,20 +246,33 @@ $(function() {
     	});
     	
     	$(document).on("click","input:button[id='btnUpdate']",function(e){
-    		console.log(file_arr_copy);
+
     		let is_infoData_OK = true;
 	    	   
 	    	  $('span.error').hide();
 	    	  
 	    	   $('.infoData').each(function(index, elmt){
 	    		   const val = $(elmt).val().trim();
+	    		   const inputType = $(elmt).attr("type");
+	    		   
+	    		    if (inputType === "file" && elmt.name === "pimage1") {
+	    		        const image = $("input[name='originPimage1']").val()?.trim() !== "";
+	    		        const NewFile = elmt.files.length > 0;
+
+	    		        if (!Image && !NewFile) {
+	    		            $(elmt).next().show(); // 에러 메시지 보여줌
+	    		            is_infoData_OK = false;
+	    		            return false;
+	    		        }
+	    		    }
+	    		    else{
 	    		   if(val == "") {
 	    			   $(elmt).next().show();
 	    			   is_infoData_OK = false;
 	    			   return false; // forEach 는 break(중단) 기능이 없으나, each 는 있다.
 	    			   
+	    		   	}
 	    		   }
-	    		   
 	    	   });    		
     		
 	    	  	  if(is_infoData_OK) {
@@ -264,6 +282,7 @@ $(function() {
 	    	  		for(let i = 0; i < file_arr_copy.length; i++) {
 	    	  			formData.append("files", file_arr_copy[i]);
 	    	  		}
+
 	    	  		
 	    	  		$.ajax({
 				    	  url:"${pageContext.request.contextPath}/prod/updateProdInfoProdImg",
@@ -273,12 +292,12 @@ $(function() {
 		                  contentType:false,  // 파일 전송시 설정
 		                  dataType:"json",
 		                  success:function(json){
-		                	  alert("들어왔어");
-		                		   
+		                	  alert("수정완료");
+		                	  location.href="${pageContext.request.contextPath}/product/detail/${pvo.product_id}"
 		                	  
 		                  },
 		                  error: function(request, status, error){
-		                	   alert("메롱");
+		                	   //alert("메롱");
 		                       alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		                  }
 				       });
@@ -350,6 +369,7 @@ $(function() {
                     <td class="prodInputName">제품이미지</td>
                     <td align="left">
                         <input type="file" name="pimage1" class="infoData img_file" accept="image/*"/>
+                        <input type="hidden" name="originPimage1" value="${thbumnail}" />
                         <span class="error">필수입력</span>
                     </td>
                 </tr>
@@ -401,7 +421,8 @@ $(function() {
                 <tr>
                     <td class="prodInputName">제품상세설명</td>
                     <td align="left">
-                        <textarea name="product_contents" rows="5" cols="60"></textarea>
+                        <input type="file" name="product_contents" class="infoData img_contents_file" accept="image/*" />
+                        <input type="hidden" name="originContents" value="${pvo.contents}" />
                         <span class="error">필수입력</span>
                     </td>
                 </tr>

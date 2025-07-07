@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.seungho.domain.NoticeVO;
 import com.github.semiprojectshop.repository.seungho.model.NoticeDAO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -21,9 +24,11 @@ public class MainPageNotice {
 	
 	@GetMapping("/")
 	public String Mainnotice(HttpServletRequest request) throws SQLException {
+		
+
 		List<NoticeVO> nvoList = new ArrayList<>();
 		nvoList = ndao.selectMainPageNotice();
-		
+
 		request.setAttribute("nvoList", nvoList);
 		
 		

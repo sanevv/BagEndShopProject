@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 
 <!-- Bootstrap & Bootstrap Icons -->
 <link
@@ -16,14 +17,15 @@
 	max-width: 800px;
 	margin: 0 auto;
 	position: relative;
-	padding: 60px 0;
+	padding: 150px 0 60px ;
 	text-align: center;
 }
 
 .dropdown.custom-dropdown {
 	position: absolute;
-	top: 10px;
+	top: 100px;
 	right: 0;
+	z-index: 1000;
 }
 
 .dropdown-menu .dropdown-item {
@@ -90,7 +92,7 @@ function goDelete(noticeId) {
 
 <div class="text-center" id="notice_head">
 
-
+<c:if test="${not empty loginUser && loginUser.roleId == 1}">
 	<div class="dropdown custom-dropdown">
 		<button class="btn btn-light btn-sm dropdown-toggle border-0"
 			type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
@@ -107,13 +109,20 @@ function goDelete(noticeId) {
 			<form name="editFrm" style="display:none;">
 		<input type="hidden" name="noticeID" value="${nvo.notice_id}">
 	</form>
+	</c:if>
 	</div>
 	
-
-
+	<!-- 목록으로 버튼 -->
+	<a href="${pageContext.request.contextPath}/notice/list.one"
+	   style="font-size: 12pt; position: absolute; top: 200px; right: 0px;">
+	   목록으로
+	</a>
+	
 	<!-- NOTICE 제목 -->
+	<div class="notice_title" style="text-align: center;">
 	<span
 		style="color: #7ff000; font-size: 20px; font-weight: bold; line-height: 100px;">NOTICE</span>
+	
 
 	<h2 class="title" style="font-weight: bold; font-size: 20pt;">${nvo.title}</h2>
 
@@ -121,10 +130,10 @@ function goDelete(noticeId) {
 		style="font-size: 10pt; margin: 30px 0 100px 0; color: rgba(0, 0, 0, 0.5);">
 		작성일 <span style="color: rgba(0, 0, 0, 0.7);">${nvo.created_at}</span>
 	</p>
-
+	</div>
 	<img style="height: 500px; margin: 0 auto;" src="${nvo.thumbnail}">
 
 	<div class="text-center" style="margin-top: 50px; font-size: 13pt;" id="contents">${nvo.contents}</div>
 </div>
-<input name="roleId" type="hidden" value="${loginuser.roleId}">
+<input name="roleId" type="hidden" value="${loginUser.roleId}">
 <jsp:include page="../include/footer.jsp" />

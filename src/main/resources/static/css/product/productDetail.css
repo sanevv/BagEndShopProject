@@ -185,3 +185,20 @@
     width: 100%;
     margin: 0 auto;
 }
+
+.dropdown.custom-dropdown {
+	position: absolute;
+	top: 100px;
+	right: 0;
+	z-index: 1000;
+}
+
+.dropdown-menu .dropdown-item {
+	font-size: 0.9rem;
+	padding: 5px 12px;
+}
+
+.bi-gear-fill {
+	font-size: 1.3rem;
+	color: #333;
+}
