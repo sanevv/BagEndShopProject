@@ -9,19 +9,17 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor // 전체필드를 포함한 생성자
 @NoArgsConstructor // 기본생성자
-public class OrderQueryVO {
+public class AdminMemberProVO {
 
-    private String imagePath;
-    private String productName;
-    private String productSize;
+    private int orderProductId;
     private int orderId;
-    private int ordersProductId;
-    private String createdAt;
-    private String status;
-    private int reviewId;
+    private int productId;
     private int atPrice;
     private double atDiscountRate;
+    private int reviewId;
+    private String thumbnailPath;
+    private String productName;
+    private String productSize;
     private int quantity;
     private String name;
-    private int userId;
 }
