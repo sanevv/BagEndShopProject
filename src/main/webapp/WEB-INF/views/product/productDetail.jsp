@@ -3,21 +3,40 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/product/productDetail.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/review/review.css">
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="../include/header.jsp"></jsp:include>
+
+<<script type="text/javascript">
+function goDelete(noticeId) {
+    if (confirm("이 상품 삭제해?")) {
+
+        $.ajax({
+            url: "${pageContext.request.contextPath}/prod/deleteProd",
+            type: "post",
+            data: { "product_id":"${prdVO.productId}"},
+            dataType: "json",
+            success: function(response) {
+                alert("삭제 완료!");
+                location.href = "${pageContext.request.contextPath}/product/list";
+            },
+            error: function(request, status, error) {
+                alert("code: " + request.status + "\n" +
+                      "message: " + request.responseText + "\n" +
+                      "error: " + error);
+            }
+        });
+    }
+}
+</script>
 
 
 
 <main id="main">
-	<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
-		<form method="post" action="${pageContext.request.contextPath}/prod/update">
-			<button class="btn btn-sm" type="submit">수정하기</button>
-			<input type="hidden" name="productId"value="${prdVO.productId}">
-		</form>
-	</c:if>
+
 	<div class="product-container">
 		<div class="product-banner-top">
 			<c:if test="${not empty prdVO.productImagePath}">
@@ -28,6 +47,23 @@
 							<c:forEach var="item" items="${productAddImageList}">
 								<span class="thumb"><img src="${item.productAddImagePath}" alt="${prdVO.productName} 추가 이미지"></span>
 							</c:forEach>
+						</div>
+					</c:if>
+					<c:if test="${not empty loginUser && loginUser.roleId == 1}">
+						<div class="dropdown custom-dropdown">
+							<button class="btn btn-light btn-sm dropdown-toggle border-0"type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"aria-expanded="false" title="관리 메뉴">
+								<i class="bi bi-gear-fill"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+								<li>		
+									<form method="post" action="${pageContext.request.contextPath}/prod/update">
+										<button class="btn btn-sm" type="submit">수정하기</button>
+										<input type="hidden" name="productId"value="${prdVO.productId}">
+									</form>
+								</li>
+								<li><a class="dropdown-item text-danger" href="#" data-id="${nvo.notice_id}" onclick="goDelete(this)">삭제하기</a></li>
+							</ul>
+							
 						</div>
 					</c:if>
 					<div class="representative-img">

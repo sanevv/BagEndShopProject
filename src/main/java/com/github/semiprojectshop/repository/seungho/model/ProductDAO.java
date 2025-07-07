@@ -18,4 +18,8 @@ public interface ProductDAO {
 
 	int insertImg(Map<String, Object> paramap) throws SQLException;
 
+	String getThumbnail(String productId) throws SQLException;
+
+	int deleteProd(String product_id) throws SQLException;
+
 }

@@ -59,11 +59,12 @@ public class ProdRegistration {
 			pvo = pdao.productDetailInfo(productId);
 			List<CategoryVO> cateList = cdao.getCategoryInfo();
 			List<String> imageList = pdao.getImgPath(productId);
-			
+			String thumbnail = pdao.getThumbnail(productId);
+			request.setAttribute("thumbnail", thumbnail);
 			request.setAttribute("imageList", imageList);
 			request.setAttribute("cateList", cateList);
 			request.setAttribute("pvo", pvo);
-			System.out.println(imageList);
+			//System.out.println(imageList);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -80,7 +81,7 @@ public class ProdRegistration {
 		Map<String, Object> paramap = new HashMap<>();
 		paramap.put("filename", filename);
 		paramap.put("product_id", product_id);
-		System.out.println(filename);
+
 		int n = 0;
 		
 		if(filename != null) {
@@ -103,44 +104,90 @@ public class ProdRegistration {
 	
 	@PostMapping("/updateProdInfoProdImg")
 	@ResponseBody
-	public String updateProdInfoProdImg(HttpServletRequest request,
+	public Map<String, Object> updateProdInfoProdImg(HttpServletRequest request,
 										ProductVO pvo,
+										@RequestParam("img_contents_file") MultipartFile contents,
 										@RequestParam("pimage1") MultipartFile thumbnailImg, // 썸네일
 										@RequestParam (value = "files", required = false) List<MultipartFile> files) {
-		System.out.println("이제 넣으면끝");
-		System.out.println(files);
-		System.out.println("확인용"+pvo.getProduct_id());
+		Map<String, Object> resultMap = new HashMap<>();
+		//System.out.println(files);
 		String product_id = String.valueOf(pvo.getProduct_id());
+		String thumbnailPath = "";
+		String contentsPath = "";
+		int n = 0;
+		int result = 0;
 		List<String> imgPath = new ArrayList<>();
 		Path uploadDir = storageService.createFileDirectory("product", product_id);
-		for(MultipartFile mf : files) {
-			String imagePath = storageService.returnTheFilePathAfterTransfer(mf, uploadDir);
-			imgPath.add(imagePath);
+		if (files != null && !files.isEmpty()) {
+		    for (MultipartFile mf : files) {
+		        if (!mf.isEmpty()) {
+		            String imagePath = storageService.returnTheFilePathAfterTransfer(mf, uploadDir);
+		            imgPath.add(imagePath);
+		        }
+		    }
 		}
+		String originContentsPath = request.getParameter("originPimage1");
+		if(contents != null && !contents.isEmpty()) {
+			contentsPath= storageService.returnTheFilePathAfterTransfer(contents, uploadDir);
+		} else {
+			contentsPath = originContentsPath;
+		}
+		
+		// 썸네일 안바꾸면 그대로
+		String originThumbnailPath = request.getParameter("originPimage1");
+
+		if (thumbnailImg != null && !thumbnailImg.isEmpty()) {
+		    thumbnailPath = storageService.returnTheFilePathAfterTransfer(thumbnailImg, uploadDir);
+		} else {
+		    thumbnailPath = originThumbnailPath; // 새 파일 없으면 기존 거 유지
+		}
+		
 		Map<String, Object> paramap = new HashMap<>();
 		paramap.put("product_id", pvo.getProduct_id());
-		paramap.put("thumbnailImg", thumbnailImg);
+		System.out.println("업데이트 썸네일"+thumbnailPath);
+		System.out.println("업데이트 상품" + product_id);
+		paramap.put("thumbnailPath", thumbnailPath);
+		
 		paramap.put("imgPath", imgPath);
-
+		
 		try {
 			// int result = pdao.insertImg(paramap);
 			
-			int n = pdao.updateProduct(pvo);
-			int result = pdao.insertImg(paramap);
-			JSONObject jsobj = new JSONObject();
-			jsobj.put("n", n);
+			n = pdao.updateProduct(pvo);
+			result = pdao.insertImg(paramap);
 			
-			return jsobj.toString();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-
-		
-		
-		return "";
+	    resultMap.put("n", n);
+	    resultMap.put("result", result);
+	    return resultMap;
 	}
 	
+	@PostMapping("/deleteProd")
+	@ResponseBody
+	public Map<String, Object> deleteProd(HttpServletRequest request){
+		Map<String, Object> deleteProd = new HashMap<>();
+		String product_id = request.getParameter("product_id");
+		System.out.println("삭제할 상품번호 :" +product_id);
+		int result = 0;
+		
+		try {
+			result = pdao.deleteProd(product_id);
+			System.out.println(result +"개 삭제댐");
+			deleteProd.put("result", result);
+			request.setAttribute("json", deleteProd);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		return deleteProd;
+	}
 	
 	
 	
