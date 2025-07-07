@@ -118,6 +118,11 @@
 							        </form>
 							    </li>
 							</c:if>
+                            <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/admin/dashboard">귀염둥이시후</a>
+                                </li>
+                            </c:if>
                         </ul>
                     </div>
                 </div>
