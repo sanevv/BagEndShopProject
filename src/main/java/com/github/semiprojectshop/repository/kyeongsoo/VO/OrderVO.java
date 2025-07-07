@@ -18,5 +18,6 @@ public class OrderVO {
     private String createdAt;
     private String status;
     List<OrdersProductVO> ordersProductList;
+    List<AdminMemberProVO> adminMemberProList;
 
 }

@@ -1,6 +1,7 @@
 package com.github.semiprojectshop.repository.kyeongsoo.DAO;
 
 import com.github.semiprojectshop.config.encryption.AES256;
+import com.github.semiprojectshop.repository.kyeongsoo.VO.AdminMemberProVO;
 import com.github.semiprojectshop.repository.kyeongsoo.VO.OrderQueryVO;
 import com.github.semiprojectshop.repository.kyeongsoo.VO.OrderVO;
 import com.github.semiprojectshop.repository.kyeongsoo.VO.OrdersProductVO;
@@ -128,4 +129,125 @@ public class OrderDAOImple implements OrderDAO{
 
         return orderVOList;
     }
+
+    // 모든 회원 주문 정보 조회
+    @Override
+    public List<OrderVO> getAllOrderDetails() throws SQLException {
+
+            List<OrderVO> orderVOList = new ArrayList<>();
+
+            try {
+
+                conn = ds.getConnection();
+
+                String sql = " SELECT P.image_path, P.product_name, P.product_size, T.orders_id, p.product_id, to_char(O.created_at, 'yyyy-mm-dd') as created_at " +
+                        "       , O.status, T.at_price, T.at_discount_rate, T.review_id, T.QUANTITY " +
+                        "       ,O.user_id, M.name " +
+                        " FROM ( " +
+                        "    SELECT image_path, product_name, product_size, P.product_id " +
+                        "    FROM product P  " +
+                        "    JOIN product_image I ON P.product_id = I.product_id " +
+                        "    WHERE thumbnail = 1 " +
+                        " ) P " +
+                        " JOIN orders_product T ON P.product_id = T.product_id " +
+                        " JOIN orders O ON O.orders_id = T.orders_id " +
+                        " JOIN my_user M on M.user_id = O.user_id " +
+                        " order by created_at desc ";
+
+                pstmt = conn.prepareStatement(sql);
+                rs = pstmt.executeQuery();
+                List<OrderQueryVO> orderQueryList = new ArrayList<>();
+
+                while (rs.next()) {
+
+                    OrderQueryVO oqVO = new OrderQueryVO();
+                    oqVO.setImagePath(rs.getString("image_path"));
+                    oqVO.setProductName(rs.getString("product_name"));
+                    oqVO.setProductSize(rs.getString("product_size"));
+                    oqVO.setOrderId(rs.getInt("orders_id"));
+                    oqVO.setOrdersProductId(rs.getInt("product_id"));
+                    oqVO.setCreatedAt(rs.getString("created_at"));
+                    oqVO.setStatus(rs.getString("status"));
+                    oqVO.setAtPrice(rs.getInt("at_price"));
+                    oqVO.setAtDiscountRate(rs.getDouble("at_discount_rate"));
+                    oqVO.setReviewId(rs.getInt("review_id"));
+                    oqVO.setQuantity(rs.getInt("QUANTITY"));
+                    oqVO.setUserId(rs.getInt("user_id"));
+                    oqVO.setName(rs.getString("name"));
+
+                    orderQueryList.add(oqVO);
+
+                }
+
+                Map<Integer, List<OrdersProductVO>> ordersProductMap = new HashMap<>();
+
+                orderQueryList.forEach(orderQuery->{
+                    List<OrdersProductVO> or = ordersProductMap.get(orderQuery.getOrderId());
+
+                    OrdersProductVO ordersProductVO = new OrdersProductVO();
+
+                    ordersProductVO.setOrderProductId(orderQuery.getOrdersProductId());
+                    ordersProductVO.setThumbnailPath(orderQuery.getImagePath());
+                    ordersProductVO.setProductName(orderQuery.getProductName());
+                    ordersProductVO.setAtPrice(orderQuery.getAtPrice());
+                    ordersProductVO.setReviewId(orderQuery.getReviewId());
+                    ordersProductVO.setAtDiscountRate(orderQuery.getAtDiscountRate());
+                    ordersProductVO.setProductSize(orderQuery.getProductSize());
+                    ordersProductVO.setQuantity(orderQuery.getQuantity());
+
+                    if(or == null) {
+                        // 처음들어온 주문값일땐 새로운 OrderVO 생성
+                        OrderVO orderVO = new OrderVO();
+                        orderVO.setOrderId(orderQuery.getOrderId());
+                        orderVO.setStatus(orderQuery.getStatus());
+                        orderVO.setCreatedAt(orderQuery.getCreatedAt());
+
+                        // 주문별 상품 리스트 생성 및 set
+                        List<OrdersProductVO> productList = new ArrayList<>();
+                        productList.add(ordersProductVO);
+                        orderVO.setOrdersProductList(productList);
+
+                        orderVOList.add(orderVO);
+                        ordersProductMap.put(orderQuery.getOrderId(), productList);
+                    }
+                    else {
+                        or.add(ordersProductVO);
+                    }
+
+                });
+
+            } finally {
+                close();
+            }
+
+
+            return orderVOList;
+    }
+
+    @Override
+    public int updateOrderStatus(int orderId, String status) throws SQLException {
+        int result = 0;
+
+        try {
+
+            conn = ds.getConnection();
+
+            String sql = " UPDATE orders SET status = ? WHERE orders_id = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, status);
+            pstmt.setInt(2, orderId);
+
+            result = pstmt.executeUpdate();
+
+        } finally {
+            close();
+        }
+
+        return result;
+    }
+
+
+    // 주문 상태 업데이트
+
 }
