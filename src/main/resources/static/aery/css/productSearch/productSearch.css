@@ -1,0 +1,219 @@
+
+@charset "UTF-8";
+
+/* ==========================
+   Product : 상품관련
+   ========================== */
+
+.product-list {
+    display: flex;
+    flex-wrap:wrap;
+    gap: 2rem 0;
+}
+.product-list li {
+    position: relative;
+    width: 25%;
+}
+.product-list li .product-img {
+    position: relative;
+    width: 100%;
+    border-top: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
+    border-left: solid 1px #ddd;
+}
+.product-list li:last-child .product-img {
+    border-right: solid 1px #ddd;
+}
+.product-list .product-back-img {
+    padding-top: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.product-list .product-img img {
+    background: #f8f8f8;
+    object-fit: cover;
+}
+.product-list .product-info {
+    line-height: 1.4;
+    margin-top: 1.1rem;
+}
+.product-list .product-name {
+    font-size: 16px;
+    line-height: 24px;
+    color: #000;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+}
+.product-list .product-price * {
+    font-size: 16px;
+    font-weight: 600;
+}
+.product-list .before_price {
+    font-size: 14px;
+    font-weight: 400;
+    color: #ccc;
+    text-decoration: line-through;
+}
+.product-list .discout-rate {
+    color: #ff0000;
+    margin-right: 0.2rem;
+}
+.product-list .price {
+    color: #000;
+}
+.show-detail {
+    cursor: pointer;
+}
+
+.product-list .product-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+.product-list .btn-wish {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: center;
+    background-image: url(../../images/common/icon/icon_wish.png);
+    z-index: 22;
+}
+.product-list .btn-wish.active {
+    background-image: url(../../images/common/icon/icon_wish_active.png);
+}
+
+/***** 상품리스트 상단 *****/
+.product-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2.5rem 0 1.5rem;
+}
+.product-top .category-list {
+    display: inline-flex;
+    gap: 0 1rem;
+}
+.product-top .category-list li {
+    position: relative;
+}
+
+.product-top .category-list li:not(:last-child) {
+    margin-right: 10px;
+}
+.product-top .category-list li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -14px;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 20px;
+    background-color: #ddd;
+}
+.product-top .category-list li a {
+    font-size: 1.6rem;
+    color: #000;
+}
+.product-top .category-list li a.active {
+    font-weight: bold;
+}
+
+.product-sort {
+    margin-left: auto;
+}
+.product-sort .select-option {
+    height: 40px;
+    padding: 0 0.5rem;
+}
+
+
+@media screen and (min-width: 1025px){
+    .product-list li:nth-child(4n) .product-img{
+        border-right: solid 1px #ddd;
+    }
+}
+@media screen and (max-width: 1024px){
+    .product-list.type-4 li {
+        width: 50%;
+    }
+    .product-list li:nth-child(2n) .product-img {
+        border-right: solid 1px #ddd;
+    }
+}
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 20px;
+    border-bottom: solid 1px #eee;
+    position: relative;
+    margin: 2.5rem 0;
+}
+
+/* 카테고리 영역 */
+.categories {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* 정렬박스는 오른쪽 끝으로 */
+.sort-box {
+    margin-left: auto;
+}
+
+/* 카테고리 밑줄 스타일 */
+.category {
+    position: relative;
+    padding-bottom: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.category.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: black;
+}
+
+/* 셀렉트박스 스타일 */
+.sort-box select {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sort-box {
+        margin-left: 0;
+        margin-top: 10px;
+        align-self: flex-end;
+    }
+
+    .categories {
+        justify-content: center;
+    }
+}

@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="./include/header.jsp"/>
 <div class="container">
-    <p class="h2 text-center mt-4">장애발생</p>
-    <img src="<%= request.getContextPath()%>/images/error.gif" class="img-fluid"/> <%-- 반응형 이미지 --%>
-    <p class="h4 text-primary mt-3">빠른 복구를 위해 최선을 다하겠습니다.</p>
+    <p class="h2 text-center mt-5">장애발생</p>
+    <img src="<%= request.getContextPath()%>/images/error1.png" class="img-fluid" style="display: block; margin: 0 auto;"/> <%-- 반응형 이미지 --%>
+    <p class="h5 mt-3" style="text-align: center; color: black;">빠른 복구를 위해 최선을 다하겠습니다.</p>
 </div>
 
 

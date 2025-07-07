@@ -114,70 +114,74 @@
     }
 </script>
 
-<div class="wishlist-container container">
-    <!-- 좌측 마이페이지 메뉴 -->
-    <div class="mypageMenu">
-        <jsp:include page="../../include/mypageMenu.jsp" />
-    </div>
+<div class="container mt-5">
 
-    <!-- 관심상품 리스트 -->
-    <div class="wish-content" style="margin-top: 50px;">
-        <div class="wishlist-header">
-            <h4 class="wish-title" style="padding-left: 20px;">관심 상품</h4>
-        </div>
+	<div class="row">
 
-        <div class="wishlist-toolbar" style="margin: 15px 0; gap: 10px;">
-            <label style="padding-left: 20px;"><input type="checkbox" id="selectAll" /></label>
-            <button id="deleteSelected" class="button btn-outline-dark btn-sm">선택 삭제</button>
-        </div>
-
-        <div class="wish-list">
-            <c:forEach var="wish" items="${wishProductList}">
-                <div class="wish-item">
-                    <div class="wish-info-row">
-                        <div class="wish-left">
-                            <input type="checkbox" class="wishCheck" data-id="${wish.productId}">
-                            <div class="product-name">${wish.productName}</div>
-                            <div class="wish-price">
-                                <del><fmt:formatNumber value="${wish.productPrice}" pattern="#,###"/>원</del>&nbsp;
-                                <span><fmt:formatNumber value="${wish.priceAfterDiscount}" pattern="#,###"/>원</span>
-                            </div>
-                        </div>
-                        <div class="wish-image">
-                            <img src="${wish.productThumbnailUrl}" alt="상품 이미지" onclick="goToDetail(${wish.productId})">
-                            <button class="wish-delete-button" onclick="removeWish(${wish.productId})">×</button>
-                        </div>
-                    </div>
-                    <div class="wish-actions">
-                        <button class="button btn-outline-dark btn-sm" onclick="goToDetail(${wish.productId})">상세보기</button>
-                        <div class="right-group">
-                            <button class="button btn-outline-dark btn-sm" onclick="wishToCart(${wish.productId})">장바구니</button>
-                            <button class="button btn-outline-dark btn-sm" onclick="wishToOrder(${wish.productId})">주문하기</button>
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
-        </div>
-
-        <!-- 페이지네이션 -->
-        <div class="pagination-container text-center mt-4" style="margin-top: 50px;">
-            <nav aria-label="Page navigation">
-                <ul class="pagination-custom">
-                    <li class="${currentShowPageNo == 1 ? 'disabled' : ''}">
-                        <a href="?currentShowPageNo=${currentShowPageNo - 1}">&lt;</a>
-                    </li>
-                    <c:forEach var="i" begin="${startPage}" end="${endPage}">
-                        <li class="${i == currentShowPageNo ? 'active' : ''}">
-                            <a href="?currentShowPageNo=${i}">${i}</a>
-                        </li>
-                    </c:forEach>
-                    <li class="${currentShowPageNo == totalPage ? 'disabled' : ''}">
-                        <a href="?currentShowPageNo=${currentShowPageNo + 1}">&gt;</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+	    <!-- 좌측 마이페이지 메뉴 -->
+	    <div class="mypageMenu col-lg-3 col-md-4">
+	        <jsp:include page="../../include/mypageMenu.jsp" />
+	    </div>
+	
+	    <!-- 관심상품 리스트 -->
+	    <div class="wish-content col-lg-9 col-md-8" style="margin-top: 50px;">
+	        <div class="wishlist-header">
+	            <h4 class="wish-title";>관심 상품</h4>
+	        </div>
+	
+	        <div class="wishlist-toolbar";>
+	            <label style="padding-left: 20px;"><input type="checkbox" id="selectAll" /></label>
+	            <button id="deleteSelected" class="button btn-outline-dark btn-sm">선택 삭제</button>
+	        </div>
+	
+	        <div class="wish-list">
+	            <c:forEach var="wish" items="${wishProductList}">
+	                <div class="wish-item">
+	                    <div class="wish-info-row">
+	                        <div class="wish-left">
+	                            <input type="checkbox" class="wishCheck" data-id="${wish.productId}">
+	                            <div class="product-name">${wish.productName}</div>
+	                            <div class="wish-price">
+	                                <del><fmt:formatNumber value="${wish.productPrice}" pattern="#,###"/>원</del>&nbsp;
+	                                <span><fmt:formatNumber value="${wish.priceAfterDiscount}" pattern="#,###"/>원</span>
+	                            </div>
+	                        </div>
+	                        <div class="wish-image">
+	                            <img src="${wish.productThumbnailUrl}" alt="상품 이미지" onclick="goToDetail(${wish.productId})">
+	                            <button class="wish-delete-button" onclick="removeWish(${wish.productId})">×</button>
+	                        </div>
+	                    </div>
+	                    <div class="wish-actions">
+	                        <button class="button btn-outline-dark btn-sm" onclick="goToDetail(${wish.productId})">상세보기</button>
+	                        <div class="right-group">
+	                            <button class="button btn-outline-dark btn-sm" onclick="wishToCart(${wish.productId})">장바구니</button>
+	                            <button class="button btn-outline-dark btn-sm" onclick="wishToOrder(${wish.productId})">주문하기</button>
+	                        </div>
+	                    </div>
+	                </div>
+	            </c:forEach>
+	        </div>
+	
+	        <!-- 페이지네이션 -->
+	        <div class="pagination-container text-center mt-4" style="margin-top: 50px;">
+	            <nav aria-label="Page navigation">
+	                <ul class="pagination-custom">
+	                    <li class="${currentShowPageNo == 1 ? 'disabled' : ''}">
+	                        <a href="?currentShowPageNo=${currentShowPageNo - 1}">&lt;</a>
+	                    </li>
+	                    <c:forEach var="i" begin="${startPage}" end="${endPage}">
+	                        <li class="${i == currentShowPageNo ? 'active' : ''}">
+	                            <a href="?currentShowPageNo=${i}">${i}</a>
+	                        </li>
+	                    </c:forEach>
+	                    <li class="${currentShowPageNo == totalPage ? 'disabled' : ''}">
+	                        <a href="?currentShowPageNo=${currentShowPageNo + 1}">&gt;</a>
+	                    </li>
+	                </ul>
+	            </nav>
+	        </div>
+	    </div>
+	</div>
 </div>
 
 <jsp:include page="../../include/footer.jsp" />

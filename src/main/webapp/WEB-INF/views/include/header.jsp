@@ -8,9 +8,11 @@
 <script type="text/javascript">
 
 	const frm = document.prodRegisterFrm;
-	frm.method = "post";
-	frm.action = "prod/register";
-	frm.submit();
+	if (frm) {
+	    frm.method = "post";
+	    frm.action = "prod/register";
+	    frm.submit();
+	}
 
 </script>
 <!DOCTYPE html>
@@ -78,13 +80,13 @@
                     </div>
                     <div class="side-navi navi-list">
                         <div class="navi-item search-item">
-                            <button type="button" class="btn-search">
-                            	<img src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg"alt="" class="max">
-                            </button>
-                            <div class="search-form">
-                                <form action="${pageContext.request.contextPath}/searchResult.team1" method="get">
-						            <input type="search" class="inp-search" name="keyword" placeholder="검색어를 입력해주세요"/>
-						        </form>
+						    <button type="button" class="btn-search">
+						        <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg" alt="" class="max">
+						    </button>
+						    <div class="search-form">
+						        <form id="searchForm" onsubmit="return goSearch();">
+								    <input type="search" id="keyword" name="keyword" class="inp-search" placeholder="검색어를 입력해주세요" autocomplete="off"/>
+								</form>
 						    </div>
 						</div>
                         <div class="navi-item">
@@ -143,6 +145,18 @@
                     })
             }
 
-            if(isLogin)
-                showCartCount();
+            const contextPath = '${pageContext.request.contextPath}';
+
+            function goSearch() {
+                const keyword = document.getElementById('keyword').value.trim();
+                if (!keyword) {
+                    alert("검색어를 입력해주세요.");
+                    return false;
+                }
+
+                const path = contextPath.replace(/\/+$/, ''); 
+                location.href = path + '/productSearch?keyword=' + encodeURIComponent(keyword);
+                return false;
+            }
+            
         </script>
