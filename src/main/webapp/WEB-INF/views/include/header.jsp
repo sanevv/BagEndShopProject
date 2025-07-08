@@ -105,7 +105,6 @@
                                     <c:if test="<%= isLoginJava %>">
                                         <span class="basket-count"></span>
                                     </c:if>
-
                                 </span>
                             </a>
                         </div>
@@ -161,6 +160,7 @@
         const isLogin = <%= isLoginJava %>;
 
         function showCartCount() {
+
             axios.get('/api/cart/count')
                 .then(response => {
                     const count = response.data;
@@ -206,6 +206,10 @@
         }
         searchBtn.addEventListener("click", function () {
             productPageMovement(searchInput.value);
+        })
+
+        document.addEventListener('DOMContentLoaded', function () {
+            showCartCount();
         })
 
 

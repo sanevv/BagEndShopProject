@@ -58,7 +58,7 @@ function goDelete(noticeId) {
 								<li>		
 									<form method="post" action="${pageContext.request.contextPath}/prod/update">
 										<button class="btn btn-sm" type="submit">수정하기</button>
-										<input type="hidden" name="productId"value="${prdVO.productId}">
+										<input type="hidden" name="productId" value="${prdVO.productId}">
 									</form>
 								</li>
 								<li><a class="dropdown-item text-danger" href="#" data-id="${nvo.notice_id}" onclick="goDelete(this)">삭제하기</a></li>

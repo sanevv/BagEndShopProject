@@ -47,7 +47,7 @@ public interface ReviewDAO {
     ReviewCommentVO getReviewCommentInfo(int reviewId);
 
     // 상품 구매를 한 사람인지 알아오기
-    boolean getIsBuy(int userId);
+    boolean getIsBuy(int userId, int productId);
 
     // 리뷰를 작성한 사용자인지 체크하기
     boolean getIsWriteReview(int userId, int productId);

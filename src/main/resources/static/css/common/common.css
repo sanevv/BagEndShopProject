@@ -226,6 +226,9 @@
    ========================== */
 
 .search-form {
+    display: flex;
+    align-items: center;
+    height: 2.8rem;
     position: absolute;
     width: 0;
     right: 5.5rem;
@@ -235,12 +238,6 @@
     overflow: hidden;
     opacity: 0;
     z-index: 999;
-}
-
-.search-form form {
-    display: flex;
-    align-items: center;
-    height: 2.8rem;
 }
 
 .search-form.deactive {
@@ -307,6 +304,7 @@
     font-size: 2.8rem;
     color: #000;
     text-decoration: none;
+    transition: all 0.3s;
 }
 
 /* ==========================

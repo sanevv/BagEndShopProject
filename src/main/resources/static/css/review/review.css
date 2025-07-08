@@ -208,11 +208,13 @@
     background-color: #f8f8f8;
     min-height: 200px;
     padding: 20px;
+    line-height: 1.6;
 }
 
 textarea[name="reviewCommentContents"] {
     width: 100%;
     height: 200px;
+    line-height: 1.4;
     border: solid 1px #ddd;
     padding: 20px;
     resize: none;

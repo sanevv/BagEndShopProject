@@ -40,7 +40,7 @@ public class ProductDetailController {
         // 해당 상품 추가이미지 가져오기
         List<ProductDetailVO> productAddImageList = prdDAO.getProductImageList(productId);
 
-        System.out.println("productAddImageList.size() : " + productAddImageList.size());
+        //System.out.println("productAddImageList.size() : " + productAddImageList.size());
 
         for (ProductDetailVO productAddImage : productAddImageList) {
             prdVO.setProductAddImagePath(productAddImage.getProductAddImagePath());
