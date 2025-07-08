@@ -255,7 +255,7 @@ $(function() {
 </script>
 
 
-<div align="center" style="margin-bottom: 20px;">
+<div align="center" style="margin: 150px 0;">
 
     <div style="border: solid green 2px; width: 250px; margin-top: 20px; padding: 10px 0; border-left: hidden; border-right: hidden;">
         <span style="font-size: 15pt; font-weight: bold;">제품등록&nbsp;[관리자전용]</span>
@@ -352,7 +352,7 @@ $(function() {
                 <tr>
                     <td class="prodInputName">제품상세설명</td>
                     <td align="left">
-                        <textarea name="product_contents" rows="5" cols="60"></textarea>
+                    	<input type="file" name="product_contents" class="infoData img_contents_file" accept="image/*" />
                         <span class="error">필수입력</span>
                     </td>
                 </tr>

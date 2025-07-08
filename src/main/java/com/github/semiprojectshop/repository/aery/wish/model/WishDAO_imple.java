@@ -278,4 +278,62 @@ public class WishDAO_imple implements WishDAO {
         return count;
     }
 
+    
+    // 관심상품으로 등록했는지에 따라 토글 등록 또는 해제
+    @Override
+    public boolean toggleWish(Map<String, Object> paramMap) throws SQLException {
+        boolean isWished = false;
+
+        String email = (String) paramMap.get("email");
+        int productId = Integer.parseInt(paramMap.get("productId").toString());
+
+        try (Connection conn = ds.getConnection()) {
+
+            int userId;
+            String getUserSql = "SELECT user_id FROM my_user WHERE email = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(getUserSql)) {
+                pstmt.setString(1, email);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        userId = rs.getInt("user_id");
+                    } else {
+                        throw new SQLException("해당 사용자가 존재하지 않습니다.");
+                    }
+                }
+            }
+
+            // 관심상품 존재 여부 확인
+            boolean exists;
+            String checkSql = "SELECT COUNT(*) FROM wish WHERE user_id = ? AND product_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(checkSql)) {
+                pstmt.setInt(1, userId);
+                pstmt.setInt(2, productId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    rs.next();
+                    exists = rs.getInt(1) > 0;
+                }
+            }
+
+            // 토글 (등록 또는 삭제)
+            if (exists) {
+                String deleteSql = "DELETE FROM wish WHERE user_id = ? AND product_id = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(deleteSql)) {
+                    pstmt.setInt(1, userId);
+                    pstmt.setInt(2, productId);
+                    pstmt.executeUpdate();
+                    isWished = false;
+                }
+            } else {
+                String insertSql = "INSERT INTO wish (user_id, product_id) VALUES (?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
+                    pstmt.setInt(1, userId);
+                    pstmt.setInt(2, productId);
+                    pstmt.executeUpdate();
+                    isWished = true;
+                }
+            }
+        }
+
+        return isWished;
+    }
 }

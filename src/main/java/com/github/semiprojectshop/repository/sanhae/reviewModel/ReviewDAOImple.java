@@ -478,5 +478,33 @@ public class ReviewDAOImple implements ReviewDAO {
         return result;
     }
 
+    // 리뷰를 작성한 사용자인지 체크하기
+    @Override
+    public boolean getIsWriteReview(int userId, int productId) {
+        boolean result = false;
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " SELECT * FROM review WHERE user_id = ? AND product_id = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, productId);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                result = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+
+        return result;
+    }
+
 
 }

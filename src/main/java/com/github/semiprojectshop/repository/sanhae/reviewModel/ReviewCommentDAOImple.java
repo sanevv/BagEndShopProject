@@ -133,4 +133,36 @@ public class ReviewCommentDAOImple implements ReviewCommentDAO {
 
         return result;
     }
+
+
+    // 관리자 댓글 삭제하기
+    @Override
+    public ReviewCommentVO deleteReviewComment(int reviewId) {
+
+        ReviewCommentVO result = new ReviewCommentVO();
+
+        try {
+            conn = ds.getConnection();
+
+            String sql = " DELETE FROM review_comment " +
+                         " WHERE review_id = ? ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reviewId);
+
+            int resultCnt = pstmt.executeUpdate();
+            if(resultCnt > 0) {
+                return result;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+
+        return null;
+
+    }
 }

@@ -107,7 +107,7 @@ searchProductList = () => {
             li.dataset.productId = productId;
             li.innerHTML = `
         <div class="product-img">
-            <div class="product-back-img show-detail" style="background-image: url(${thumbnail ? thumbnail : '/images/product/test2.png'})"></div>
+            <div class="product-back-img show-detail" style="background-image: url(${thumbnail ? thumbnail : '/images/error/zz.png'})"></div>
            <button type="button" class="btn-wish${wished ? ' active' : ''}"><span class="blind">좋아요</span></button>
         </div>
         <div class="product-info">
