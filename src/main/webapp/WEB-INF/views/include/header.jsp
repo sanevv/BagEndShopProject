@@ -115,7 +115,7 @@
                     <div class="inner">
                         <ul class="main-menu">
                             <li>
-                                <a href="${pageContext.request.contextPath}/product/list">ALL</a>
+                                <a href="${pageContext.request.contextPath}/product">ALL</a>
                                 <ul class="sub-menu">
                                     <li><a href="${pageContext.request.contextPath}/product/messenger">- MESSENGER</a>
                                     </li>
@@ -196,17 +196,16 @@
                 productPageMovement(searchInput.value);
             }
         });
-        productPageMovement = (searchKeyword) => {
-            if (searchKeyword) {
-                console.log(searchKeyword);
-                location.href = `${pageContext.request.contextPath}/product?search=\${encodeURIComponent(searchKeyword)}`;
-                return;
-            }
-            alert("검색어를 입력해주세요.");
-        }
         searchBtn.addEventListener("click", function () {
             productPageMovement(searchInput.value);
         })
 
-
         </script>
+<%--        <c:if test="${not empty requestScope.productList}">--%>
+<%--            --%>
+<%--        </c:if>--%>
+        <c:if test="${empty requestScope.productList}">
+            <script src="${pageContext.request.contextPath}/js/product/searchScript.js" defer></script>
+        </c:if>
+
+
