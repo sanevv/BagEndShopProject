@@ -9,6 +9,7 @@ import com.github.semiprojectshop.web.sihu.dto.product.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,11 +32,12 @@ public class ProductRestController {
                                                                                   @RequestParam (required = false) long page,
                                                                                   @RequestParam (defaultValue = "12") long size,
                                                                                   @RequestParam (required = false) String sort,
+                                                                                  @RequestParam (required = false, value = "search") String searchKeyword,
                                                                                   HttpSession session) {
         Long loginUserId = session.getAttribute("loginUser") != null ?
                 (long) ((MemberVO) session.getAttribute("loginUser")).getUserId()
                 : null;
-        ProductListRequest productListRequest = ProductListRequest.of(page, size, sort, category);
+        ProductListRequest productListRequest = ProductListRequest.of(page, size, sort, category, searchKeyword);
 
         Optional<PaginationDto<ProductListResponse>> categoryProductList = productService.getCategoryProductList(productListRequest, loginUserId);
         return categoryProductList
@@ -53,18 +55,28 @@ public class ProductRestController {
         return CustomResponse.ofOk("상품 찜하기 성공", "찜하기가 완료되었습니다.");
 
     }
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public long createProduct(@RequestParam("fk_cnum") long categoryId,
                               @RequestParam("product_name") String productName,
                               @RequestParam("stock") long stock,
                               @RequestParam("price") long price,
-                              @RequestParam("product_contents") String productContents,
+                              @RequestPart("product_contents") MultipartFile productContents,
                               @RequestParam String productInfo,
                               @RequestParam String productSize,
                               @RequestParam String matter,
-                              @RequestParam("pimage1") MultipartFile mainImage,
-                              @RequestParam("files") List<MultipartFile> files,
+                              @RequestPart("pimage1") MultipartFile mainImage,
+                              @RequestPart("files") List<MultipartFile> files,
                               HttpSession session) {
+        if(session.getAttribute("loginUser") == null)
+            throw CustomMyException.fromMessage("로그인 후 상품 등록을 이용해주세요.");
+        MemberVO memberVO = (MemberVO) session.getAttribute("loginUser");
+        long loginUserId = memberVO.getUserId();
+        long userRole = memberVO.getRoleId();
+        if (userRole != 1) // 관리자 권한이 아닌 경우
+            throw CustomMyException.fromMessage("상품 등록은 관리자만 가능합니다.");
+        
+
+
         ProductCreateRequest request = ProductCreateRequest.of(
                 categoryId,
                 productName,
@@ -79,7 +91,7 @@ public class ProductRestController {
         );
         
 
-        return productService.createProduct(request, 1L);
+        return productService.createProduct(request, loginUserId);
     }
 
 }
