@@ -15,6 +15,7 @@ public class ProductController {
     public String list(Model model, @RequestParam(required = false, value = "search") String searchKeyword) {
         model.addAttribute("category", "all");
         model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("productList", "나 상품");
         return "product/productList";
     }
     @GetMapping("/{category}")
