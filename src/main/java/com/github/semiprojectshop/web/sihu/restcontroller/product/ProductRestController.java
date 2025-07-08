@@ -67,13 +67,13 @@ public class ProductRestController {
                               @RequestPart("pimage1") MultipartFile mainImage,
                               @RequestPart("files") List<MultipartFile> files,
                               HttpSession session) {
-        if(session.getAttribute("loginUser") == null)
-            throw CustomMyException.fromMessage("로그인 후 상품 등록을 이용해주세요.");
-        MemberVO memberVO = (MemberVO) session.getAttribute("loginUser");
-        long loginUserId = memberVO.getUserId();
-        long userRole = memberVO.getRoleId();
-        if (userRole != 1) // 관리자 권한이 아닌 경우
-            throw CustomMyException.fromMessage("상품 등록은 관리자만 가능합니다.");
+//        if(session.getAttribute("loginUser") == null)
+//            throw CustomMyException.fromMessage("로그인 후 상품 등록을 이용해주세요.");
+//        MemberVO memberVO = (MemberVO) session.getAttribute("loginUser");
+        long loginUserId = 1L;
+//        long userRole = memberVO.getRoleId();
+//        if (userRole != 1) // 관리자 권한이 아닌 경우
+//            throw CustomMyException.fromMessage("상품 등록은 관리자만 가능합니다.");
         
 
 
