@@ -201,6 +201,7 @@ public class OrderDAOImple implements OrderDAO{
                         orderVO.setOrderId(orderQuery.getOrderId());
                         orderVO.setStatus(orderQuery.getStatus());
                         orderVO.setCreatedAt(orderQuery.getCreatedAt());
+                        orderVO.setUserId(orderQuery.getUserId());
 
                         // 주문별 상품 리스트 생성 및 set
                         List<OrdersProductVO> productList = new ArrayList<>();

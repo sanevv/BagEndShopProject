@@ -73,7 +73,7 @@ public class MemberController {
 
     @PostMapping("/login.up")
     public String loginPost(HttpServletRequest request){
-        System.out.println("확인용");
+        // System.out.println("확인용");
 
         String userEmail = request.getParameter("userEmail");
         String pwd = request.getParameter("pwd");
@@ -117,6 +117,12 @@ public class MemberController {
 
     @GetMapping("/findEmailSuccess.up")
     public String findEmailSuccess (HttpServletRequest request, HttpServletResponse response) throws SQLException {
+
+        String referer = request.getHeader("Referer");
+        if (referer == null) {
+            // 페이지를 홈화면 으로 보낸다.
+            return "redirect:/";
+        }
 
         MemberVO mvo = new MemberVO();
 
@@ -183,6 +189,12 @@ public class MemberController {
     @GetMapping("receiveAuthenticationNumberByEmail")
     public String receiveAuthenticationNumberByEmail(HttpServletRequest request)  {
 
+        String referer = request.getHeader("Referer");
+        if (referer == null) {
+            // 페이지를 홈화면 으로 보낸다.
+            return "redirect:/";
+        }
+
         String email = request.getParameter("email");
         request.setAttribute("email", email);
         return "member/receiveAuthenticationNumberByEmail";
@@ -190,6 +202,12 @@ public class MemberController {
 
     @GetMapping("receiveAuthenticationNumberByPhone")
     public String receiveAuthenticationNumberByPhone(HttpServletRequest request)  {
+
+        String referer = request.getHeader("Referer");
+        if (referer == null) {
+            // 페이지를 홈화면 으로 보낸다.
+            return "redirect:/";
+        }
 
          String phoneNumber = request.getParameter("phoneNumber");
          request.setAttribute("phoneNumber", phoneNumber);
