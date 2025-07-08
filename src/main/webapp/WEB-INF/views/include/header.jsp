@@ -38,6 +38,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 
+
     <div id="wrap">
         <!-- header -->
         <header id="header">
@@ -125,6 +126,8 @@
                             </li>
 
                             <li><a href="${pageContext.request.contextPath}/notice/list.one">NOTICE</a></li>
+
+
                             <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
                                 <li>
                                     <form name="prodRegisterFrm"
@@ -140,6 +143,11 @@
                                     <a href="${pageContext.request.contextPath}/admin/dashboard">최근 주문금액 통계 리스트</a>
                                 </li>
                             </c:if>
+                            <br>
+                            <br>
+                            <br>
+                            <li><a class="submenu" href="#" style="font-size: 18px; color: #A3A9AF;">오시는길</a></li>
+
                         </ul>
                     </div>
                 </div>
