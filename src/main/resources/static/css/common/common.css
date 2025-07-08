@@ -147,7 +147,7 @@
     position: relative;
     width: 34px;
     height: 30px;
-    background: #fff;
+    background: transparent;
     border: 0;
     cursor: pointer;
     outline: 0;
@@ -284,28 +284,30 @@
     background: #f8f8f8;
 }
 
-#allMenu li {
-    transition: all 0.3s ease-in-out;
-}
-#allMenu li:nth-child(1) {}
-#allMenu li:nth-child(2) {}
-#allMenu li:nth-child(3) {}
-#allMenu li:nth-child(4) {}
-#allMenu li:nth-child(5) {}
-
-
-#allMenu li:hover {
+#allMenu li a:hover {
     padding-left: 1.4rem;
 }
 
-#allMenu li:not(:last-child) {
-    margin-bottom: 1rem;
+#allMenu .main-menu > li:not(:last-child) {
+    margin-bottom: 1.6rem;
+}
+
+#allMenu .sub-menu {
+    margin-top: 1.2rem;
+    margin-bottom: 2rem;
+}
+#allMenu .sub-menu li:not(:last-child) {
+    margin-bottom: 0.8rem;
+}
+#allMenu .sub-menu li a {
+    font-size: 2.2rem;
 }
 
 #allMenu li a {
     font-size: 2.8rem;
     color: #000;
     text-decoration: none;
+    transition: all 0.3s ease-in-out;
 }
 
 /* ==========================
