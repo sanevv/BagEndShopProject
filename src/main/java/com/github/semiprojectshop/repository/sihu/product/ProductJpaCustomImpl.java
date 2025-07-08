@@ -16,12 +16,26 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
 
 @RequiredArgsConstructor
 public class ProductJpaCustomImpl implements ProductJpaCustom {
     private final JPAQueryFactory queryFactory;
 
+ // DataSource 자동생성
+ 	private final DataSource ds;  // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다. 
+ 	private Connection conn;
+ 	private PreparedStatement pstmt;
+ 	private ResultSet rs;
 
     @Override
     public List<MainProductResponse> findMainProductList() {
@@ -157,4 +171,54 @@ public class ProductJpaCustomImpl implements ProductJpaCustom {
             case NEWEST -> QProduct.product.createdAt.desc();
         };
     }
+
+    
+    // 사용한 자원을 반납하는 close() 메소드 생성하기
+ 	private void close() {
+ 		try {
+ 			if(rs    != null) {rs.close();	  rs=null;}
+ 			if(pstmt != null) {pstmt.close(); pstmt=null;}
+ 			if(conn  != null) {conn.close();  conn=null;}
+ 		} catch(SQLException e) {
+ 			e.printStackTrace();
+ 		}
+ 	}// end of private void close()---------------
+    
+ 	
+    // tbl_map(위,경도) 테이블에 있는 정보를 가져오기(select)
+	@Override
+	public List<Map<String, String>> selectStoreMap() throws SQLException {
+		List<Map<String, String>> storeMapList = new ArrayList<>();
+	      
+		try {
+			conn = ds.getConnection();
+	         
+			String sql = " select storeID, storeName, storeUrl, storeImg, storeAddress, lat, lng, zindex " + 
+						 " from tbl_map " + 
+	                     " order by zindex asc ";
+	         
+			pstmt = conn.prepareStatement(sql);
+	         
+			rs = pstmt.executeQuery();
+	         
+			while(rs.next()) {
+				Map<String, String> map = new HashMap<>();
+	            map.put("STOREID", rs.getString("STOREID"));
+	            map.put("STORENAME", rs.getString("STORENAME"));
+	            map.put("STOREURL", rs.getString("STOREURL"));
+	            map.put("STOREIMG", rs.getString("STOREIMG"));
+	            map.put("STOREADDRESS", rs.getString("STOREADDRESS"));
+	            map.put("LAT", rs.getString("LAT"));
+	            map.put("LNG", rs.getString("LNG"));
+	            map.put("ZINDEX", rs.getString("ZINDEX"));
+	                        
+	            storeMapList.add(map); 
+			}// end of while-----------------
+	         
+		} finally {
+			close();
+		}
+	      
+		return storeMapList;
+	}
 }

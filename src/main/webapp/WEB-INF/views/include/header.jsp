@@ -107,12 +107,16 @@
                 <div id="allMenu">
                     <div class="inner">
                         <ul>
-                            <li><a href="productList.one">BAG</a></li>
-                            <li><a href="productList.one">ACC</a></li>
-                            <li><a href="${pageContext.request.contextPath}/product/list">시후냉동바보</a></li>
-                            <li><a href="${pageContext.request.contextPath}/notice/list.one">승호바보</a></li>
-                            <li><a href="productList.one">경수바보</a></li>
-                            <li><a href="productList.one">애리천재</a></li>
+                            <li><a class="mainmenu" href="productList.one">BAG</a></li>
+                            <li><a class="mainmenu" href="productList.one">ACC</a></li>
+                            <li><a class="mainmenu" href="${pageContext.request.contextPath}/product/list">시후냉동바보</a></li>
+                            <li><a class="mainmenu" href="${pageContext.request.contextPath}/notice/list.one">승호바보</a></li>
+                            <li><a class="mainmenu" href="productList.one">경수바보</a></li>
+                            <li><a class="mainmenu" href="productList.one">애리천재</a></li>
+                            <br>
+                            <br>
+                            <br>
+                            <li><a class="submenu" href="#" style="font-size: 18px; color: #A3A9AF;">오시는길</a></li>
 							<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
 							    <li>
 							        <form name="prodRegisterFrm" action="${pageContext.request.contextPath}/prod/register" method="post">

@@ -294,7 +294,7 @@
 #allMenu li:nth-child(5) {}
 
 
-#allMenu li:hover {
+#allMenu li:not(:last-child):hover {
     padding-left: 1.4rem;
 }
 
