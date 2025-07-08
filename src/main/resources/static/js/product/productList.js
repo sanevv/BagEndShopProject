@@ -7,6 +7,20 @@ let isLoading = false;
 
 const categories = document.querySelectorAll('.category');
 const sortSelect = document.querySelector('.sort-box select');
+const searchKeywordDiv = document.querySelector('#searchKeywordDiv');
+const closeButton = document.querySelector('#closeButton');
+
+if(searchKeyword)
+    searchKeywordDiv.style.display = 'flex'; // 검색어가 있을 때만 검색어 표시
+
+closeButton.addEventListener('click', () => {
+    searchKeywordDiv.style.display = 'none'; // 검색어 숨김
+    currentSearchKeyword = ''; // 검색어 초기화
+    currentPage = 1; // 페이지 초기화
+    searchProductList(); // 검색어 초기화 후 상품 목록 재조회
+})
+
+
 
 // 스크롤 이벤트 콜백 함수 분리
 function onScrollLoad() {
