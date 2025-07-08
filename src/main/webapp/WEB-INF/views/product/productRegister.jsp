@@ -169,7 +169,8 @@ $(function() {
                     } else {
                         file_arr.push(f);
                     }
-
+	
+                    $('div#fileDrop').empty();
                     
                     for(let imgfile of file_arr){
                     	const fileName = imgfile.name;
@@ -180,6 +181,7 @@ $(function() {
 	                	     <span class='fileName'>\${fileName}</span>
 	                	     <span class='clear'></span>
 	                	   </div>`;
+	                	
 	                 	$(this).append(v_html); 
 	                    
                     } // end of  for(let imgfile of file_arr){} --------------

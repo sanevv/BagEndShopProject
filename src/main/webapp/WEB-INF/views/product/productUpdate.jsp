@@ -187,7 +187,8 @@ $(function() {
                     } else {
                         file_arr.push(f);
                     }
-
+                    
+                    $('div#fileDrop').empty();
                     
                     for(let imgfile of file_arr){
                     	const fileName = imgfile.name;
@@ -369,7 +370,7 @@ $(function() {
                     <td class="prodInputName">제품이미지</td>
                     <td align="left">
                         <input type="file" name="pimage1" class="infoData img_file" accept="image/*"/>
-                        <input type="hidden" name="originPimage1" value="${thbumnail}" />
+                        <input type="hidden" name="originPimage1" value="${thumbnail}" />
                         <span class="error">필수입력</span>
                     </td>
                 </tr>
@@ -422,7 +423,7 @@ $(function() {
                     <td class="prodInputName">제품상세설명</td>
                     <td align="left">
                         <input type="file" name="product_contents" class="infoData img_contents_file" accept="image/*" />
-                        <input type="hidden" name="originContents" value="${pvo.contents}" />
+                        <input type="hidden" name="originContents" value="${pvo.product_contents}" />
                         <span class="error">필수입력</span>
                     </td>
                 </tr>
