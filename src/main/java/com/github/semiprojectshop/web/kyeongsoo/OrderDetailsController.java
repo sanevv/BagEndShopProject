@@ -9,6 +9,7 @@ import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.kyeongsoo.memberModel.MemberDAO;
 import com.github.semiprojectshop.repository.kyeongsoo.productDomain.ProductVO;
 import com.github.semiprojectshop.repository.kyeongsoo.model.DaoCustom;
+import com.github.semiprojectshop.web.kyeongsoo.dto.UpdateOrderStatusResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +33,14 @@ public class OrderDetailsController {
 
     @GetMapping("/orderDetails")
     public String orderDetails(HttpServletRequest request) throws SQLException {
+
+        String referer = request.getHeader("Referer");
+
+        if (referer == null) {
+            // 페이지를 홈화면 으로 보낸다.
+            return "redirect:/";
+        }
+
         HttpSession session = request.getSession();
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
@@ -58,12 +67,24 @@ public class OrderDetailsController {
     }
 
     @PostMapping("/updateStatus")
-    public int updateStatus(@RequestParam String status,
-                            @RequestParam int orderId) throws SQLException {
+    @ResponseBody
+    public UpdateOrderStatusResponse updateStatus(@RequestParam String status,
+                                                  @RequestParam int orderId) throws SQLException {
 
         int n = 0;
+        boolean changeOrderStatus = false;
 
         n = orderDAO.updateOrderStatus(orderId, status);
-        return n;
+
+        if( n == 1){
+            changeOrderStatus = true;
+        }
+        else {
+            changeOrderStatus = false;
+        }
+
+        UpdateOrderStatusResponse response = new UpdateOrderStatusResponse(changeOrderStatus);
+
+        return response;
     }
 }

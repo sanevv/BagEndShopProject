@@ -13,29 +13,50 @@
 <jsp:include page="../include/header.jsp"/>
 
 <script type="text/javascript">
-    function updateOrderStatus(orderId, status) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/orderShow/updateStatus",
-            type: "POST",
-            data: {
-                orderId: orderId,
-                status: status
-            },
-            success: function(n) {
 
-                if (n === 1){
-                    alert("주문상태 변경이 성공했습니다.");
-                }
-                else{
-                    alert("주문상태 변경이 실패했습니다.")
-                }
+    $(document).ready(function () {
 
-            },
-            error:function(request, status, error) {
-                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        // Admin 일 경우 select 태그의 값을 변경하여 db에 업데이트해준다.
+        $('select#orderStatus').change(function (e) {
+
+            const selectVal = $(e.target).val();
+
+            if(selectVal === ""){
+                return;
             }
-        });
-    }
+
+            const orderId = $(e.target).data('orderid');
+
+            $.ajax({
+                url: "${pageContext.request.contextPath}/orderShow/updateStatus",
+                type: "POST",
+                data: {
+                    orderId : orderId,
+                    status : selectVal
+                },
+                success: function (response) {
+                    console.log(response.changeOrderStatus);
+                    if(response.changeOrderStatus === true){
+                        alert("주문상태값이 변경되었습니다.");
+                        // 다시 페이지를 새로고침 해준다
+                        location.reload();
+                    }
+                    else{
+                        alert("주문상태값 변경이 실패했습니다.");
+                    }
+                },
+                error: function(request, status, error){
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                }
+            })
+
+        }) // end of $('select#orderStatus').change(function () {})
+
+
+    }); // $(document).ready(function () {})
+
+
+
 </script>
 
 <div class="container mt-5">
@@ -62,11 +83,10 @@
                         <c:forEach var="order" items="${requestScope.orderDetailsAdminList}">
                             <div class="mb-4">
                                 <h5 class="fw-bold mb-3">
-                                    ${order.createdAt} - 주문번호: ${order.orderId}
+                                    ${order.createdAt} - 주문번호: ${order.orderId}&nbsp;&nbsp;주문자 아이디: ${order.userId}
                                     <div class="float-end">
-                                        <select class="form-select form-select-sm" onchange="updateOrderStatus(${order.orderId}, this.value)">
+                                        <select class="form-select form-select-sm mt-4" id="orderStatus" data-orderid="${order.orderId}">
                                             <option value="">상태 변경</option>
-                                            <option value="READY">준비중</option>
                                             <option value="DELIVERY">배송중</option>
                                             <option value="COMPLETED">배송완료</option>
                                         </select>
