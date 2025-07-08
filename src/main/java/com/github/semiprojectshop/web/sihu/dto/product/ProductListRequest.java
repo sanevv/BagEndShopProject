@@ -7,13 +7,15 @@ public class ProductListRequest {
     private long size;
     private ProductSortRequest sort;
     private ProductCategoryRequest category;
+    private String searchKeyword;
 
-    public static ProductListRequest of(long page, long size, String sort, String category) {
+    public static ProductListRequest of(long page, long size, String sort, String category, String searchKeyword) {
         ProductListRequest request = new ProductListRequest();
         request.page = page-1;
         request.size = size;
         request.sort = ProductSortRequest.from(sort);
         request.category = ProductCategoryRequest.from(category);
+        request.searchKeyword = searchKeyword;
         return request;
     }
 

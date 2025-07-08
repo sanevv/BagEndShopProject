@@ -7,12 +7,12 @@
 
 <script type="text/javascript">
 
-	const frm = document.prodRegisterFrm;
-	if (frm) {
-	    frm.method = "post";
-	    frm.action = "prod/register";
-	    frm.submit();
-	}
+    const frm = document.prodRegisterFrm;
+    if (frm) {
+        frm.method = "post";
+        frm.action = "prod/register";
+        frm.submit();
+    }
 
 </script>
 <!DOCTYPE html>
@@ -36,7 +36,6 @@
     <script src="${pageContext.request.contextPath}/lib/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
 
 
     <div id="wrap">
@@ -80,15 +79,22 @@
                     </div>
                     <div class="side-navi navi-list">
                         <div class="navi-item search-item">
-						    <button type="button" class="btn-search">
-						        <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg" alt="" class="max">
-						    </button>
-						    <div class="search-form">
-						        <form id="searchForm" onsubmit="return goSearch();">
-								    <input type="search" id="keyword" name="keyword" class="inp-search" placeholder="검색어를 입력해주세요" autocomplete="off"/>
-								</form>
-						    </div>
-						</div>
+                            <button type="button" class="btn-search">
+                                <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg"
+                                     alt="" class="max">
+                            </button>
+                            <div class="search-form">
+                                <%--						        <form id="searchForm" onsubmit="return goSearch();">--%>
+                                <input type="search" id="searchInput" name="keyword" class="inp-search"
+                                       placeholder="검색어를 입력해주세요" autocomplete="off"/>
+                                <label for="searchInput"></label>
+                                <button type="button" id="searchBtn">
+                                    <img src="${pageContext.request.contextPath}/images/common/icon/icon_header_search.svg"
+                                         alt="" class="max">
+                                </button>
+                                <%--                                </form>--%>
+                            </div>
+                        </div>
                         <div class="navi-item">
                             <a href="${pageContext.request.contextPath}/cart">
                                 <span class="count cart-count">
@@ -113,13 +119,16 @@
                             <li><a href="${pageContext.request.contextPath}/notice/list.one">승호바보</a></li>
                             <li><a href="productList.one">경수바보</a></li>
                             <li><a href="productList.one">애리천재</a></li>
-							<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
-							    <li>
-							        <form name="prodRegisterFrm" action="${pageContext.request.contextPath}/prod/register" method="post">
-							            <a><button type="submit" style="all:unset; cursor:pointer;">제품 등록</button></a>
-							        </form>
-							    </li>
-							</c:if>
+                            <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
+                                <li>
+                                    <form name="prodRegisterFrm"
+                                          action="${pageContext.request.contextPath}/prod/register" method="post">
+                                        <a>
+                                            <button type="submit" style="all:unset; cursor:pointer;">제품 등록</button>
+                                        </a>
+                                    </form>
+                                </li>
+                            </c:if>
                             <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
                                 <li>
                                     <a href="${pageContext.request.contextPath}/admin/dashboard">귀염둥이시후</a>
@@ -135,33 +144,56 @@
         </header>
         <!-- //header -->
         <script defer>//
-            const isLogin = <%= isLoginJava %>;
-            function showCartCount() {
-                axios.get('/api/cart/count')
-                    .then(response => {
-                        const count = response.data;
-                        const cartCountElement = document.querySelector('.basket-count');
-                        if (cartCountElement)
-                            cartCountElement.textContent = count > 0 ? count : 0;
+        const isLogin = <%= isLoginJava %>;
 
-                    })
-                    .catch(error => {
-                        console.error('Error fetching cart count:', error);
-                    })
+        function showCartCount() {
+            axios.get('/api/cart/count')
+                .then(response => {
+                    const count = response.data;
+                    const cartCountElement = document.querySelector('.basket-count');
+                    if (cartCountElement)
+                        cartCountElement.textContent = count > 0 ? count : 0;
+
+                })
+                .catch(error => {
+                    console.error('Error fetching cart count:', error);
+                })
+        }
+
+        const contextPath = '${pageContext.request.contextPath}';
+
+        // function goSearch() {
+        //     const keyword = document.getElementById('keyword').value.trim();
+        //     if (!keyword) {
+        //         alert("검색어를 입력해주세요.");
+        //         return false;
+        //     }
+        //
+        //     const path = contextPath.replace(/\/+$/, '');
+        //     location.href = path + '/productSearch?search=' + encodeURIComponent(keyword);
+        //     return false;
+        // }
+
+        //검색
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        searchInput.addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
+                productPageMovement(searchInput.value);
             }
-
-            const contextPath = '${pageContext.request.contextPath}';
-
-            function goSearch() {
-                const keyword = document.getElementById('keyword').value.trim();
-                if (!keyword) {
-                    alert("검색어를 입력해주세요.");
-                    return false;
-                }
-
-                const path = contextPath.replace(/\/+$/, ''); 
-                location.href = path + '/productSearch?keyword=' + encodeURIComponent(keyword);
-                return false;
+        });
+        productPageMovement = (searchKeyword) => {
+            if(searchKeyword){
+                console.log(searchKeyword);
+                location.href = `${pageContext.request.contextPath}/product?search=\${encodeURIComponent(searchKeyword)}`;
+                return;
             }
-            
+            alert("검색어를 입력해주세요.");
+        }
+        searchBtn.addEventListener("click", function () {
+            productPageMovement(searchInput.value);
+        })
+
+
+
         </script>

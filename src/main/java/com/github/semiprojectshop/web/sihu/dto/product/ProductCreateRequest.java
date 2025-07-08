@@ -11,14 +11,14 @@ public class ProductCreateRequest {
     private String productName;
     private long stock;
     private long price;
-    private String productContents;
+    private MultipartFile productContents;
     private MultipartFile mainImage;
     private List<MultipartFile> files;
     private String productInfo;
     private String productSize;
     private String matter;
 
-    public static ProductCreateRequest of(long categoryId, String productName, long stock, long price, String productContents, MultipartFile mainImage, List<MultipartFile> files, String ProductInfo, String productSize, String matter) {
+    public static ProductCreateRequest of(long categoryId, String productName, long stock, long price, MultipartFile productContents, MultipartFile mainImage, List<MultipartFile> files, String ProductInfo, String productSize, String matter) {
         ProductCreateRequest request = new ProductCreateRequest();
         request.categoryId = categoryId;
         request.productName = productName;

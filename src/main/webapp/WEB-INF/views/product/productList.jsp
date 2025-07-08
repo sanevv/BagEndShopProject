@@ -7,6 +7,7 @@
 <script src="<%=request.getContextPath()%>/js/product/productList.js" defer></script>
 <script>
     const category = '${category}';
+    const searchKeyword = '${searchKeyword}';
 </script>
 
 
@@ -30,6 +31,14 @@
             </label>
         </div>
     </div>
+    <div class="search-keyword-wrapper d-flex justify-content-center my-4">
+        <div class="search-tag d-flex align-items-center px-3 py-2">
+            <span class="me-3" style="margin-top: -2px">검색어 : <strong>${searchKeyword}</strong></span>
+            <button class="x-button" aria-label="닫기">×</button>
+        </div>
+    </div>
+
+
     <div class="inner">
 <%--        <h2 class="">zz</h2>--%>
         <ul class="product-list type-4" id="productList">
