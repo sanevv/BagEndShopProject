@@ -106,13 +106,17 @@
                 </div>
                 <div id="allMenu">
                     <div class="inner">
-                        <ul>
-                            <li><a href="productList.one">BAG</a></li>
-                            <li><a href="productList.one">ACC</a></li>
-                            <li><a href="${pageContext.request.contextPath}/product/list">시후냉동바보</a></li>
-                            <li><a href="${pageContext.request.contextPath}/notice/list.one">승호바보</a></li>
-                            <li><a href="productList.one">경수바보</a></li>
-                            <li><a href="productList.one">애리천재</a></li>
+                        <ul class="main-menu">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/product/list">ALL</a>
+                                <ul class="sub-menu">
+                                    <li><a href="${pageContext.request.contextPath}/product/messenger">- MESSENGER</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/product/cross">- CROSS</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/product/backpack">- BACKPACK</a></li>
+                                </ul>
+                            </li>
+
+                            <li><a href="${pageContext.request.contextPath}/notice/list.one">NOTICE</a></li>
 							<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
 							    <li>
 							        <form name="prodRegisterFrm" action="${pageContext.request.contextPath}/prod/register" method="post">
@@ -122,7 +126,7 @@
 							</c:if>
                             <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.roleId == 1}">
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/admin/dashboard">귀염둥이시후</a>
+                                    <a href="${pageContext.request.contextPath}/admin/dashboard">최근 주문금액 통계 리스트</a>
                                 </li>
                             </c:if>
                         </ul>
