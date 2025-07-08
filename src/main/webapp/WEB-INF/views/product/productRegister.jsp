@@ -169,7 +169,8 @@ $(function() {
                     } else {
                         file_arr.push(f);
                     }
-
+	
+                    $('div#fileDrop').empty();
                     
                     for(let imgfile of file_arr){
                     	const fileName = imgfile.name;
@@ -180,6 +181,7 @@ $(function() {
 	                	     <span class='fileName'>\${fileName}</span>
 	                	     <span class='clear'></span>
 	                	   </div>`;
+	                	
 	                 	$(this).append(v_html); 
 	                    
                     } // end of  for(let imgfile of file_arr){} --------------
@@ -217,11 +219,14 @@ $(function() {
     		
 	    	  	  if(is_infoData_OK) {
 	    		   
+
 	    	  		var formData = new FormData($("form[name='prodInputFrm']").get(0));
-	    		   
+	    		
+	    	  		
 	    	  		for(let i = 0; i < file_arr_copy.length; i++) {
 	    	  			formData.append("files", file_arr_copy[i]);
 	    	  		}
+	    	  		
 	    	  		
 	    	  		$.ajax({
 				    	  url:"${pageContext.request.contextPath}/api/product",
