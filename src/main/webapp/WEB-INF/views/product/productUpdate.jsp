@@ -234,7 +234,7 @@ $(function() {
                        	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
                   	}
     				
-    			});
+    			}); 
     			
 
     		}
@@ -266,14 +266,24 @@ $(function() {
 	    		            return false;
 	    		        }
 	    		    }
+	    		    else if (inputType === "file" && elmt.name === "pimage1") {
+	    		        const image = $("input[name='product_contents_img']").val()?.trim() !== "";
+	    		        const NewFile = elmt.files.length > 0;
+
+	    		        if (!Image && !NewFile) {
+	    		            $(elmt).next().show(); // 에러 메시지 보여줌
+	    		            is_infoData_OK = false;
+	    		            return false;
+	    		        }
+	    		    }
 	    		    else{
-	    		   if(val == "") {
-	    			   $(elmt).next().show();
-	    			   is_infoData_OK = false;
-	    			   return false; // forEach 는 break(중단) 기능이 없으나, each 는 있다.
-	    			   
-	    		   	}
-	    		   }
+	    		   		if(val == "") {
+		    			   $(elmt).next().show();
+		    			   is_infoData_OK = false;
+		    			   return false; // forEach 는 break(중단) 기능이 없으나, each 는 있다.
+		    			   
+		    		   		}
+	    		   		}
 	    	   });    		
     		
 	    	  	  if(is_infoData_OK) {
@@ -422,7 +432,7 @@ $(function() {
                 <tr>
                     <td class="prodInputName">제품상세설명</td>
                     <td align="left">
-                        <input type="file" name="product_contents" class="infoData img_contents_file" accept="image/*" />
+                        <input type="file" name="product_contents_img" class="infoData img_contents_file" accept="image/*"/>
                         <input type="hidden" name="originContents" value="${pvo.product_contents}" />
                         <span class="error">필수입력</span>
                     </td>

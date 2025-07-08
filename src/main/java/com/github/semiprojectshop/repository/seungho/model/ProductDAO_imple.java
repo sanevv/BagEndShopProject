@@ -116,7 +116,7 @@ public class ProductDAO_imple implements ProductDAO {
 	}
 
 	@Override
-	public int updateProduct(ProductVO pvo) throws SQLException {
+	public int updateProduct(ProductVO pvo, String contentsPath) throws SQLException {
 
 		int n = 0;
 		try {
@@ -130,7 +130,7 @@ public class ProductDAO_imple implements ProductDAO {
 			pstmt.setLong(4, pvo.getStock());
 			pstmt.setLong(5, pvo.getPrice());
 			pstmt.setString(6, pvo.getProduct_info());
-			pstmt.setString(7, pvo.getProduct_contents());
+			pstmt.setString(7, contentsPath);
 			pstmt.setString(8, pvo.getCategory_id());
 			pstmt.setLong(9, pvo.getProduct_id());
 
