@@ -60,12 +60,12 @@ public class ProductRestController {
                               @RequestParam("product_name") String productName,
                               @RequestParam("stock") long stock,
                               @RequestParam("price") long price,
-                              @RequestParam("product_contents") MultipartFile productContents,
+                              @RequestPart("product_contents") MultipartFile productContents,
                               @RequestParam String productInfo,
                               @RequestParam String productSize,
                               @RequestParam String matter,
-                              @RequestParam("pimage1") MultipartFile mainImage,
-                              @RequestParam("files") List<MultipartFile> files,
+                              @RequestPart("pimage1") MultipartFile mainImage,
+                              @RequestPart("files") List<MultipartFile> files,
                               HttpSession session) {
         if(session.getAttribute("loginUser") == null)
             throw CustomMyException.fromMessage("로그인 후 상품 등록을 이용해주세요.");
