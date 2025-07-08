@@ -131,9 +131,20 @@ textarea {
 
 
 $(function() {
+
+	
     $('span.error').hide();
 	let file_arr = [];
 	let file_arr_copy = [];
+    let hasNewImage = $("input[name='product_contents_img']")[0].files.length > 0;
+    let hasOldImage = $("input[name='originContents']").val()?.trim() !== "";
+    let originImage = $("input[name='originContents']").val()?.trim();
+
+    
+    let hasNewThumbnail = $("input[name='pimage1']")[0].files.length > 0;
+    let hasOldThumbnail = $("input[name='originThumbnail']").val()?.trim() !== "";
+    let originThumbnail = $("input[name='originThumbnail']").val()?.trim();
+
     // 수량 스피너
     $("input#spinnerPqty").spinner({
         spin: function(event, ui) {
@@ -247,7 +258,7 @@ $(function() {
     	});
     	
     	$(document).on("click","input:button[id='btnUpdate']",function(e){
-
+    	    console.log(hasOldThumbnail);
     		let is_infoData_OK = true;
 	    	   
 	    	  $('span.error').hide();
@@ -256,26 +267,19 @@ $(function() {
 	    		   const val = $(elmt).val().trim();
 	    		   const inputType = $(elmt).attr("type");
 	    		   
-	    		    if (inputType === "file" && elmt.name === "pimage1") {
-	    		        const image = $("input[name='originPimage1']").val()?.trim() !== "";
-	    		        const NewFile = elmt.files.length > 0;
-
-	    		        if (!Image && !NewFile) {
-	    		            $(elmt).next().show(); // 에러 메시지 보여줌
-	    		            is_infoData_OK = false;
-	    		            return false;
-	    		        }
+    		    
+	    		    if (!hasNewImage && !hasOldImage) {
+	    		        $("input[name='product_contents_img']").next().show(); // 에러 메시지 출력
+	    		        is_infoData_OK = false;
+	    		        return false;
 	    		    }
-	    		    else if (inputType === "file" && elmt.name === "pimage1") {
-	    		        const image = $("input[name='product_contents_img']").val()?.trim() !== "";
-	    		        const NewFile = elmt.files.length > 0;
-
-	    		        if (!Image && !NewFile) {
-	    		            $(elmt).next().show(); // 에러 메시지 보여줌
-	    		            is_infoData_OK = false;
-	    		            return false;
-	    		        }
+	    		    
+	    		    if (!hasNewThumbnail && !hasOldThumbnail) {
+	    		        $("input[name='pimage1']").next().show(); // 에러 메시지 출력
+	    		        is_infoData_OK = false;
+	    		        return false;
 	    		    }
+	    		    
 	    		    else{
 	    		   		if(val == "") {
 		    			   $(elmt).next().show();
@@ -290,6 +294,14 @@ $(function() {
 	    		   
 	    	  		var formData = new FormData($("form[name='prodInputFrm']").get(0));
 	    		   
+	    	  		if (!hasNewImage && originImage != "") {
+	    	  		    formData.append("product_contents_img", "${pvo.product_contents}");
+	    	  		}
+	    	  		
+	    	  		if (!hasNewThumbnail && originThumbnail != "") {
+	    	  		    formData.append("pimage1", "${thumbnail}");
+	    	  		}
+	    	  		
 	    	  		for(let i = 0; i < file_arr_copy.length; i++) {
 	    	  			formData.append("files", file_arr_copy[i]);
 	    	  		}
@@ -352,7 +364,7 @@ $(function() {
                 </tr>
 
                 <tr>
-                    <td class="prodInputName">제품명</td>
+                    <td class="prodInputName">제품명 </td>
                     <td align="left">
                         <input type="text" style="width: 300px;" name="product_name" class="box infoData" value="${pvo.product_name}" />
                         <span class="error">필수입력</span>
@@ -379,8 +391,15 @@ $(function() {
                 <tr>
                     <td class="prodInputName">제품이미지</td>
                     <td align="left">
+                    	<c:if test="${not empty thumbnail}">
+						    <div id="existingProductThumbnail">
+						        <p>기존 파일:</p>
+						        <img src="${pageContext.request.contextPath}${thumbnail}" 
+						             style="width: 150px; height: auto;" />
+						        <input type="hidden" name="originThumbnail" value="${thumbnail}" />
+						    </div>
+						</c:if>
                         <input type="file" name="pimage1" class="infoData img_file" accept="image/*"/>
-                        <input type="hidden" name="originPimage1" value="${thumbnail}" />
                         <span class="error">필수입력</span>
                     </td>
                 </tr>
@@ -432,9 +451,18 @@ $(function() {
                 <tr>
                     <td class="prodInputName">제품상세설명</td>
                     <td align="left">
-                        <input type="file" name="product_contents_img" class="infoData img_contents_file" accept="image/*"/>
-                        <input type="hidden" name="originContents" value="${pvo.product_contents}" />
-                        <span class="error">필수입력</span>
+						<c:if test="${not empty pvo.product_contents}">
+						    <div id="existingProductContents">
+						        <p>기존 파일:</p>
+						        <img src="${pageContext.request.contextPath}${pvo.product_contents}" 
+						             style="width: 150px; height: auto;" />
+						        <input type="hidden" name="originContents" value="${pvo.product_contents}" />
+						    </div>
+						</c:if>
+						
+						<!-- 새로운 파일 업로드 input -->
+						<p>새 파일 선택 (선택 시 기존 파일은 무시됩니다):</p>
+						<input type="file" name="product_contents_img" class="product_contents_img" accept="image/*" />
                     </td>
                 </tr>
 
