@@ -63,7 +63,7 @@ public class ProductService {
                 .stream().map(file->storageService.returnTheFilePathAfterTransfer(file, path))
                 .toList();
         String productContentsUrl = storageService.returnTheFilePathAfterTransfer(request.getProductContents(), path, "승호메롱_");
-
+        System.out.println(mainImageUrl);
         List<ProductImage> productImageList = imageUrls.stream()
                 .map(url -> ProductImage.fromProductAndUrl(product, url))
                 .collect(Collectors.toCollection(ArrayList::new));

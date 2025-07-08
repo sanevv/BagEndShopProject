@@ -219,11 +219,14 @@ $(function() {
     		
 	    	  	  if(is_infoData_OK) {
 	    		   
+
 	    	  		var formData = new FormData($("form[name='prodInputFrm']").get(0));
-	    		   
+	    		
+	    	  		
 	    	  		for(let i = 0; i < file_arr_copy.length; i++) {
 	    	  			formData.append("files", file_arr_copy[i]);
 	    	  		}
+	    	  		
 	    	  		
 	    	  		$.ajax({
 				    	  url:"${pageContext.request.contextPath}/api/product",

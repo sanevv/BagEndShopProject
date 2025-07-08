@@ -74,7 +74,7 @@ public class ProductRestController {
         long userRole = memberVO.getRoleId();
         if (userRole != 1) // 관리자 권한이 아닌 경우
             throw CustomMyException.fromMessage("상품 등록은 관리자만 가능합니다.");
-
+        
 
 
         ProductCreateRequest request = ProductCreateRequest.of(
