@@ -5,6 +5,7 @@ import com.github.semiprojectshop.web.sihu.dto.product.ProductCreateRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Entity
+//@DynamicInsert
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,6 +71,7 @@ public class Product {
         product.matter = request.getMatter();
         product.createdAt = LocalDateTime.now();
         product.productStatus = ProductStatus.NORMAL;
+        product.productContents = "temp";
         return product;
     }
 
