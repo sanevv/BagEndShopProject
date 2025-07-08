@@ -28,22 +28,22 @@ public class SearchPaging {
         return CustomResponse.ofOk("최신 10개 상품 검색 성공", mainProductList);
     }
 
-    @GetMapping("/{category}")
-    public CustomResponse<PaginationDto<ProductListResponse>> categoryProductList(@PathVariable String category,
-                                                                                  @RequestParam (required = false) long page,
-                                                                                  @RequestParam (defaultValue = "12") long size,
-                                                                                  @RequestParam (required = false) String sort,
-                                                                                  HttpSession session) {
-        Long loginUserId = session.getAttribute("loginUser") != null ?
-                (long) ((MemberVO) session.getAttribute("loginUser")).getUserId()
-                : null;
-        ProductListRequest productListRequest = ProductListRequest.of(page, size, sort, category);
-
-        Optional<PaginationDto<ProductListResponse>> categoryProductList = productService.getCategoryProductList(productListRequest, loginUserId);
-        return categoryProductList
-                .map(paginationDto -> CustomResponse.ofOk("카테고리별 상품 검색 성공", paginationDto))
-                .orElseThrow(() -> CustomMyException.fromMessage("해당 카테고리의 상품이 없습니다."));
-    }
+//    @GetMapping("/{category}")
+//    public CustomResponse<PaginationDto<ProductListResponse>> categoryProductList(@PathVariable String category,
+//                                                                                  @RequestParam (required = false) long page,
+//                                                                                  @RequestParam (defaultValue = "12") long size,
+//                                                                                  @RequestParam (required = false) String sort,
+//                                                                                  HttpSession session) {
+//        Long loginUserId = session.getAttribute("loginUser") != null ?
+//                (long) ((MemberVO) session.getAttribute("loginUser")).getUserId()
+//                : null;
+//        ProductListRequest productListRequest = ProductListRequest.of(page, size, sort, category);
+//
+//        Optional<PaginationDto<ProductListResponse>> categoryProductList = productService.getCategoryProductList(productListRequest, loginUserId);
+//        return categoryProductList
+//                .map(paginationDto -> CustomResponse.ofOk("카테고리별 상품 검색 성공", paginationDto))
+//                .orElseThrow(() -> CustomMyException.fromMessage("해당 카테고리의 상품이 없습니다."));
+//    }
 
     @PutMapping("/wish")
     public CustomResponse<String> steamingProcess(@RequestParam long productId,
@@ -55,31 +55,31 @@ public class SearchPaging {
         return CustomResponse.ofOk("상품 찜하기 성공", "찜하기가 완료되었습니다.");
 
     }
-	@PostMapping
-	public long createProduct(@RequestParam("fk_cnum") long categoryId,
-						      @RequestParam("product_name") String productName,
-						      @RequestParam("stock") long stock,
-						      @RequestParam("price") long price,
-						      @RequestParam("product_contents") String productContents,
-						      @RequestParam String productInfo,
-						      @RequestParam String productSize,
-						      @RequestParam String matter,
-						      @RequestParam("pimage1") MultipartFile mainImage,
-						      @RequestParam("files") List<MultipartFile> files,
-						      HttpSession session) {
-		ProductCreateRequest request = ProductCreateRequest.of(
-			categoryId,
-			productName,
-			stock,
-			price,
-			productContents,
-			mainImage,
-			files,
-			productInfo,
-			productSize,
-			matter
-		);
-								
-		return productService.createProduct(request, 1L);
-    }
+//	@PostMapping
+//	public long createProduct(@RequestParam("fk_cnum") long categoryId,
+//						      @RequestParam("product_name") String productName,
+//						      @RequestParam("stock") long stock,
+//						      @RequestParam("price") long price,
+//						      @RequestParam("product_contents") String productContents,
+//						      @RequestParam String productInfo,
+//						      @RequestParam String productSize,
+//						      @RequestParam String matter,
+//						      @RequestParam("pimage1") MultipartFile mainImage,
+//						      @RequestParam("files") List<MultipartFile> files,
+//						      HttpSession session) {
+//		ProductCreateRequest request = ProductCreateRequest.of(
+//			categoryId,
+//			productName,
+//			stock,
+//			price,
+//			productContents,
+//			mainImage,
+//			files,
+//			productInfo,
+//			productSize,
+//			matter
+//		);
+//
+//		return productService.createProduct(request, 1L);
+//    }
 }

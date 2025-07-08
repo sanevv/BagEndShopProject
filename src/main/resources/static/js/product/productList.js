@@ -1,4 +1,5 @@
 let currentCategory = category;// category 는 ALL("전체"),MESSENGER("메신저"),CROSS("크로스백"),BACKPACK("백팩"); 참고
+let currentSearchKeyword = searchKeyword; // 검색어
 let currentSort = 'newest';
 let currentPage = 1;
 const currentPageSize = 12;
@@ -70,7 +71,8 @@ searchProductList = () => {
         params: {
             sort: currentSort,
             page: currentPage,
-            size: currentPageSize
+            size: currentPageSize,
+            search: currentSearchKeyword
         }
 
     }).then(response => {

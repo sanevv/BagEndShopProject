@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -34,10 +35,16 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Setter
+
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductImage> productImageList;
 
+    public void addProductImage(List<ProductImage> productImageList, String contents) {
+        if(this.productImageList == null)
+            this.productImageList = new ArrayList<>();
+        this.productImageList.addAll(productImageList);
+        this.productContents = contents;
+    }
 
     public enum ProductStatus {
         DELETE,
@@ -57,7 +64,6 @@ public class Product {
         product.category = Category.onlyId(request.getCategoryId());
         product.stock = request.getStock();
         product.price = request.getPrice();
-        product.productContents = request.getProductContents();
         product.productInfo = request.getProductInfo();
         product.productSize = request.getProductSize();
         product.matter = request.getMatter();
