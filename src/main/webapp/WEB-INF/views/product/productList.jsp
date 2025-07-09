@@ -172,6 +172,8 @@
 
 
 <%-- Header --%>
+
+<div id="scrollSentinel"></div> <!-- 관찰 대상 -->
 <jsp:include page="../include/footer.jsp" />
 
 <script src="${pageContext.request.contextPath}/js/product/product.js"></script>
