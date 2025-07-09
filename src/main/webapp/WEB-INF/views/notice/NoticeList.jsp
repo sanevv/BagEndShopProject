@@ -46,7 +46,7 @@ $(function(){
 	}
 </script>
 
-
+<main id="main">
 
 <div class="container">
 	<div></div>
@@ -90,5 +90,5 @@ $(function(){
 	</nav>
 </div>
 <input name="roleId" type="hidden" value="${loginuser.roleId}">
-
+</main>
 <jsp:include page="../include/footer.jsp" />

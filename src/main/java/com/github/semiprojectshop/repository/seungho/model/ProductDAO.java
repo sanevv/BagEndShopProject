@@ -14,7 +14,7 @@ public interface ProductDAO {
 
 	int deleteImg(Map<String, Object> paramap) throws SQLException;
 
-	int updateProduct(ProductVO pvo) throws SQLException;
+	int updateProduct(ProductVO pvo, String contentsPath) throws SQLException;
 
 	int insertImg(Map<String, Object> paramap) throws SQLException;
 

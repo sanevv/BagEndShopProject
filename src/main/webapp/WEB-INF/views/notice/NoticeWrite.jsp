@@ -112,7 +112,7 @@ $(function() {
 
 </script>
 
-
+<main id="main">
 
 <div id="container">
     <h1>공지사항 쓰기</h1>
@@ -128,5 +128,5 @@ $(function() {
         </div>
     </form>
 </div>
-
+</main>
 <jsp:include page="../include/footer.jsp"></jsp:include>
