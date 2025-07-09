@@ -322,6 +322,24 @@ function goRegister() {
     // **** "이메일중복확인" 을 클릭했는지 검사하기 끝 **** //
 	
 	
+	// **** 휴대폰 입력값 검사 시작 **** //
+	const hp2 = $('input#hp2').val().trim();
+	const hp3 = $('input#hp3').val().trim();
+
+	if (hp2 === "") {
+		alert("휴대폰 번호를 입력하셔야 합니다.");
+		$('input#hp2').focus();
+		return;
+	}
+
+	if (hp3 === "") {
+		alert("휴대폰 번호를 입력하셔야 합니다.");
+		$('input#hp3').focus();
+		return;
+	}
+	// **** 휴대폰 입력값 검사 끝 **** //
+	
+	
 	// **** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 **** //
 	let b_addressInfo = true;
 	

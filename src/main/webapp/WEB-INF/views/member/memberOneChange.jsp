@@ -291,14 +291,147 @@
 
 
     }); // end of $(function(){})
+ // Function Declaration
 
+ // "가입하기" 버튼 클릭시 호출되는 함수
+ function goRegister() {
+ 	
+ 	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 시작 **** //
+ 	let b_requiredInfo = true;
+ 	
+ 	$('input.requiredInfo').each(function(index, elmt){
+ 		const data = $(elmt).val().trim();
+ 		if(data == "") {
+ 			alert("*표시된 필수입력사항은 모두 입력하셔야 합니다.");
+ 			b_requiredInfo = false;
+ 			return false; // break; 라는 뜻이다.
+ 		}
+ 	});
+ 	
+ 	if(!b_requiredInfo) {
+ 		return; // goRegister() 함수를 종료한다.
+ 	}
+ 	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 끝 **** //
+ 	
+ 	
+ 	// **** "이메일중복확인" 을 클릭했는지 검사하기 시작 **** //
+ 	if(!b_emailcheck_click) {
+ 		// "이메일중복확인" 을 클릭 안 했을 경우
+ 		
+ 		alert("이메일 중복확인을 클릭하셔야 합니다.");
+ 		return; // goRegister() 함수를 종료한다.
+ 	}	
+     // **** "이메일중복확인" 을 클릭했는지 검사하기 끝 **** //
+ 	
+ 	
+ 	// **** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 **** //
+ 	let b_addressInfo = true;
+ 	
+ 	const arr_addressInfo = [];
+ 	arr_addressInfo.push($('input#zipCode').val());
+ 	arr_addressInfo.push($('input#address').val());
+ 	
+ 	for(let addressInfo of arr_addressInfo) {
+ 		if(addressInfo.trim() == "") {
+ 			alert("우편번호 및 주소를 입력하셔야 합니다.");
+ 			b_addressInfo = false;
+ 			break;
+ 		}
+ 	}// end of for---------------------
+ 	
+ 	if(!b_addressInfo) {
+ 		return; // goRegister() 함수를 종료한다.
+ 	}
+ 	// **** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 **** //
+ 	
+ 	
+ 	// **** 약관에 동의를 했는지 검사하기 시작 **** //
+ 	const checkbox_checked_length = $('input:checkbox[id="agree"]:checked').length;
+ 	
+ 	if(checkbox_checked_length == 0) {
+ 		alert("이용약관에 동의하셔야 합니다.");
+ 		return; // goRegister() 함수를 종료한다.
+ 	}
+ 	// **** 약관에 동의를 했는지 검사하기 끝 **** //
+ 	
+ 	const frm = document.registerFrm;
+ 	frm.method = "post";
+  //	frm.action = "memberRegister.up";
+ 	frm.submit();
+ 	
+ }// end of function goRegister()-----------------------------
     function goChange(){
-
+	 
+    	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 시작 **** //
+     	let b_requiredInfo = true;
+     	
+     	$('input.requiredInfo').each(function(index, elmt){
+     		const data = $(elmt).val().trim();
+     		if(data == "") {
+     			alert("*표시된 필수입력사항은 모두 입력하셔야 합니다.");
+     			b_requiredInfo = false;
+     			return false; // break; 라는 뜻이다.
+     		}
+     	});
+     	
+     	if(!b_requiredInfo) {
+     		return; // 함수를 종료한다.
+     	}
+     	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 끝 **** /
+     	
+     	// **** 휴대폰 입력값 검사 시작 **** //
+		const hp2 = $('input#hp2').val().trim();
+		const hp3 = $('input#hp3').val().trim();
+	
+		if (hp2 === "") {
+			alert("휴대폰 번호를 입력하셔야 합니다.");
+			$('input#hp2').focus();
+			return;
+		}
+	
+		if (hp3 === "") {
+			alert("휴대폰 번호를 입력하셔야 합니다.");
+			$('input#hp3').focus();
+			return;
+		}
+		// **** 휴대폰 입력값 검사 끝 **** //
+		
+		
+		// **** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 **** //
+		let b_addressInfo = true;
+		
+		const arr_addressInfo = [];
+		arr_addressInfo.push($('input#zipCode').val());
+		arr_addressInfo.push($('input#address').val());
+		
+		for(let addressInfo of arr_addressInfo) {
+			if(addressInfo.trim() == "") {
+				alert("우편번호 및 주소를 입력하셔야 합니다.");
+				b_addressInfo = false;
+				break;
+			}
+		}// end of for---------------------
+		
+		if(!b_addressInfo) {
+			return; // goRegister() 함수를 종료한다.
+		}
+		// **** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 **** //
+	 	
+	 	// **** 약관에 동의를 했는지 검사하기 시작 **** //
+	 	const checkbox_checked_length = $('input:checkbox[id="agree"]:checked').length;
+	 	
+	 	if(checkbox_checked_length == 0) {
+	 		alert("이용약관에 동의하셔야 합니다.");
+	 		return; // 함수를 종료한다.
+	 	}
+	 	// **** 약관에 동의를 했는지 검사하기 끝 **** //
+ 	
         // AJAX 요청
         $.ajax({
         	type: 'POST',
             url: '/api/member/memberOneChange',
             data: {
+            	email: $('#email').val(),
                 password: $('#password').val(),
                 name: $('#name').val(),
                 hp1: $('#hp1').val(),
@@ -318,6 +451,9 @@
         });
 
     }
+
+ 
+ // Function Declaration
 
 
 </script>
@@ -342,7 +478,7 @@
 	            <div class="Change-row">
 	                <label for="email">이메일<span class="star">*</span></label>
 	                <div class="input-box">
-	                    <input type="text" id="email" readonly onfocus="this.blur()" onkeydown="return false;" />
+	                    <input type="text" id="email" class="requiredInfo" readonly  onfocus="this.blur()" onkeydown="return false;"/>
 	                </div>
 	            </div>
 	
@@ -350,7 +486,7 @@
 	            <div class="Change-row">
 	                <label for="password">비밀번호<span class="star">*</span></label>
 	                <div class="input-box">
-	                    <input type="password" id="password" maxlength="15" />
+	                    <input type="password" id="password" maxlength="15" class="requiredInfo"/>
 	                    <div class="error">암호는 영문자, 숫자, 특수기호 포함 8~15자로 입력하세요.</div>
 	                    <div class="form-info">
 	                        <img src="/aery/images/help.png" alt="도움말" />
@@ -363,7 +499,7 @@
 	            <div class="Change-row">
 	                <label for="pwdcheck">비밀번호 확인<span class="star">*</span></label>
 	                <div class="input-box">
-	                    <input type="password" name="pwdcheck" id="pwdcheck" maxlength="15"/>
+	                    <input type="password" name="pwdcheck" id="pwdcheck" maxlength="15" class="requiredInfo"/>
 	                    <div class="error">비밀번호가 일치하지 않습니다.</div>
 	                </div>
 	            </div>
@@ -372,7 +508,7 @@
 	            <div class="Change-row">
 	                <label for="name">이름<span class="star">*</span></label>
 	                <div class="input-box">
-	                    <input type="text" name="name" id="name" maxlength="30"/>
+	                    <input type="text" name="name" id="name" maxlength="30" class="requiredInfo"/>
 	                    <div class="error">이름은 필수입력 사항입니다.</div>
 	                </div>
 	            </div>
@@ -382,11 +518,11 @@
 	                <label for="phonetext">휴대폰<span class="star">*</span></label>
 	                <div class="input-box">
 	                    <div class="phoneGroup">
-	                        <input type="text" name="hp1" id="hp1" maxlength="3" value="010" readonly />
+	                        <input type="text" name="hp1" id="hp1" maxlength="3" value="010" readonly/>
 	                        <span>-</span>
-	                        <input type="text" name="hp2" id="hp2" maxlength="4" />
+	                        <input type="text" name="hp2" id="hp2" maxlength="4"/>
 	                        <span>-</span>
-	                        <input type="text" name="hp3" id="hp3" maxlength="4" />
+	                        <input type="text" name="hp3" id="hp3" maxlength="4"/>
 	                    </div>
 	                    <div class="error">휴대폰 형식이 아닙니다.</div>
 	                </div>
@@ -397,7 +533,7 @@
 	                <label for="zipCode">우편번호<span class="star">*</span></label>
 	                <div class="input-box">
 	                    <div class="zipCodeGroup">
-	                        <input type="text" name="zipCode" id="zipCode" maxlength="5" />
+	                        <input type="text" name="zipCode" id="zipCode" maxlength="5"/>
 	                        <button type="button" class="btn btn-dark" id="zipCodeSearch">주소검색</button>
 	                    </div>
 	                    <div class="error">주소 형식에 맞지 않습니다.</div>
@@ -408,7 +544,7 @@
 	            <div class="Change-row">
 	                <label for="address">주소<span class="star">*</span></label>
 	                <div class="input-box">
-	                    <input type="text" name="address" id="address" maxlength="200" placeholder="주소" style="margin-bottom: 5px;" />
+	                    <input type="text" name="address" id="address" maxlength="200" placeholder="주소" style="margin-bottom: 5px;"/>
 	                    <input type="text" name="addressDetails" id="addressDetails" maxlength="200" placeholder="상세주소" />
 	                    <div class="error">주소를 입력하세요.</div>
 	                </div>
