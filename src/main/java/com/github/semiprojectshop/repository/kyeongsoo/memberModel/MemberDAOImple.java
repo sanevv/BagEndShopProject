@@ -282,7 +282,7 @@ public class MemberDAOImple implements MemberDAO{
     
     // 회원 탈퇴하기시 회원 상태 탈퇴로 업데이트
     @Override
-    public int deleteMember(String email, String password) throws SQLException {
+    public int withdrawMember(String email, String password) throws SQLException {
 
         int n = 0;
         Connection conn = null;
