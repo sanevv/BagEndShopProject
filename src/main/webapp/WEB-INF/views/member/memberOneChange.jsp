@@ -426,18 +426,6 @@
 	 	}
 	 	// **** 약관에 동의를 했는지 검사하기 끝 **** //
  	
-	 	// "취소하기" 버튼 클릭시 호출되는 함수
-    function goReset() {
-
-   	document.registerFrm.reset();
-
-       $('span.error').hide();
-       $('#emailCheckResult').html('');
-       $('#email').focus();
-
-       b_emailcheck_click = false;
-   }// end of  function goReset(){}-----------
-   
         // AJAX 요청
         $.ajax({
         	type: 'POST',
@@ -463,6 +451,30 @@
         });
 
     }
+ 
+ 	// 탈퇴하기 버튼 클릭시 
+    function goWithdraw() {
+        if (!confirm("정말 탈퇴하시겠습니까? 탈퇴 후 복구는 불가능합니다.")) {
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/memberWithdraw.team1",
+            data: {
+                email: $('#email').val(),
+                password: $('#password').val()
+            },
+            success: function() {
+                alert("회원 탈퇴가 완료되었습니다.");
+                location.href = "/"; // 탈퇴 후 메인 페이지로 이동
+            },
+            error: function(xhr, status, error) {
+                alert("회원 탈퇴에 실패했습니다. 비밀번호를 확인해주세요.");
+            }
+        });
+    }
+
  
 </script>
 
@@ -582,7 +594,7 @@
             	<div class="Change-row button-row">
 				    <div class="button-box">
 				        <input type="button" id="update" class="btn btn-success btn-lg" style="background-color: black;" value="수정하기" onclick="goChange()" />
-				        <input type="button" class="btn btn-danger btn-lg" id="cancel" style="background-color: #fff; color: black; border:solid 1px #e9ecef; font-size: 14px;" value="취소하기" onclick="goReset()"/>
+				        <input type="button" class="btn btn-danger btn-lg" id="cancel" style="background-color: #fff; color: black; border:solid 1px #e9ecef; font-size: 14px;" value="탈퇴하기" onclick="goWithdraw()"/>
 				    </div>
 				</div>
             </form>
