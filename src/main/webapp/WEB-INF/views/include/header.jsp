@@ -3,6 +3,7 @@
 <%
     // 로그인 여부 확인
     boolean isLoginJava = session.getAttribute("loginUser") != null;
+    String ctxPath = request.getContextPath();
 %>
 
 <script type="text/javascript">
@@ -146,7 +147,8 @@
                             <br>
                             <br>
                             <br>
-                            <li><a class="submenu" href="#" style="font-size: 18px; color: #A3A9AF;">오시는길</a></li>
+                            <br>
+                            <li><a class="storeLocation" href="<%= ctxPath %>/storeLocation.team1" style="font-size: 18px; color: gray;">오시는길</a></li>
 
                         </ul>
                     </div>

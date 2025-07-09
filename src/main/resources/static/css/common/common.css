@@ -79,7 +79,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 24px;
+    padding: 35px 40px 50px 40px;
 }
 
 #header .logo {
@@ -326,7 +326,7 @@
     background: #f8f8f8;
 }
 
-#allMenu li a:hover {
+#allMenu li a:hover:not(.storeLocation) {
     padding-left: 1.4rem;
 }
 

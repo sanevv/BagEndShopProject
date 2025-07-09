@@ -16,28 +16,30 @@ div.sidebar {
 	font-size: 11px;
 }
 
-
-/* 메뉴 제목 (예: 쇼핑 정보, 1:1 문의 등) */
+/* 메뉴 제목 (예: 쇼핑 정보 등) */
 .sidebar .menu-list .title {
+	border: solid 0px blue;
     font-size: 13px;
     font-weight: 500;
     color: #999999;
-    margin-bottom: 8px;
+    margin-top: 35px;
 }
 
 /* 메뉴 리스트 */
 .sidebar .menu-list .list {
+	border: solid 0px red;
     list-style: none;
     padding-left: 0;
-    margin-bottom: 20px;
+    /* margin-top: 25px; */
 }
 
 /* 각 리스트 항목 링크 */
 .sidebar .menu-list .list li a {
+	border: solid 0px orange;
     display: block;
     font-size: 15px;
     color: #111111;
-    padding: 6px 0;
+    /* padding: 6px 0; */
     text-decoration: none;
 }
 
@@ -46,3 +48,4 @@ div.sidebar {
     text-decoration: underline;
     color: #000000;
 }
+

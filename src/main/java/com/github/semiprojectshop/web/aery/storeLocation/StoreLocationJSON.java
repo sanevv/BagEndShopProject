@@ -28,7 +28,7 @@ public class StoreLocationJSON extends AbstractController {
         if (pdao == null) {
             ServletContext sc = request.getServletContext();
             WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(sc);
-            pdao = (ProductJpaCustom) ctx.getBean("ProductJpaCustomImpl");
+            pdao = (ProductJpaCustom) ctx.getBean("productJpaCustomImpl");
         }
 
 		// tbl_map(위,경도) 테이블에 있는 정보를 가져오기(select)
