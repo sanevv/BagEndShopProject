@@ -350,8 +350,17 @@ btnPlus.addEventListener('click', () => {
 });
 
 
-
 // 바로구매하기 버튼 클릭 이벤트
-document.querySelector('#btnBuy').addEventListener('click', () => {
+directOrder = (checkLogin) => {
+
+    if(!checkLogin){
+        if(!confirm("주문을 하기 위해서는 로그인이 필요합니다.\n로그인하시겠습니까?")) return;
+
+        location.href = '/test/login.up';
+        return;
+    }
+
     requestOrderProducts([{ productId: productId, quantity: inpQuantity.value}]);
-});
+
+}
+

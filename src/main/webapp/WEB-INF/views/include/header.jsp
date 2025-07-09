@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>시후와아이들</title>
+    <title>가방종결자 BAGEND</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">

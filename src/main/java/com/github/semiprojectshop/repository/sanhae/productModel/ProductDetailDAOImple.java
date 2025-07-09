@@ -85,6 +85,7 @@ public class ProductDetailDAOImple implements ProductDetailDAO {
     }
 
 
+    // 상세페이지 추가이미지 리스트 불러오기
     @Override
     public List<ProductDetailVO> getProductImageList(int productId) {
 

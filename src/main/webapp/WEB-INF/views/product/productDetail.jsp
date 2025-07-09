@@ -107,7 +107,7 @@ function goDelete(noticeId) {
 							</div>
 							<div class="product-buttons">
 								<button type="button" id="btnAddCart" class="btn btn-cart">장바구니 담기</button>
-								<button type="button" id="btnBuy" class="btn btn-buy">바로 구매하기</button>
+								<button type="button" id="btnBuy" class="btn btn-buy" onclick="directOrder(isLogin)">바로 구매하기</button>
 							</div>
 						</div>
 					</form>
