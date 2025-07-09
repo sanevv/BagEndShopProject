@@ -5,7 +5,7 @@
 <jsp:include page="../include/header.jsp" />
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/review/review.css">
-<script src="<%=request.getContextPath()%>/js/review/reviewUpdate.js" defer></script>
+<script src="<%=request.getContextPath()%>/js/review/review.js" defer></script>
 
 <!-- main contents -->
 <main id="main">
@@ -89,16 +89,22 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>첨부파일</th>
+                                <th>첨부 이미지</th>
                                 <td>
-                                    <input type="file" name="reviewImageFile">
+                                    <input type="file" id="reviewImageFile" name="reviewImageFile">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>첨부 이미지 미리보기</th>
+                                <td>
+                                    <div id="reviewImagePreview"></div>
                                 </td>
                             </tr>
                             <c:if test="${not empty reviewVO.reviewImagePath}">
                                 <tr>
                                     <th>첨부된 이미지</th>
                                     <td>
-                                        <img src="${pageContext.request.contextPath}${reviewVO.reviewImagePath}" alt="첨부된 이미지" />
+                                        <img src="${pageContext.request.contextPath}${reviewVO.reviewImagePath}" alt="첨부된 이미지" style="max-width: 400px;" />
                                     </td>
                                 </tr>
                             </c:if>

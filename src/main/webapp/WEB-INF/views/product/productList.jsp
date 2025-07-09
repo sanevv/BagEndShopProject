@@ -8,6 +8,7 @@
 <script>
     const category = '${category}';
     const searchKeyword = '${searchKeyword}';
+
 </script>
 
 
@@ -33,7 +34,7 @@
     </div>
     <div id="searchKeywordDiv" style="display: none" class="search-keyword-wrapper justify-content-center my-4">
         <div class="search-tag d-flex align-items-center px-3 py-2">
-            <span class="me-3" style="margin-top: -2px">검색어 : <strong style="font-weight: bold">${searchKeyword}</strong></span>
+            <span class="me-3" style="margin-top: -2px">검색어 : <strong style="font-weight: bold" id="keywordStrong"></strong></span>
             <button id="closeButton" class="x-button" aria-label="닫기">×</button>
         </div>
     </div>
@@ -171,6 +172,8 @@
 
 
 <%-- Header --%>
+
+<div id="scrollSentinel"></div> <!-- 관찰 대상 -->
 <jsp:include page="../include/footer.jsp" />
 
 <script src="${pageContext.request.contextPath}/js/product/product.js"></script>

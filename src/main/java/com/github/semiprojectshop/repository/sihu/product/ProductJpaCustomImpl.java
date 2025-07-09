@@ -27,6 +27,9 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 @RequiredArgsConstructor
 public class ProductJpaCustomImpl implements ProductJpaCustom {
     private final JPAQueryFactory queryFactory;
@@ -64,6 +67,9 @@ public class ProductJpaCustomImpl implements ProductJpaCustom {
     @Override
     public PaginationDto<ProductListResponse> findCategoryProductList(ProductListRequest productListRequest, Long loginUserId) {
         BooleanExpression categoryCondition = whereByCategory(productListRequest.getCategory());
+
+        //소재 + 상품명 + 상품소개로 검색조건 설정
+        BooleanExpression searchCondition = whereBySearchKeyword(productListRequest.getSearchKeyword());
         OrderSpecifier<? extends Comparable<?>> orderSpecifier = orderByCondition(productListRequest.getSort());
 
         Long totalCount = queryFactory.select(QProduct.product.count())
@@ -101,7 +107,7 @@ public class ProductJpaCustomImpl implements ProductJpaCustom {
                         )
                 ))
                 .from(QProduct.product)
-                .where(categoryCondition)
+                .where(categoryCondition,searchCondition)
                 .orderBy(orderSpecifier, QProduct.product.productId.asc())
                 .offset(productListRequest.getPage() * productListRequest.getSize())
                 .limit(productListRequest.getSize())
@@ -117,6 +123,16 @@ public class ProductJpaCustomImpl implements ProductJpaCustom {
         );
 
     }
+
+    private BooleanExpression whereBySearchKeyword(String searchKeyword) {
+        if (searchKeyword == null || searchKeyword.isBlank()) {
+            return null;
+        }
+        return QProduct.product.productName.containsIgnoreCase(searchKeyword)
+                .or(QProduct.product.productInfo.containsIgnoreCase(searchKeyword))
+                .or(QProduct.product.matter.containsIgnoreCase(searchKeyword));
+    }
+
     private void settingQuantityForOrder(List<CartListResponse> cartListResponses, List<OrderProductRequest> orderProductRequests) {
         for (CartListResponse cartListResponse : cartListResponses) {
             for (OrderProductRequest orderProductRequest : orderProductRequests) {

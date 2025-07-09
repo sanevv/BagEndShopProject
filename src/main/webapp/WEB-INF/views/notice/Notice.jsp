@@ -110,13 +110,15 @@ function goDelete(noticeId) {
 		<input type="hidden" name="noticeID" value="${nvo.notice_id}">
 	</form>
 	</c:if>
-	</div>
 	
-	<!-- 목록으로 버튼 -->
+		<!-- 목록으로 버튼 -->
 	<a href="${pageContext.request.contextPath}/notice/list.one"
 	   style="font-size: 12pt; position: absolute; top: 200px; right: 0px;">
 	   목록으로
 	</a>
+	</div>
+	
+
 	
 	<!-- NOTICE 제목 -->
 	<div class="notice_title" style="text-align: center;">

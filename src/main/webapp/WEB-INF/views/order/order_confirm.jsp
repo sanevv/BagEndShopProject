@@ -127,31 +127,33 @@
 </style>
 </head>
 <body>
-<div class="container">
-    <h2>주문 상품 확인</h2>
+<main id="main">
+    <div class="container">
+        <h2>주문 상품 확인</h2>
 
-    <div id="orderItems"></div>
+        <div id="orderItems"></div>
 
-    <div class="summary">
-        <div class="summary-row">
-            <span>총 상품금액</span>
-            <span id="totalPrice" class="original"></span>
+        <div class="summary">
+            <div class="summary-row">
+                <span>총 상품금액</span>
+                <span id="totalPrice" class="original"></span>
+            </div>
+            <div class="summary-row">
+                <span>할인 금액</span>
+                <span id="discountPrice"></span>
+            </div>
+            <div class="summary-row total">
+                <span>총 결제 금액</span>
+                <span id="finalPrice"></span>
+            </div>
         </div>
-        <div class="summary-row">
-            <span>할인 금액</span>
-            <span id="discountPrice"></span>
-        </div>
-        <div class="summary-row total">
-            <span>총 결제 금액</span>
-            <span id="finalPrice"></span>
+
+        <div class="btn-box">
+            <button class="btn-cancel" onclick="history.back()">취소</button>
+            <button class="btn-pay" onclick="requestPayment()">결제하기</button>
         </div>
     </div>
-
-    <div class="btn-box">
-        <button class="btn-cancel" onclick="history.back()">취소</button>
-        <button class="btn-pay" onclick="requestPayment()">결제하기</button>
-    </div>
-</div>
+</main>
 
 <script type="text/javascript" src='${pageContext.request.contextPath}/js/order/orderConfirm.js' defer></script>
 

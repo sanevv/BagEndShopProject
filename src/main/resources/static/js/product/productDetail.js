@@ -55,6 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const reviewId = btnReviewCommentUpdate.dataset.reviewid;
             const userId = btnReviewCommentUpdate.dataset.userid;
             const commentId = btnReviewCommentUpdate.dataset.commentid;
+            const commentTarget = btnReviewCommentUpdate.dataset.comment;
+
+            document.querySelector('#commentUpdateContents').value = document.querySelector(`#${commentTarget}`).innerText;
 
             console.log('관리자 댓글 수정하기 버튼 클릭:', btnReviewCommentUpdate);
             console.log('data-reviewId 값:', reviewId);
@@ -67,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // 댓글 수정하기 버튼 클릭
+        // 관리자 댓글 수정하기 폼안에 댓글 수정하기 버튼 클릭
         if (e.target.closest('#btnCommentUpdate')) {
             const reviewId = e.target.dataset.reviewid;
             const userId = e.target.dataset.userid;
@@ -114,7 +117,7 @@ reviewListCall = (reviewList, loginUserRoleId) => {
 
     let reviewListHTML = ``;
 
-    reviewList.forEach(review => {
+    reviewList.forEach( (review, index) => {
         console.log(review);
 
         const rating = Number(review.rating);
@@ -136,7 +139,7 @@ reviewListCall = (reviewList, loginUserRoleId) => {
                                     reviewListHTML += `
                                         <div class="admin-comment"> 
                                             <p class="title">관리자 답변</p>
-                                            <p class="text">${review.commentContents}</p>
+                                            <p id="adminComment_${index}" class="text">${review.commentContents}</p>
                                         </div> 
                                     `;
                                 }
@@ -161,7 +164,7 @@ reviewListHTML += `    </div> `;
                                         reviewListHTML += `<button type="button" class="btn btn-review-comment black" data-toggle="modal" data-target="#reviewCommentModal" data-userid="${review.userId}" data-reviewid="${review.reviewId}">관리자 댓글 작성하기</button>`;
                                         break;
                                     case 1:
-                                        reviewListHTML += `<button type="button" class="btn btn-review-comment-update black" data-toggle="modal" data-target="#reviewCommentUpdateModal" data-userid="${review.userId}" data-reviewid="${review.reviewId}" data-commentid="${review.reviewCommentId}">관리자 댓글 수정하기</button>`;
+                                        reviewListHTML += `<button type="button" class="btn btn-review-comment-update black" data-toggle="modal" data-target="#reviewCommentUpdateModal" data-userid="${review.userId}" data-reviewid="${review.reviewId}" data-commentid="${review.reviewCommentId}" data-comment="adminComment_${index}">관리자 댓글 수정하기</button>`;
                                         reviewListHTML += `<button type="button" class="btn btn-review-comment-delete red" onclick="reviewCommentDelete(${review.reviewId})">관리자 댓글 삭제하기</button>`;
                                         break;
                                 }
@@ -347,8 +350,17 @@ btnPlus.addEventListener('click', () => {
 });
 
 
-
 // 바로구매하기 버튼 클릭 이벤트
-document.querySelector('#btnBuy').addEventListener('click', () => {
+directOrder = (checkLogin) => {
+
+    if(!checkLogin){
+        if(!confirm("주문을 하기 위해서는 로그인이 필요합니다.\n로그인하시겠습니까?")) return;
+
+        location.href = '/test/login.up';
+        return;
+    }
+
     requestOrderProducts([{ productId: productId, quantity: inpQuantity.value}]);
-});
+
+}
+

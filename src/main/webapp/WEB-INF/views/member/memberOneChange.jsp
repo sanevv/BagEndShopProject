@@ -1,45 +1,24 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="../include/header.jsp"/>
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<%
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 
-    %>
+<jsp:include page="../include/header.jsp"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:if test="${empty sessionScope.loginUser}">
+    <script>
+        alert("로그인 후 이용해주세요.");
+        location.href = "/login"; // 로그인 페이지로 이동
+    </script>
+</c:if>
+
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link rel="stylesheet" href="/css/member/memberEdit.css" />
+
 <script type="text/javascript">
 
     $(function (){
 
         $('.error').hide(); // 에러 메시지 숨김
-
-        // 유효성 검사하기
-        $('input#email').blur((e) => {
-
-            const regExp_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-            // 숫자/문자/특수문자 포함 형태의 8~15자리 이내의 암호 정규표현식 객체 생성
-
-            const bool = regExp_email.test($(e.target).val());
-
-            if(!bool){
-                // 암호가 정규표현식에 위배된 경우
-
-                $('table#tblMemberRegister :input').prop('disabled', true); // table 태그내의 모든 input 태그를 잡을 때는 공백 :input 으로 표시한다.
-                $(e.target).prop('disabled', false); // ('disabled', true) 는 input 태그 내의 기능을 정지, $(e.target).prop('disabled', false)는 $('input#name') 만 기능을 활성화
-                $(e.target).val('').focus();
-
-                // $(e.target).next().show(); // .next() 는 형제 태크에서 다음 태그를 말하는 것이고, .show() 는 .hide() 했던 것을 다시 보여라 라는 말이다.
-                // 또는
-                $(e.target).parent().find('span.error').show();
-            }
-            else {
-                // 암호가 정규표현식에 맞는 경우
-
-                $('table#tblMemberRegister :input').prop('disabled', false);
-
-                // $(e.target).next().hide(); // .next() 는 형제 태크에서 다음 태그를 말하는 것이고, .show() 는 .hide() 했던 것을 다시 보여라 라는 말이다.
-                // 또는
-                $(e.target).parent().find('span.error').hide(); // .parent() 로 상위 태그인 td 태그로 올라가고 .find() 로 자식 태그를 다시 불러온다.
-            }
-        }); // end of $('input#email').blur((e) =>{})
-
 
         $('input#password').blur((e) => {
 
@@ -53,12 +32,12 @@
             if(!bool) {
                 // 암호가 정규표현식에 위배된 경우
 
-                $(e.target).parent().find('span.error').show();
+                $(e.target).parent().find('.error').show();
             }
             else {
                 // 암호가 정규표현식에 맞는 경우
 
-                $(e.target).parent().find('span.error').hide();
+                $(e.target).parent().find('.error').hide();
             }
 
         });	// end of $('input#password').blur((e) => {})-------------------
@@ -69,12 +48,12 @@
             if( $('input#password').val() != $(e.target).val() ) {
                 // 암호와 암호확인값이 틀린 경우
 
-                $(e.target).parent().find('span.error').show();
+                $(e.target).parent().find('.error').show();
             }
             else {
                 // 암호와 암호확인값이 같은 경우
 
-                $(e.target).parent().find('span.error').hide();
+                $(e.target).parent().find('.error').hide();
             }
 
         });	// end of $('input#pwdcheck').blur((e) => {})-------------------
@@ -88,12 +67,12 @@
             if(name == "") {
                 // 입력하지 않거나 공백만 입력했을 경우
 
-                $(e.target).parent().find('span.error').show();
+                $(e.target).parent().find('.error').show();
             }
             else {
                 // 공백이 아닌 글자를 입력했을 경우
 
-                $(e.target).parent().find('span.error').hide();
+                $(e.target).parent().find('.error').hide();
             }
 
         });	// end of $('input#name').blur((e) => {})-------------------
@@ -109,22 +88,22 @@
             if(!bool){
                 // 연락처 국번이 정규표현식에 위배된 경우
 
-                $('table#tblMemberRegister :input').prop('disabled', true); // table 태그내의 모든 input 태그를 잡을 때는 공백 :input 으로 표시한다.
+                $('form#memberOneChangeFrm :input').prop('disabled', true); // table 태그내의 모든 input 태그를 잡을 때는 공백 :input 으로 표시한다.
                 $(e.target).prop('disabled', false); // ('disabled', true) 는 input 태그 내의 기능을 정지, $(e.target).prop('disabled', false)는 $('input#name') 만 기능을 활성화
                 $(e.target).val('').focus();
 
                 // $(e.target).next().show(); // .next() 는 형제 태크에서 다음 태그를 말하는 것이고, .show() 는 .hide() 했던 것을 다시 보여라 라는 말이다.
                 // 또는
-                $(e.target).parent().find('span.error').show();
+                $(e.target).parent().find('.error').show();
             }
             else {
                 // 연락처 국번이 정규표현식에 맞는 경우
 
-                $('table#tblMemberRegister :input').prop('disabled', false);
+                $('form#memberOneChangeFrm :input').prop('disabled', false);
 
                 // $(e.target).next().hide(); // .next() 는 형제 태크에서 다음 태그를 말하는 것이고, .show() 는 .hide() 했던 것을 다시 보여라 라는 말이다.
                 // 또는
-                $(e.target).parent().find('span.error').hide(); // .parent() 로 상위 태그인 td 태그로 올라가고 .find() 로 자식 태그를 다시 불러온다.
+                $(e.target).parent().find('.error').hide(); // .parent() 로 상위 태그인 td 태그로 올라가고 .find() 로 자식 태그를 다시 불러온다.
             }
         }); // end of $('input#hp2').blur((e) =>{})
 
@@ -141,22 +120,22 @@
             if(!bool){
                 // 연락처 마지막 4자리가 정규표현식에 위배된 경우
 
-                $('table#tblMemberRegister :input').prop('disabled', true); // table 태그내의 모든 input 태그를 잡을 때는 공백 :input 으로 표시한다.
+                $('form#memberOneChangeFrm :input').prop('disabled', true); // table 태그내의 모든 input 태그를 잡을 때는 공백 :input 으로 표시한다.
                 $(e.target).prop('disabled', false); // ('disabled', true) 는 input 태그 내의 기능을 정지, $(e.target).prop('disabled', false)는 $('input#name') 만 기능을 활성화
                 $(e.target).val('').focus();
 
                 // $(e.target).next().show(); // .next() 는 형제 태크에서 다음 태그를 말하는 것이고, .show() 는 .hide() 했던 것을 다시 보여라 라는 말이다.
                 // 또는
-                $(e.target).parent().find('span.error').show();
+                $(e.target).parent().find('.error').show();
             }
             else {
                 // 연락처 마지막 4자리가 정규표현식에 맞는 경우
 
-                $('table#tblMemberRegister :input').prop('disabled', false);
-
+                $('form#memberOneChangeFrm :input').prop('disabled', false);
+                
                 // $(e.target).next().hide(); // .next() 는 형제 태크에서 다음 태그를 말하는 것이고, .show() 는 .hide() 했던 것을 다시 보여라 라는 말이다.
                 // 또는
-                $(e.target).parent().find('span.error').hide(); // .parent() 로 상위 태그인 td 태그로 올라가고 .find() 로 자식 태그를 다시 불러온다.
+                $(e.target).parent().find('.error').hide(); // .parent() 로 상위 태그인 td 태그로 올라가고 .find() 로 자식 태그를 다시 불러온다.
             }
         }); // end of $('input#hp3').blur((e) =>{})
 
@@ -173,11 +152,11 @@
             if(!bool) {
                 // 우편번호가 정규표현식에 위배된 경우
 
-                $(e.target).parent().find('span.error').show();
+                $(e.target).parent().find('.error').show();
             }
             else {
 
-                $(e.target).parent().find('span.error').hide();
+                $(e.target).parent().find('.error').hide();
             }
 
         });	// end of $('input#zipCode').blur((e) => {})-------------------
@@ -243,63 +222,18 @@
         });// end of $('button#zipCodeSearch').click(function(){})---------------
 
 
-        $('input#email').val("${requestScope.loginUser.email}");
-        $('input#name').val("${requestScope.loginUser.name}");
-        $('input#hp1').val("${requestScope.hp1}");
-        $('input#hp2').val("${requestScope.hp2}");
-        $('input#hp3').val("${requestScope.hp3}");
-
+        $('input#email').val("${sessionScope.loginUser.email}");
+        $('input#name').val("${sessionScope.loginUser.name}");
+        $('input#hp1').val("${sessionScope.loginUser.phoneNumber.substring(0,3)}");
+        $('input#hp2').val("${sessionScope.loginUser.phoneNumber.substring(3,7)}");
+        $('input#hp3').val("${sessionScope.loginUser.phoneNumber.substring(7)}");
+        $('input#zipCode').val("${sessionScope.loginUser.zipCode}");
+        $('input#address').val("${sessionScope.loginUser.address}");
+        $('input#addressDetails').val("${sessionScope.loginUser.addressDetails}");
+        
         $('button#update').on('click', function(){
             goChange();
         }); // end of $('button#update').on('click', function(){})-------------------
-
-
-        const originalEmail = "${requestScope.email}";
-        const emailInput = $('input#email');
-        const confirmBtn = $('button#emailDuplicateConfirmation');
-
-        // 👉 먼저 input 값을 세팅
-        emailInput.val(originalEmail);
-
-        //  input 값 설정이 끝난 다음에 비교
-        if (originalEmail === emailInput.val()) {
-            confirmBtn.hide();
-        } else {
-            confirmBtn.show();
-        }
-
-        //  사용자가 값을 바꿨을 때
-        emailInput.on('input', function() {
-            if (originalEmail === $(this).val()) {
-                confirmBtn.hide();
-            } else {
-                confirmBtn.show();
-            }
-        });
-
-        //  중복 확인 버튼 클릭
-        confirmBtn.on('click', function() {
-            $.ajax({
-                url: "/api/member/exist-email",
-                type: "GET",
-                data: {
-                    email: emailInput.val()
-                },
-                success: function(response) {
-                    if (response) {
-                        alert('사용 가능한 이메일입니다.');
-                        confirmBtn.hide();
-                    } else {
-                        alert('이미 사용중인 이메일입니다.');
-                        emailInput.val("").focus();
-                    }
-                },
-                error: function() {
-                    alert('이메일 중복 확인에 실패했습니다.');
-                }
-            });
-        });
-
 
         // 전화번호 중복확인 버튼 제어
         const originalHp2 = "${requestScope.hp2}";
@@ -356,18 +290,160 @@
         });
 
 
-
-
     }); // end of $(function(){})
+ // Function Declaration
 
+ // "가입하기" 버튼 클릭시 호출되는 함수
+ function goRegister() {
+ 	
+ 	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 시작 **** //
+ 	let b_requiredInfo = true;
+ 	
+ 	$('input.requiredInfo').each(function(index, elmt){
+ 		const data = $(elmt).val().trim();
+ 		if(data == "") {
+ 			alert("*표시된 필수입력사항은 모두 입력하셔야 합니다.");
+ 			b_requiredInfo = false;
+ 			return false; // break; 라는 뜻이다.
+ 		}
+ 	});
+ 	
+ 	if(!b_requiredInfo) {
+ 		return; // goRegister() 함수를 종료한다.
+ 	}
+ 	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 끝 **** //
+ 	
+ 	
+ 	// **** "이메일중복확인" 을 클릭했는지 검사하기 시작 **** //
+ 	if(!b_emailcheck_click) {
+ 		// "이메일중복확인" 을 클릭 안 했을 경우
+ 		
+ 		alert("이메일 중복확인을 클릭하셔야 합니다.");
+ 		return; // goRegister() 함수를 종료한다.
+ 	}	
+     // **** "이메일중복확인" 을 클릭했는지 검사하기 끝 **** //
+ 	
+ 	
+ 	// **** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 **** //
+ 	let b_addressInfo = true;
+ 	
+ 	const arr_addressInfo = [];
+ 	arr_addressInfo.push($('input#zipCode').val());
+ 	arr_addressInfo.push($('input#address').val());
+ 	
+ 	for(let addressInfo of arr_addressInfo) {
+ 		if(addressInfo.trim() == "") {
+ 			alert("우편번호 및 주소를 입력하셔야 합니다.");
+ 			b_addressInfo = false;
+ 			break;
+ 		}
+ 	}// end of for---------------------
+ 	
+ 	if(!b_addressInfo) {
+ 		return; // goRegister() 함수를 종료한다.
+ 	}
+ 	// **** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 **** //
+ 	
+ 	
+ 	// **** 약관에 동의를 했는지 검사하기 시작 **** //
+ 	const checkbox_checked_length = $('input:checkbox[id="agree"]:checked').length;
+ 	
+ 	if(checkbox_checked_length == 0) {
+ 		alert("이용약관에 동의하셔야 합니다.");
+ 		return; // goRegister() 함수를 종료한다.
+ 	}
+ 	// **** 약관에 동의를 했는지 검사하기 끝 **** //
+ 	
+ 	const frm = document.registerFrm;
+ 	frm.method = "post";
+  //	frm.action = "memberRegister.up";
+ 	frm.submit();
+ 	
+ }// end of function goRegister()-----------------------------
     function goChange(){
+	 
+    	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 시작 **** //
+     	let b_requiredInfo = true;
+     	
+     	$('input.requiredInfo').each(function(index, elmt){
+     		const data = $(elmt).val().trim();
+     		if(data == "") {
+     			alert("*표시된 필수입력사항은 모두 입력하셔야 합니다.");
+     			b_requiredInfo = false;
+     			return false; // break; 라는 뜻이다.
+     		}
+     	});
+     	
+     	if(!b_requiredInfo) {
+     		return; // 함수를 종료한다.
+     	}
+     	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 끝 **** /
+     	
+     	// **** 휴대폰 입력값 검사 시작 **** //
+		const hp2 = $('input#hp2').val().trim();
+		const hp3 = $('input#hp3').val().trim();
+	
+		if (hp2 === "") {
+			alert("휴대폰 번호를 입력하셔야 합니다.");
+			$('input#hp2').focus();
+			return;
+		}
+	
+		if (hp3 === "") {
+			alert("휴대폰 번호를 입력하셔야 합니다.");
+			$('input#hp3').focus();
+			return;
+		}
+		// **** 휴대폰 입력값 검사 끝 **** //
+		
+		
+		// **** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 **** //
+		let b_addressInfo = true;
+		
+		const arr_addressInfo = [];
+		arr_addressInfo.push($('input#zipCode').val());
+		arr_addressInfo.push($('input#address').val());
+		
+		for(let addressInfo of arr_addressInfo) {
+			if(addressInfo.trim() == "") {
+				alert("우편번호 및 주소를 입력하셔야 합니다.");
+				b_addressInfo = false;
+				break;
+			}
+		}// end of for---------------------
+		
+		if(!b_addressInfo) {
+			return; // goRegister() 함수를 종료한다.
+		}
+		// **** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 **** //
+	 	
+	 	// **** 약관에 동의를 했는지 검사하기 시작 **** //
+	 	const checkbox_checked_length = $('input:checkbox[id="agree"]:checked').length;
+	 	
+	 	if(checkbox_checked_length == 0) {
+	 		alert("이용약관에 동의하셔야 합니다.");
+	 		return; // 함수를 종료한다.
+	 	}
+	 	// **** 약관에 동의를 했는지 검사하기 끝 **** //
+ 	
+	 	// "취소하기" 버튼 클릭시 호출되는 함수
+    function goReset() {
 
+   	document.registerFrm.reset();
+
+       $('span.error').hide();
+       $('#emailCheckResult').html('');
+       $('#email').focus();
+
+       b_emailcheck_click = false;
+   }// end of  function goReset(){}-----------
+   
         // AJAX 요청
         $.ajax({
-            type: 'POST',
+        	type: 'POST',
             url: '/api/member/memberOneChange',
             data: {
-                email: $('#email').val(),
+            	email: $('#email').val(),
                 password: $('#password').val(),
                 name: $('#name').val(),
                 hp1: $('#hp1').val(),
@@ -379,7 +455,7 @@
             },
             success: function(response) {
                 alert('회원 정보가 변경되었습니다.');
-                location.href = '/'; // 변경이 성고하면 다시 홈으로 이동
+                location.href = '/'; // 변경이 성공하면 다시 홈으로 이동
             },
             error: function(xhr, status, error) {
                 alert('회원 정보 변경에 실패했습니다. 다시 시도해주세요.');
@@ -387,225 +463,131 @@
         });
 
     }
-
-
+ 
 </script>
 
 <div class="container mt-5">
     <div class="row">
 
-        <!-- 왼쪽 사이드바 -->
-        <div class="col-lg-3 col-md-4">
+        <!-- 좌측 마이페이지 메뉴 -->
+        <div class="mypageMenu col-lg-3 col-md-4">
             <jsp:include page="../include/mypageMenu.jsp"/>
         </div>
 
-		
-        <!-- 오른쪽 회원가입 폼 -->
-        <div class="col-lg-9 col-md-8">
-                <div class="container"">
-                    <div class="row" id="registerRow">
-                        <div class="wish-content col-lg-9 col-md-8" style="margin-top: 50px;">
-                        	<div class="memberOneChange-header" style="display: flex; justify-content: space-between; margin-bottom: 35px;">
-					            <h4 class="memberOneChange-title" style="font-size: 24px; font-weight: bold;">내 정보 수정하기</h4>
-					        </div>
-                            <form name="registerFrm">
-                                <table id="tblMemberRegister">
-                                    <tbody>
-
-                                    <%-- 이메일 입력 --%>
-                                    <tr>
-                                        <td>
-                                            <label for="emailtext" id="emailtext" class="mb-2">이메일<span class="star">*</span></label><br>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="email" id="email" maxlength="60" class="requiredInfo" style="padding-left: 10px;"/>
-                                            <button type="button" class="btn btn-dark" name="duplicate" id="emailDuplicateConfirmation">중복확인</button>
-                                            <span class="error" style="display: block; margin-top: 5px;">이메일 형식에 맞지 않습니다.</span>
-                                        </td>
-                                    </tr>
-
-
-
-
-                                    <%-- 비밀번호 입력 --%>
-                                    <tr>
-                                        <td>
-                                            <label for="pwdtext" id="pwdtext" class="mb-2">비밀번호<span class="star">*</span></label><br>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <input type="password" name="password" id="password" maxlength="15" class="requiredInfo" style="padding-left: 10px;"/><br>
-                                            <span class="error">암호는 영문자,숫자,특수기호가 혼합된 8~15 글자로 입력하세요.</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px; margin-top: 5px;">
-                                                <img src="/aery/images/help.png" id="help_icon" style="width: 16px; height: 16px;" /><br>
-                                                <span style="font-size: 11px; color: #999999; line-height: 1;">(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8~15자)</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-
-                                    <%-- 비밀번호 확인 --%>
-                                    <tr>
-                                        <td>
-                                            <label for="pwdchtext" id="pwdchtext" style="margin-top: 15px;" class="mb-2">비밀번호 확인<span class="star">*</span></label><br>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <input type="password" name="pwdcheck" id="pwdcheck" maxlength="15" class="requiredInfo" style="padding-left: 10px;"/><br>
-                                            <span class="error" style="display: block; margin-top: 5px;">비밀번호가 일치하지 않습니다.</span>
-                                        </td>
-                                    </tr>
-
-
-                                    <%-- 이름 입력 --%>
-                                    <tr>
-                                        <td>
-                                            <label for="nametext" id="nametext" style="margin-top: 15px;" class="mb-2">이름<span class="star">*</span></label><br>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="name" id="name" maxlength="30" class="requiredInfo" style="padding-left: 10px;"/><br>
-                                            <span class="error" style="display: block; margin-top: 5px;">이름은 필수입력 사항입니다.</span>
-                                        </td>
-                                    </tr>
-
-
-                                    <%-- 휴대폰 --%>
-                                    <tr>
-                                        <td>
-                                            <label for="phonetext" id="phonetext" style="margin-top: 15px;" class="mb-2">휴대폰<span class="star">*</span></label><br>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="phoneGroup" style="display: flex; align-items: center; gap: 6px;">
-                                                <input type="text" name="hp1" id="hp1" size="6" maxlength="3" value="010" readonly style="padding-left: 10px;" />
-                                                <span>-</span>
-                                                <input type="text" name="hp2" id="hp2" size="6" maxlength="4" style="padding-left: 10px;" />
-                                                <span>-</span>
-                                                <input type="text" name="hp3" id="hp3" size="6" maxlength="4" style="padding-left: 10px;" />
-                                            </div>
-                                            <button type="button" class="btn btn-dark mt-3" name="duplicate" id="checkThePhoneNumberDuplicate">중복확인</button>
-                                            <span class="error" style="display: block; margin-top: 5px;">휴대폰 형식이 아닙니다.</span>
-                                        </td>
-                                    </tr>
-
-
-
-                                    <%-- 추후 회원가입시 휴대전화 인증 필요할 시, js 구현 필요
-                                    <tr>
-                                         <td>
-                                           <button type="button" class="btn btn-dark" id="phonecheck" style="display: block; margin: 5px auto 15px;">인증번호 받기</button>
-                                           <span id="phoneCheckResult"></span>
-                                        </td>
-                                    </tr>
-
-
-                                    // 인증번호
-                                    <tr>
-                                        <td>
-                                           <label for="veriCodetext" id="veriCodetext">인증번호<span class="star">*</span></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                           <div class="veriCodeGroup">
-                                               <input type="text" name="veriCode" id="veriCode" maxlength="5" style="padding-left: 10px;"/>
-                                               <button type="button" class="btn btn-dark" id="veriCodeCheck">확인</button>
-                                           </div>
-                                           <span class="error" style="display: block; margin-top: 5px;">인증번호가 일치하지 않습니다.</span>
-                                        </td>
-                                    </tr>
-                                    --%>
-
-
-                                    <%-- 우편번호 --%>
-                                    <tr>
-                                        <td>
-                                            <label for="zipCodetext" id="zipCodetext" style="margin-top: 15px;" class="mb-2">우편번호<span class="star">*</span></label><br>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="zipCodeGroup">
-                                                <input type="text" name="zipCode" id="zipCode" maxlength="5" style="padding-left: 10px;"/>
-                                                <button type="button" class="btn btn-dark" id="zipCodeSearch">우편번호찾기</button>
-                                            </div>
-                                            <span class="error" style="display: block; margin-top: 5px;">우편번호 형식에 맞지 않습니다.</span>
-                                        </td>
-                                    </tr>
-
-
-                                    <%-- 주소 --%>
-                                    <tr>
-                                        <td>
-                                            <label for="addtext" id="addtext" style="margin-top: 15px;" class="mb-2">주소<span class="star">*</span></label><br>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="address" id="address" size="40" maxlength="200" placeholder="주소" style="margin-bottom: 5px; padding-left: 10px;"/><br>
-                                            <input type="text" name="addressDetails" id="addressDetails" size="40" maxlength="200" placeholder="상세주소" style="padding-left: 10px;"/>
-                                            <span class="error" style="display: block; margin-top: 5px;">주소를 입력하세요.</span>
-                                        </td>
-                                    </tr>
-
-
-                                    <%-- 이용약관 --%>
-                                    <tr>
-                                        <td>
-                                            <hr style="border: 0; border-top: 1px solid #e9ecef; margin: 20px 0;" />
-                                            <label style="margin-top: 15px;">[필수] 이용약관 동의</label>
-
-                                            <div style="border: 1px solid #e9ecef; height: 150px; overflow-y: auto; overflow-x: hidden; margin-top: 5px;">
-                                                <iframe src="/aery/iframe_agree/agree.html" width="100%" height="100%" style="border: none;"></iframe>
-                                            </div>
-                                        </td>
-
-                                    <tr>
-                                        <td>
-                                            <label for="agree" style="font-size: 13px; color: #666666;">이용약관에 동의하십니까?</label>
-                                            <input type="checkbox" id="agree" style="margin-left: 10px; width:18px; height:18px; vertical-align: middle;"/>
-                                            <label for="agree" style="margin-left: 5px;">동의함</label>
-                                        </td>
-                                    </tr>
-
-
-                                    <tr>
-                                        <td>
-                                            <div style="display: flex; justify-content: center; margin-top: 20px;">
-                                                <input type="button" id="update" class="btn btn-success btn-lg" style="background-color: black;" value="수정하기" onclick="goChange()"/>
-                                                <input type="reset" class="btn btn-danger btn-lg" id="cancel" style="background-color: #f05650; font-size: 14px;" value="취소하기"/>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- 내 정보 수정 -->
+		<div class="memberOneChange-content col-lg-9 col-md-8" style="margin-top: 50px;">
+	        <div class="memberOneChange-header">
+	            <h4 class="memberOneChange-title">내 정보 수정</h4>
+	        </div>		
+				
+            <form name="memberOneChangeFrm" id="memberOneChangeFrm">
+            
+	            <%-- 이메일 입력 --%>
+	            <div class="Change-row">
+	                <label for="email">이메일<span class="star">*</span></label>
+	                <div class="input-box">
+	                    <input type="text" id="email" class="requiredInfo" readonly  onfocus="this.blur()" onkeydown="return false;"/>
+	                </div>
+	            </div>
+	
+	            <%-- 비밀번호 입력 --%>
+	            <div class="Change-row">
+	                <label for="password">비밀번호<span class="star">*</span></label>
+	                <div class="input-box">
+	                    <input type="password" id="password" maxlength="15" class="requiredInfo"/>
+	                    <div class="error">암호는 영문자, 숫자, 특수기호 포함 8~15자로 입력하세요.</div>
+	                    <div class="form-info">
+	                        <img src="/aery/images/help.png" alt="도움말" />
+	                        <span>(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8~15자)</span>
+	                    </div>
+	                </div>
+	            </div>
+	
+	            <%-- 비밀번호 확인 --%>
+	            <div class="Change-row">
+	                <label for="pwdcheck">비밀번호 확인<span class="star">*</span></label>
+	                <div class="input-box">
+	                    <input type="password" name="pwdcheck" id="pwdcheck" maxlength="15" class="requiredInfo"/>
+	                    <div class="error">비밀번호가 일치하지 않습니다.</div>
+	                </div>
+	            </div>
+	
+	            <%-- 이름 입력 --%>
+	            <div class="Change-row">
+	                <label for="name">이름<span class="star">*</span></label>
+	                <div class="input-box">
+	                    <input type="text" name="name" id="name" maxlength="30" class="requiredInfo"/>
+	                    <div class="error">이름은 필수입력 사항입니다.</div>
+	                </div>
+	            </div>
+	
+	            <%-- 휴대폰 --%>
+	            <div class="Change-row">
+	                <label for="phonetext">휴대폰<span class="star">*</span></label>
+	                <div class="input-box">
+	                    <div class="phoneGroup">
+	                        <input type="text" name="hp1" id="hp1" maxlength="3" value="010" readonly/>
+	                        <span>-</span>
+	                        <input type="text" name="hp2" id="hp2" maxlength="4"/>
+	                        <span>-</span>
+	                        <input type="text" name="hp3" id="hp3" maxlength="4"/>
+	                    </div>
+	                    <div class="error">휴대폰 형식이 아닙니다.</div>
+	                </div>
+	            </div>
+	
+	            <%-- 우편번호 --%>
+	            <div class="Change-row">
+	                <label for="zipCode">우편번호<span class="star">*</span></label>
+	                <div class="input-box">
+	                    <div class="zipCodeGroup">
+	                        <input type="text" name="zipCode" id="zipCode" maxlength="5"/>
+	                        <button type="button" class="btn btn-dark" id="zipCodeSearch">주소검색</button>
+	                    </div>
+	                    <div class="error">주소 형식에 맞지 않습니다.</div>
+	                </div>
+	            </div>
+	
+	            <%-- 주소 --%>
+	            <div class="Change-row">
+	                <label for="address">주소<span class="star">*</span></label>
+	                <div class="input-box">
+	                    <input type="text" name="address" id="address" maxlength="200" placeholder="주소" style="margin-bottom: 5px;"/>
+	                    <input type="text" name="addressDetails" id="addressDetails" maxlength="200" placeholder="상세주소" />
+	                    <div class="error">주소를 입력하세요.</div>
+	                </div>
+	            </div>
+	
+	            <div class="hr-line-wrapper">
+	                <hr class="hr-line" />
+	            </div>
+	
+	            <%-- 이용약관 --%>
+	            <div class="Change-row">
+	                <label>[필수] 이용약관 동의</label>
+					<div class="input-box">
+	    				<div class="agree-box">
+	        				<iframe src="/aery/iframe_agree/agree.html" width="100%" height="100%" style="border: none;"></iframe>
+	    				</div>
+	
+		    			<div class="agree-check">
+		        			<label for="agree">이용약관에 동의하십니까?</label>
+		        			<input type="checkbox" id="agree" style="margin-left: 5px;"/>
+		        			<label for="agree" style="margin-left: 5px; font-size: 14px;">동의함</label>
+		    			</div>
+					</div>
+				</div>
+	
+	
+            	<div class="Change-row button-row">
+				    <div class="button-box">
+				        <input type="button" id="update" class="btn btn-success btn-lg" style="background-color: black;" value="수정하기" onclick="goChange()" />
+				        <input type="button" class="btn btn-danger btn-lg" id="cancel" style="background-color: #fff; color: black; border:solid 1px #e9ecef; font-size: 14px;" value="취소하기" onclick="goReset()"/>
+				    </div>
+				</div>
+            </form>
         </div>
-
     </div>
+</div>
 
 <jsp:include page="../include/footer.jsp"/>

@@ -448,7 +448,7 @@ public class ReviewDAOImple implements ReviewDAO {
 
     // 상품 구매를 한 사람인지 알아오기
     @Override
-    public boolean getIsBuy(int userId) {
+    public boolean getIsBuy(int userId, int productId) {
 
         boolean result = false;
 
@@ -459,10 +459,11 @@ public class ReviewDAOImple implements ReviewDAO {
                          " FROM orders_product OP " +
                          " JOIN product P ON OP.product_id = P.product_id " +
                          " JOIN orders O ON OP.orders_id = O.orders_id " +
-                         " WHERE O.status not in ('READY') and O.user_id = ? ";
+                         " WHERE O.status not in ('READY') and O.user_id = ? and OP.product_id = ?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userId);
+            pstmt.setInt(2, productId);
             rs = pstmt.executeQuery();
 
             while(rs.next()){

@@ -20,6 +20,12 @@
     <script src="${pageContext.request.contextPath}/lib/bootstrap-4.6.2-dist/js/bootstrap.bundle.js"></script>
 </c:if>
 <script src="${pageContext.request.contextPath}/js/common/common.js" defer></script>
+<div id="loadingBar">
+    <div class="loading-box">
+        <div class="spinner"></div>
+        <div class="text">이메일 발송 중 입니다.</div>
+    </div>
+</div>
 
 </div>
 </body>

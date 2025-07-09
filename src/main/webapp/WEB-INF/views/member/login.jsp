@@ -49,6 +49,7 @@
         })
 
 
+
     }) // end of $(function (){}
     //소셜로그인 요청 URL 생성
     async function requestAuthUrl(provider) {
@@ -72,10 +73,10 @@
     }
 
     function handleLoginSuccess(isConnection, responseData, providerValue) {
-
+        console.log(responseData)
         if (isConnection) {
             swal({
-                title: '환영합니다, \${responseData.name}님!',
+                title: `환영합니다, \${responseData.name}님!`,
                 text: `계정에 \${providerValue} 로그인이 연동 되었습니다.`,
                 icon: 'success',
                 button: '확인'
@@ -116,6 +117,9 @@
         document.body.appendChild(form);
         form.submit();
     }
+
+
+
 
 </script>
 

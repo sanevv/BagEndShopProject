@@ -3,6 +3,7 @@
 <%
     // 로그인 여부 확인
     boolean isLoginJava = session.getAttribute("loginUser") != null;
+    String ctxPath = request.getContextPath();
 %>
 
 <script type="text/javascript">
@@ -18,7 +19,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>시후와아이들</title>
+    <title>가방종결자 BAGEND</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -146,7 +147,8 @@
                             <br>
                             <br>
                             <br>
-                            <li><a class="submenu" href="#" style="font-size: 18px; color: #A3A9AF;">오시는길</a></li>
+                            <br>
+                            <li><a class="storeLocation" href="<%= ctxPath %>/storeLocation.team1" style="font-size: 18px; color: gray;">오시는길</a></li>
 
                         </ul>
                     </div>
@@ -196,17 +198,21 @@
                 productPageMovement(searchInput.value);
             }
         });
-        productPageMovement = (searchKeyword) => {
-            if (searchKeyword) {
-                console.log(searchKeyword);
-                location.href = `${pageContext.request.contextPath}/product?search=\${encodeURIComponent(searchKeyword)}`;
-                return;
-            }
-            alert("검색어를 입력해주세요.");
-        }
         searchBtn.addEventListener("click", function () {
             productPageMovement(searchInput.value);
         })
 
+        document.addEventListener('DOMContentLoaded', function () {
+            showCartCount();
+        })
+
 
         </script>
+<%--        <c:if test="${not empty requestScope.productList}">--%>
+<%--            --%>
+<%--        </c:if>--%>
+        <c:if test="${empty requestScope.productList}">
+            <script src="${pageContext.request.contextPath}/js/product/searchScript.js" defer></script>
+        </c:if>
+
+

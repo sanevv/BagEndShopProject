@@ -66,9 +66,11 @@ public class PhoneMessageService {
     }
 
     public boolean verifyMessage(String phoneNumber, String code) {
+        String phoneNumParse = phoneNumber.replace(" ", "").replace("-", "");
+
         HttpSession session = getSession();
-        String sessionCode = (String) session.getAttribute(phoneNumber + "_code");
-        Long expireAt = (Long) session.getAttribute(phoneNumber + "_expireAt");
+        String sessionCode = (String) session.getAttribute(phoneNumParse + "_code");
+        Long expireAt = (Long) session.getAttribute(phoneNumParse + "_expireAt");
 
         if (sessionCode == null || expireAt == null || !sessionCode.equals(code)) {
             return false; // 세션에 인증 코드가 없거나 만료 시간 정보가 없거나 인증 코드가 일치하지 않음
@@ -78,13 +80,13 @@ public class PhoneMessageService {
         LocalDateTime expirationTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(expireAt), ZoneId.systemDefault());
 
         if (now.isAfter(expirationTime)) {//만료 됏으면 세션에서 제거
-            session.removeAttribute(phoneNumber + "_code");
-            session.removeAttribute(phoneNumber + "_expireAt");
+            session.removeAttribute(phoneNumParse + "_code");
+            session.removeAttribute(phoneNumParse + "_expireAt");
             return false; // 인증 코드가 만료됨
         }
 
-        session.removeAttribute(phoneNumber + "_code");
-        session.removeAttribute(phoneNumber + "_expireAt");
+        session.removeAttribute(phoneNumParse + "_code");
+        session.removeAttribute(phoneNumParse + "_expireAt");
         return true; // 인증 코드 일치 여부 확인
     }
 }

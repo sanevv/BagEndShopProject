@@ -61,6 +61,7 @@
     transition: background 0.3s;
     border-bottom: 1px solid #dcdcdc;
 }
+
 #header .header-container {
     position: relative;
 }
@@ -78,7 +79,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 24px;
+    padding: 35px 40px 50px 40px;
 }
 
 #header .logo {
@@ -131,7 +132,6 @@
 }
 
 
-
 /* ==========================
    All Menu Button
    ========================== */
@@ -162,14 +162,22 @@
     border-radius: 3px;
 }
 
-#btnAllMenu span:nth-of-type(1) { top: 0; }
-#btnAllMenu span:nth-of-type(2) { top: 13px; }
-#btnAllMenu span:nth-of-type(3) { bottom: 0; }
+#btnAllMenu span:nth-of-type(1) {
+    top: 0;
+}
+
+#btnAllMenu span:nth-of-type(2) {
+    top: 13px;
+}
+
+#btnAllMenu span:nth-of-type(3) {
+    bottom: 0;
+}
 
 /* Active Animation */
 
 #btnAllMenu.active span:nth-of-type(1) {
-    top:2px;
+    top: 2px;
     animation: active-menu-01 0.75s forwards;
 }
 
@@ -178,21 +186,33 @@
 }
 
 #btnAllMenu.active span:nth-of-type(3) {
-    bottom:-2px;
+    bottom: -2px;
     animation: active-menu-02 0.75s forwards;
 
 }
 
 @keyframes active-menu-01 {
-    0% { transform: translateY(0) rotate(0); }
-    50% { transform: translateY(16px) rotate(0); }
-    100% { transform: translateY(12px) rotate(45deg); }
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+    50% {
+        transform: translateY(16px) rotate(0);
+    }
+    100% {
+        transform: translateY(12px) rotate(45deg);
+    }
 }
 
 @keyframes active-menu-02 {
-    0% { transform: translateY(0) rotate(0); }
-    50% { transform: translateY(-16px) rotate(0); }
-    100% { transform: translateY(-16px) rotate(-45deg); }
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+    50% {
+        transform: translateY(-16px) rotate(0);
+    }
+    100% {
+        transform: translateY(-16px) rotate(-45deg);
+    }
 }
 
 /* Deactive Animation */
@@ -210,15 +230,27 @@
 }
 
 @keyframes deactive-menu-01 {
-    0% { transform: translateY(12px) rotate(45deg); }
-    50% { transform: translateY(16px) rotate(0deg); }
-    100% { transform: translateY(0) rotate(0); }
+    0% {
+        transform: translateY(12px) rotate(45deg);
+    }
+    50% {
+        transform: translateY(16px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0);
+    }
 }
 
 @keyframes deactive-menu-02 {
-    0% { transform: translateY(-16px) rotate(-45deg); }
-    50% { transform: translateY(-16px) rotate(0deg); }
-    100% { transform: translateY(0) rotate(0); }
+    0% {
+        transform: translateY(-16px) rotate(-45deg);
+    }
+    50% {
+        transform: translateY(-16px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0);
+    }
 }
 
 /* ==========================
@@ -226,6 +258,9 @@
    ========================== */
 
 .search-form {
+    display: flex;
+    align-items: center;
+    height: 2.8rem;
     position: absolute;
     width: 0;
     right: 5.5rem;
@@ -237,27 +272,34 @@
     z-index: 999;
 }
 
-.search-form form {
-    display: flex;
-    align-items: center;
-    height: 2.8rem;
-}
-
 .search-form.deactive {
     animation: search-form-none 0.45s forwards;
 }
+
 .search-form.active {
     animation: search-form-active 0.45s forwards;
 }
 
 @keyframes search-form-none {
-    0% { opacity: 1; width: 16rem; }
-    100% { opacity: 0; width: 0; }
+    0% {
+        opacity: 1;
+        width: 16rem;
+    }
+    100% {
+        opacity: 0;
+        width: 0;
+    }
 }
 
 @keyframes search-form-active {
-    0% { opacity: 0; width: 0; }
-    100% { opacity: 1; width: 16rem; }
+    0% {
+        opacity: 0;
+        width: 0;
+    }
+    100% {
+        opacity: 1;
+        width: 16rem;
+    }
 }
 
 .search-form input[type="search"] {
@@ -284,7 +326,7 @@
     background: #f8f8f8;
 }
 
-#allMenu li a:hover {
+#allMenu li a:hover:not(.storeLocation) {
     padding-left: 1.4rem;
 }
 
@@ -296,9 +338,11 @@
     margin-top: 1.2rem;
     margin-bottom: 2rem;
 }
+
 #allMenu .sub-menu li:not(:last-child) {
     margin-bottom: 0.8rem;
 }
+
 #allMenu .sub-menu li a {
     font-size: 2.2rem;
 }
@@ -307,6 +351,7 @@
     font-size: 2.8rem;
     color: #000;
     text-decoration: none;
+    transition: all 0.3s;
 }
 
 /* ==========================
@@ -331,6 +376,7 @@
     font-size: 2.2rem;
     line-height: 1.2;
 }
+
 #footer .copyright {
     display: flex;
     opacity: 0.5;
@@ -343,6 +389,44 @@
 
 
 #main,
-.container{
+.container {
     padding-top: 113px;
+}
+
+#loadingBar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    background: rgba(0,0,0,0.5);
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #fff;
+    border-top: 6px solid #4654ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#loadingBar .text {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 500;
 }

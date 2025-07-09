@@ -44,6 +44,7 @@ table#tblMemberRegister button {
 
 
 table#tblMemberRegister td > div {
+	border: solid 0px purple;
 	display: flex;
 	justify-content: space-between; 
 	gap: 2%;                         

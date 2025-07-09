@@ -102,6 +102,9 @@
     font-weight: 600;
 }
 .product-info-container .product-price .quantity {
+    display: flex;
+    align-items: center;
+    gap: 0 6px;
     margin-top: 14px;
 }
 .product-info-container .product-price .quantity input[name="quantity"] {
@@ -186,7 +189,7 @@
     margin: 0 auto;
 }
 
-.dropdown.custom-dropdown {
+.dropdown.menu-dropdown {
 	position: absolute;
 	top: 100px;
 	right: 0;

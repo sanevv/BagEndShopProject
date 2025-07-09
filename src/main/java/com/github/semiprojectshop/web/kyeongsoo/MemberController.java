@@ -77,7 +77,7 @@ public class MemberController {
 
         String userEmail = request.getParameter("userEmail");
         String pwd = request.getParameter("pwd");
-        
+
         // 클라이언트 IP 가져오기
         String clientip = request.getRemoteAddr();
 
@@ -92,15 +92,17 @@ public class MemberController {
         try {
             MemberVO loginUser = memberDAO.login(paramap);
 
-            String id = loginUser.getEmail();
+            // 사용자 객체가 null이 아닌지 확인
+            if (loginUser != null) {
 
-            request.setAttribute("id", id);
-            HttpSession session = request.getSession();
-            session.setAttribute("loginUser", loginUser);
+                String id = loginUser.getEmail();
+                request.setAttribute("id", id);
+                HttpSession session = request.getSession();
+                session.setAttribute("loginUser", loginUser);
 
-            if(loginUser != null){
                 return "redirect:/test/index.up";
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

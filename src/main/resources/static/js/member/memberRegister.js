@@ -388,6 +388,8 @@ $('#idcheck').on('click', e => {
     });
 })
 
+const loadingBarElement = document.querySelector('#loadingBar');
+console.log(loadingBarElement)
 $('#emailcheck').on('click', e => {
     if (emailCheck) return; //이미 이메일 중복 체크가 완료된 경우
     const email = $('input#email').val().trim();
@@ -395,12 +397,15 @@ $('#emailcheck').on('click', e => {
         alert('이메일을 입력하세요.');
         return;
     }
+    loadingBarElement.style.display = 'flex'; // 로딩바 표시
     //중복 체크 제이쿼리 ajax 방식
     $.ajax({
+
         url: '/api/member/check-email',
         type: 'GET',
         data: {email: email},
         success: (data) => {
+            loadingBarElement.style.display = 'none'; // 로딩바 숨김
             if (!data) {
                 alert('사용 가능한 이메일입니다.');
                 emailCheck = true; //이메일 중복 체크 완료

@@ -17,7 +17,7 @@
             $(".wishCheck").prop("checked", this.checked);
         });
 
-        $("#deleteSelected").click(function () {
+        $(".deleteSelected").click(function () {
             const selected = $(".wishCheck:checked").map(function () {
                 return $(this).data("id");
             }).get();
@@ -131,7 +131,7 @@
 	
 	        <div class="wishlist-toolbar";>
 	            <label style="padding-left: 20px;"><input type="checkbox" id="selectAll" /></label>
-	            <button id="deleteSelected" class="button btn-outline-dark btn-sm">선택 삭제</button>
+	            <button class="deleteSelected btn-outline-dark btn-sm">선택 삭제</button>
 	        </div>
 	
 	        <div class="wish-list">
@@ -152,10 +152,10 @@
 	                        </div>
 	                    </div>
 	                    <div class="wish-actions">
-	                        <button class="button btn-outline-dark btn-sm" onclick="goToDetail(${wish.productId})">상세보기</button>
+	                        <button class="wishbutton btn-outline-dark btn-sm" onclick="goToDetail(${wish.productId})">상세보기</button>
 	                        <div class="right-group">
-	                            <button class="button btn-outline-dark btn-sm" onclick="wishToCart(${wish.productId})">장바구니</button>
-	                            <button class="button btn-outline-dark btn-sm" onclick="wishToOrder(${wish.productId})">주문하기</button>
+	                            <button class="wishbutton btn-outline-dark btn-sm" onclick="wishToCart(${wish.productId})">장바구니</button>
+	                            <button class="wishbutton btn-outline-dark btn-sm" onclick="wishToOrder(${wish.productId})">주문하기</button>
 	                        </div>
 	                    </div>
 	                </div>

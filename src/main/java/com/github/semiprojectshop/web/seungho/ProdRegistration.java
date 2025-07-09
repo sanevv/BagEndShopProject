@@ -106,7 +106,7 @@ public class ProdRegistration {
 	@ResponseBody
 	public Map<String, Object> updateProdInfoProdImg(HttpServletRequest request,
 										ProductVO pvo,
-										@RequestParam("img_contents_file") MultipartFile contents,
+										@RequestParam("product_contents_img") MultipartFile contents,
 										@RequestParam("pimage1") MultipartFile thumbnailImg, // 썸네일
 										@RequestParam (value = "files", required = false) List<MultipartFile> files) {
 		Map<String, Object> resultMap = new HashMap<>();
@@ -126,7 +126,7 @@ public class ProdRegistration {
 		        }
 		    }
 		}
-		String originContentsPath = request.getParameter("originPimage1");
+		String originContentsPath = request.getParameter("originContents");
 		if(contents != null && !contents.isEmpty()) {
 			contentsPath= storageService.returnTheFilePathAfterTransfer(contents, uploadDir);
 		} else {
@@ -148,12 +148,13 @@ public class ProdRegistration {
 		System.out.println("업데이트 상품" + product_id);
 		paramap.put("thumbnailPath", thumbnailPath);
 		
+		
 		paramap.put("imgPath", imgPath);
 		
 		try {
 			// int result = pdao.insertImg(paramap);
 			
-			n = pdao.updateProduct(pvo);
+			n = pdao.updateProduct(pvo, contentsPath);
 			result = pdao.insertImg(paramap);
 			
 

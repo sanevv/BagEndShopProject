@@ -37,103 +37,106 @@
     }
 </style>
 
+<main id="main">
+    <div class="signup-box text-center">
+        <h4 class="mb-3 fw-bold">소셜 회원가입</h4>
+        <p class="text-muted">추가 정보 입력 후 가입을 완료하세요<br><span style="font-size: 13px">페이지를 벗어나면 가입이 취소 됩니다.</span></p>
 
-<div class="signup-box text-center">
-    <h4 class="mb-3 fw-bold">소셜 회원가입</h4>
-    <p class="text-muted">추가 정보 입력 후 가입을 완료하세요<br><span style="font-size: 13px">페이지를 벗어나면 가입이 취소 됩니다.</span></p>
+        <!--  <div class="social-icons mb-4 d-flex justify-content-center">-->
+        <!--    <a href="/oauth2/authorization/kakao"><img src="/images/social/kakao.png" alt="Kakao"></a>-->
+        <!--    <a href="/oauth2/authorization/naver"><img src="/images/social/naver.png" alt="Naver"></a>-->
+        <!--    <a href="/oauth2/authorization/github"><img src="/images/social/github.png" alt="GitHub"></a>-->
+        <!--    <a href="/oauth2/authorization/google"><img src="/images/social/google.png" alt="Google"></a>-->
+        <!--    <a href="/oauth2/authorization/microsoft"><img src="/images/social/microsoft.png" alt="Microsoft"></a>-->
+        <!--    <a href="/oauth2/authorization/twitter"><img src="/images/social/twitter.png" alt="Twitter"></a>-->
+        <!--    <a href="/oauth2/authorization/facebook"><img src="/images/social/facebook.png" alt="Facebook"></a>-->
+        <!--  </div>-->
 
-    <!--  <div class="social-icons mb-4 d-flex justify-content-center">-->
-    <!--    <a href="/oauth2/authorization/kakao"><img src="/images/social/kakao.png" alt="Kakao"></a>-->
-    <!--    <a href="/oauth2/authorization/naver"><img src="/images/social/naver.png" alt="Naver"></a>-->
-    <!--    <a href="/oauth2/authorization/github"><img src="/images/social/github.png" alt="GitHub"></a>-->
-    <!--    <a href="/oauth2/authorization/google"><img src="/images/social/google.png" alt="Google"></a>-->
-    <!--    <a href="/oauth2/authorization/microsoft"><img src="/images/social/microsoft.png" alt="Microsoft"></a>-->
-    <!--    <a href="/oauth2/authorization/twitter"><img src="/images/social/twitter.png" alt="Twitter"></a>-->
-    <!--    <a href="/oauth2/authorization/facebook"><img src="/images/social/facebook.png" alt="Facebook"></a>-->
-    <!--  </div>-->
+        <!--  <p class="text-muted mb-3">또는</p>-->
 
-    <!--  <p class="text-muted mb-3">또는</p>-->
-
-    <form>
-        <div class="mb-3 mt-5 text-start">
-            <label for="email" class="form-label">이메일</label>
-            <div class="input-group">
-                <input type="email" class="form-control" name="email" id="email" placeholder="이메일 입력">
-                <button type="button" class="btn btn-outline-secondary" id="checkEmailBtn">중복확인</button>
-            </div>
-            <div style="display: none" id="verifyNumberBox">
-                <label for="verifyNumber" class="form-label">인증번호</label>
+        <form>
+            <div class="mb-3 mt-5 text-start">
+                <label for="email" class="form-label">이메일</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="verifyNumber" placeholder="인증번호 입력">
-                    <button type="button" class="btn btn-outline-secondary" id="verifyNumberBtn">인증받기</button>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="이메일 입력">
+                    <button type="button" class="btn btn-outline-secondary" id="checkEmailBtn">중복확인</button>
+                </div>
+                <div style="display: none" id="verifyNumberBox">
+                    <label for="verifyNumber" class="form-label">인증번호</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="verifyNumber" placeholder="인증번호 입력">
+                        <button type="button" class="btn btn-outline-secondary" id="verifyNumberBtn">인증받기</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mb-3 text-start">
-            <label for="username" class="form-label">이름</label>
-            <input type="text" class="form-control" id="username" placeholder="이름 입력">
-        </div>
-<%--        <div class="mb-3 text-start">--%>
-<%--            <label for="phone" class="form-label">전화번호</label>--%>
-<%--            <input type="tel" class="form-control" id="phone" placeholder="전화번호 입력">--%>
-<%--        </div>--%>
-
-        <div class="mb-3 text-start">
-            <label for="phone" class="form-label">전화번호</label>
-            <div class="input-group">
-                <input type="tel" class="form-control" id="phone" placeholder="전화번호 입력">
-                <button type="button" class="btn btn-outline-secondary" id="checkPhoneBtn">중복확인</button>
+            <div class="mb-3 text-start">
+                <label for="username" class="form-label">이름</label>
+                <input type="text" class="form-control" id="username" placeholder="이름 입력">
             </div>
-            <div style="display: none" id="verifyPhoneBox">
-                <label for="verifyPhoneNumber" class="form-label">인증번호</label>
+            <%--        <div class="mb-3 text-start">--%>
+            <%--            <label for="phone" class="form-label">전화번호</label>--%>
+            <%--            <input type="tel" class="form-control" id="phone" placeholder="전화번호 입력">--%>
+            <%--        </div>--%>
+
+            <div class="mb-3 text-start">
+                <label for="phone" class="form-label">전화번호</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="verifyPhoneNumber" placeholder="인증번호 입력">
-                    <button type="button" class="btn btn-outline-secondary" id="verifyPhoneBtn">인증받기</button>
-                    <button type="button" class="btn btn-outline-danger" id="reenterPhoneBtn" style="margin-left: 5px;">번호 다시입력</button>
+                    <input type="tel" class="form-control" id="phone" placeholder="전화번호 입력">
+                    <button type="button" class="btn btn-outline-secondary" id="checkPhoneBtn">중복확인</button>
+                </div>
+                <div style="display: none" id="verifyPhoneBox">
+                    <label for="verifyPhoneNumber" class="form-label">인증번호</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="verifyPhoneNumber" placeholder="인증번호 입력">
+                        <button type="button" class="btn btn-outline-secondary" id="verifyPhoneBtn">인증받기</button>
+                        <button type="button" class="btn btn-outline-danger" id="reenterPhoneBtn"
+                                style="margin-left: 5px;">번호 다시입력
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
-        <div style="margin: 50px 0;">
-            <div class="mb-1 text-start">
-                <label for="zipcode" class="form-label">우편번호</label>
-                <input type="text" class="form-control address" style="width: 21%; cursor: default" id="zipcode"
-                       readonly>
-            </div>
-            <div class="mb-1 text-start">
-                <label for="address" class="form-label">주소</label>
-                <input type="text" class="form-control address" id="address" style="cursor: default" readonly>
-            </div>
-            <div class="mb-1 text-start">
-                <label for="addressDetails" class="form-label">상세 주소</label>
-                <input type="text" class="form-control" id="addressDetails" placeholder="상세 주소 입력">
-            </div>
-
-        </div>
-        <!-- 프로필 사진 업로드 -->
-        <div class="mb-5 text-start">
-            <label class="form-label">프로필 사진</label>
-            <div class="d-flex align-items-center">
-                <div id="profilePreviewBox" class="me-3"
-                     style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                    <img id="profilePreview" src="https://www.svgrepo.com/show/343494/profile-user-account.svg"
-                         alt="미리보기" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="margin: 50px 0;">
+                <div class="mb-1 text-start">
+                    <label for="zipcode" class="form-label">우편번호</label>
+                    <input type="text" class="form-control address" style="width: 21%; cursor: default" id="zipcode"
+                           readonly>
                 </div>
-                <input class="form-control form-control-sm" type="file" id="profileImage" accept="image/*"
-                       style="max-width: 200px;">
-            </div>
-            <div class="form-text">이미지 파일(jpg, png 등)을 선택하세요.</div>
-        </div>
-        <button type="button" class="btn btn-dark w-100" id="signUpBtn">회원가입</button>
-    </form>
+                <div class="mb-1 text-start">
+                    <label for="address" class="form-label">주소</label>
+                    <input type="text" class="form-control address" id="address" style="cursor: default" readonly>
+                </div>
+                <div class="mb-1 text-start">
+                    <label for="addressDetails" class="form-label">상세 주소</label>
+                    <input type="text" class="form-control" id="addressDetails" placeholder="상세 주소 입력">
+                </div>
 
-    <div class="mt-3">
-        <a href="${pageContext.request.contextPath}/test/login.up" class="text-decoration-none">이미 계정이 있으신가요? 로그인</a>
+            </div>
+            <!-- 프로필 사진 업로드 -->
+            <div class="mb-5 text-start">
+                <label class="form-label">프로필 사진</label>
+                <div class="d-flex align-items-center">
+                    <div id="profilePreviewBox" class="me-3"
+                         style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                        <img id="profilePreview" src="https://www.svgrepo.com/show/343494/profile-user-account.svg"
+                             alt="미리보기" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <input class="form-control form-control-sm" type="file" id="profileImage" accept="image/*"
+                           style="max-width: 200px;">
+                </div>
+                <div class="form-text">이미지 파일(jpg, png 등)을 선택하세요.</div>
+            </div>
+            <button type="button" class="btn btn-dark w-100" id="signUpBtn">회원가입</button>
+        </form>
+
+        <div class="mt-3">
+            <a href="${pageContext.request.contextPath}/test/login.up" class="text-decoration-none">이미 계정이 있으신가요?
+                로그인</a>
+        </div>
     </div>
-</div>
-
+</main>
 <%--<!-- Bootstrap JS (optional) -->--%>
 <%--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>--%>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -145,14 +148,14 @@
     let isEmailValid = false;
     let isPhoneValid = false;
 
-    const signUpDto = JSON.parse('${signUpDto}'.replace(/&quot;/g,'"'));
+    const signUpDto = JSON.parse('${signUpDto}'.replace(/&quot;/g, '"'));
     const providerConstant = '${provider}';
     const socialId = signUpDto.socialId;
     const emailOriginal = signUpDto.email;
     const name = signUpDto.name;
     const profileImageUrl = signUpDto.profileImageUrl;
     console.log(socialId);
-    if(!socialId){
+    if (!socialId) {
         swal({
             title: "오류",
             text: "잘못된 접근입니다.",
@@ -164,14 +167,13 @@
     }
 
 
-
     const checkEmailBtn = document.getElementById('checkEmailBtn');
     const emailInput = document.getElementById('email');
     const nameInput = document.getElementById('username');
     const verifyNumberBox = document.getElementById('verifyNumberBox');
-    if(providerConstant!=="TWITTER"){
+    if (providerConstant !== "TWITTER") {
         isEmailValid = true;
-        emailInput.value= emailOriginal;
+        emailInput.value = emailOriginal;
         emailInput.disabled = true;
         checkEmailBtn.disabled = true;
         //버튼 색 푸른색으로 변경
@@ -262,7 +264,7 @@
     const verifyPhoneBtn = document.getElementById('verifyPhoneBtn');
     const verifyPhoneBox = document.getElementById('verifyPhoneBox');
 
-    verifyPhoneBtn.addEventListener('click',(e)=>{
+    verifyPhoneBtn.addEventListener('click', (e) => {
         const phoneVerifyNumber = phoneVerifyInput.value.trim();
         if (!phoneVerifyNumber) {
             //sweetAlert
@@ -314,7 +316,7 @@
 
 
     //핸드폰중복확인 체크 버튼
-    checkPhoneBtn.addEventListener('click', async function (){
+    checkPhoneBtn.addEventListener('click', async function () {
         const phoneValue = phoneInput.value.trim();
         if (!phoneValue) {
             //sweetAlert
@@ -342,7 +344,7 @@
 
 
         const isNotExist = await axios.get('/api/oauth/exist-phone', {
-            params: { phone: phoneValue }
+            params: {phone: phoneValue}
         })
             .then(response => {
                 if (response.data) {
@@ -375,7 +377,7 @@
                 return false;
             });
 
-        if(!isNotExist)
+        if (!isNotExist)
             return;
 
         // 전화번호 인증 요청 바디에담아
@@ -399,7 +401,7 @@
                     });
                 }
                 return response.data; // true or false
-    }).catch(error=>{
+            }).catch(error => {
                 console.error('인증 요청 실패:', error);
                 swal({
                     title: "오류 발생",
@@ -408,7 +410,7 @@
                     button: "확인"
                 });
                 return false;
-    })
+            })
         if (!phoneSend)
             return;
 
@@ -424,7 +426,7 @@
         checkPhoneBtn.textContent = '사용가능';
     });
     const reenterPhoneBtn = document.getElementById('reenterPhoneBtn');
-    reenterPhoneBtn.addEventListener('click',(e)=>{
+    reenterPhoneBtn.addEventListener('click', (e) => {
         e.preventDefault();
         phoneInput.disabled = false;
         checkPhoneBtn.disabled = false;
@@ -438,15 +440,14 @@
     })
 
 
-
-    function verifyPhone(phoneValue){
+    function verifyPhone(phoneValue) {
 
     }
 
     const signUpBtn = document.getElementById('signUpBtn');
-    signUpBtn.addEventListener('click', (e)=>{
+    signUpBtn.addEventListener('click', (e) => {
         //||!isPhoneValid 나주엥 이거 추가해야됨
-        if(!isEmailValid){
+        if (!isEmailValid) {
             swal({
                 title: "회원가입 실패",
                 text: "이메일 인증 또는 전화번호 인증이 완료되지 않았습니다.",
@@ -492,7 +493,7 @@
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        }).then(response=>{
+        }).then(response => {
             console.log(response);
             if (response.data.success) {
                 swal({
@@ -523,9 +524,6 @@
         });
 
     })
-
-
-
 
 
     function emailValidation(email) {
@@ -561,7 +559,7 @@
             return;
 
         const isNotExist = await axios.get('/api/member/exist-email', {
-            params: { email: email }
+            params: {email: email}
         })
             .then(response => {
                 if (response.data) {
@@ -595,17 +593,17 @@
                 });
                 return false;
             });
-        if(!isNotExist)
+        if (!isNotExist)
             return;
 
         // 이메일 인증 요청
-        const emailSend = await axios.post('/api/mail/send',{},{
+        const emailSend = await axios.post('/api/mail/send', {}, {
             params: {
                 email: email
             }
         })
-            .then(response =>{
-                if (response.data){
+            .then(response => {
+                if (response.data) {
                     swal({
                         title: "인증 메일이 발송되었습니다",
                         text: "이메일을 확인하고 10분안에 인증을 완료해주세요.",
@@ -621,7 +619,7 @@
                     });
                 }
                 return response.data;
-            }).catch(error=>{
+            }).catch(error => {
                 console.error('인증 메일 발송 실패:', error);
                 swal({
                     title: "오류 발생",
@@ -723,7 +721,7 @@
                     const detailInput = document.getElementById("addressDetails")
                     if (detailInput.value !== extraAddr)
                         detailInput.value = extraAddr ?
-                            (detailInput.value ? extraAddr + ' ' +detailInput.value  : extraAddr) :
+                            (detailInput.value ? extraAddr + ' ' + detailInput.value : extraAddr) :
                             detailInput.value;
 
 

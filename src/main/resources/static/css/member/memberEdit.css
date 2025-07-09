@@ -1,71 +1,199 @@
 @charset "UTF-8";
 
-div#divEditFrm {
-	text-align: center;
+.mypageMenu {
+    width: 250px;
 }
 
-table#tblMemberEdit {
- /*	border: solid 1px red; */ 
-	width: 83%;
-	margin: 1% auto;
+.memberOneChange-content {
+    flex: 1;
 }
 
-table#tblMemberEdit th {
-    border: solid 1px gray; 
+.memberOneChange-header {
+	border: solid 0px green;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 35px;
 }
 
-table#tblMemberEdit th {
-	height: 60px;
-	background-color: #ffffe6;
-	font-size: 14pt;
+h4.memberOneChange-title {
+    font-size: 24px;
+    font-weight: bold;
 }
 
-table#tblMemberEdit td {
-	line-height: 200%;
-	padding: 1.2% 0;
+.Change-row {
+	border: solid 0px red;
+  	display: flex;
+  	align-items: flex-start;
+ 	margin-bottom: 20px;
 }
 
-span.star {
-	color: red;
-	font-weight: bold;
-	font-size: 13pt;
+.Change-row > label {
+	border: solid 0px purple;
+	width: 30%;
+  	font-size: 14px;
+  	color: #666666;
+ 	padding-top: 5px;
+  	text-align: left;
+}
+
+.Change-row > input {
+	border: solid 1px #e9ecef;
+	border-radius: 3px;
+	height: 45px;
+	width: 60%;
+	box-sizing: border-box;
+	padding-left: 10px;
+	margin-bottom: 10px;
+}
+
+#email {
+	background-color: #f2f4f7;
+}
+
+.input-box {
+  	width: 60%;
+  	display: flex;
+  	flex-direction: column;
+}
+
+.input-box input {
+  	height: 45px;
+  	padding-left: 10px;
+  	border: 1px solid #e9ecef;
+  	border-radius: 4px;
+  	font-size: 14px;
+ 	box-sizing: border-box;
+}
+
+.error {
+  	display: none; 
+  	color: #f05650;
+  	font-size: 14px;
+  	margin-top: 15px;
+}
+
+.input-box .form-info {
+  	display: flex;
+  	align-items: center;
+  	font-size: 11px;
+  	color: #999999;
+  	margin-top: 15px;
+}
+
+.input-box .form-info img {
+  	width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+input::placeholder {
+	border: solid 0px green;
+	font-size: 13px;
+	color: #ced4da;
+}
+
+.phoneGroup {
+	border: solid 0px green;
+  	display: flex;
+  	align-items: center;
+  	gap: 2px;
+}
+
+.phoneGroup input[type="text"] {
+	border: solid 1px #e9ecef;
+  	width: 32%;
+}
+
+.zipCodeGroup {
+  display: flex;
+  width: 100%;
+  gap: 12px;
+}
+
+input#zipCode {
+  	width: 70%;
+  	height: 45px;
+  	padding-left: 10px;
+  	border: 1px solid #e9ecef;
+	border-radius: 4px;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+
+button#zipCodeSearch {
+	border: solid 0px orange;
+	background-color: black;
+  	flex: none !important;  
+  	width: 32% !important;   
+  	height: 45px;
+  	font-size: 14px;
+  	padding: 6px 10px;
+}
+
+.hr-line-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.hr-line {
+  width: 90%;
+  border: none;
+  border-top: 1px solid #e9ecef;
+  margin: 25px 0 40px 0;
 }
 
 
-table#tblMemberEdit > tbody > tr > td:first-child {
-	width: 20%;
-	font-weight: bold;
-	text-align: left;
+.agree-box {
+    border: 1px solid #e9ecef;
+    height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 12px;
 }
 
-table#tblMemberEdit > tbody > tr > td:nth-child(2) {
-	width: 80%;
-	text-align: left;
+.agree-check {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #666666;
+    gap: 10px;
+    margin-bottom: 30px;
 }
 
-img#zipcodeSearch {
-	cursor: pointer;
+.agree-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
 }
 
-span#emailcheck {
-	border: solid 1px gray;
-	border-radius: 5px;
-	font-size: 8pt;
-	display: inline-block;
-	width: 80px;
-	height: 30px;
-	text-align: center;
-	margin-left: 10px;
-	cursor: pointer;
+.star {
+	border: solid 0px yellow;
+	color: #666666;
+	font-size: 12pt;
 }
 
+.button-row {
+    justify-content: center;
+}
 
+.button-row .button-box {
+    display: flex !important;        
+    flex-direction: row !important;  
+    justify-content: center;        
+    align-items: center;
+    gap: 10px;
+    width: auto;
+}
 
-
-
-
-
-
+input[type="button"],
+input[type="reset"] {
+	width: 160px;         
+	height: 45px;
+	font-size: 14px;
+	border: none;
+	box-sizing: border-box;
+}
 
 
 
