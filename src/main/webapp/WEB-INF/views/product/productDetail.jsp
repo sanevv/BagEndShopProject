@@ -21,7 +21,7 @@ function goDelete(noticeId) {
             dataType: "json",
             success: function(response) {
                 alert("삭제 완료!");
-                location.href = "${pageContext.request.contextPath}/product/list";
+                location.href = "${pageContext.request.contextPath}/product";
             },
             error: function(request, status, error) {
                 alert("code: " + request.status + "\n" +

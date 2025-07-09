@@ -116,7 +116,7 @@
                     <div class="inner">
                         <ul class="main-menu">
                             <li>
-                                <a href="${pageContext.request.contextPath}/product/list">ALL</a>
+                                <a href="${pageContext.request.contextPath}/product">ALL</a>
                                 <ul class="sub-menu">
                                     <li><a href="${pageContext.request.contextPath}/product/messenger">- MESSENGER</a>
                                     </li>
