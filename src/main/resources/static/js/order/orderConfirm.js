@@ -140,7 +140,7 @@ async function paymentFail(ordersId) {
         .then((res) => {
             console.log(res.data);
 
-            alert('결제에 실패하였습니다. 다시 시도해주세요. ㅔ롱메롱' + ordersId);
+            alert('결제에 실패하였습니다. 다시 시도해주세요.');
             history.back();
         })
         .catch(error => {
