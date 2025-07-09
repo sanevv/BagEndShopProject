@@ -33,7 +33,7 @@ public interface MemberDAO {
     int memberOneChange(Map<String, String> paramap) throws SQLException;
 
     // 회원 탈퇴하기시 회원 상태 탈퇴로 업데이트
-	int deleteMember(String email, String password) throws SQLException;
+	int withdrawMember(String email, String password) throws SQLException;
 
 
 }
