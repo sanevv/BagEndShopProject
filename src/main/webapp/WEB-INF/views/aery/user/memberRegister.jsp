@@ -55,7 +55,7 @@
 			        	   <td>
 			                  <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px; margin-top: 5px;">
       						     <img src="/aery/images/help.png" id="help_icon" style="width: 16px; height: 16px;" />
-      							 <span style="font-size: 11px; color: #999999; line-height: 1;">(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8~15자)</span>
+      							 <span class="help" style="font-size: 11px; color: #999999; line-height: 1;">(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8~15자)</span>
     					 	  </div>
 			               </td> 
 			        	</tr>
@@ -151,9 +151,9 @@
 			               <td>
 			                  <div class="zipCodeGroup">
 			                  	<input type="text" name="zipCode" id="zipCode" maxlength="5" style="padding-left: 10px;"/>
-						      	<button type="button" class="btn btn-dark" id="zipCodeSearch">우편번호찾기</button>
+						      	<button type="button" class="btn btn-dark" id="zipCodeSearch">주소검색</button>
 			                  </div>
-			                  <span class="error" style="display: block; margin-top: 5px;">우편번호 형식에 맞지 않습니다.</span>
+			                  <span class="error" style="display: block; margin-top: 5px;">주소 형식에 맞지 않습니다.</span>
 			               </td>
 			           </tr> 
 			           
@@ -198,7 +198,7 @@
 			               <td>
 		        		      <div style="display: flex; justify-content: center; margin-top: 20px;">
 		              	         <input type="button" class="btn btn-success btn-lg" style="background-color: black;" value="회원가입" onclick="goRegister()"/>
-		            		     <input type="button" class="btn btn-danger btn-lg" id="cancel" style="background-color: #f05650; font-size: 14px;" value="취소하기" onclick="goReset()"/>
+		            		     <input type="button" class="btn btn-danger btn-lg" id="cancel" style="background-color: #fff; color: black; border:solid 1px #e9ecef; font-size: 14px;" value="취소하기" onclick="goReset()"/>
 		        		      </div>
 		    			   </td>
 			           </tr>

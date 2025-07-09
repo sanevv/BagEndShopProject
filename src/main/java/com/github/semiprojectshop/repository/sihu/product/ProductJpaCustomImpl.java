@@ -27,6 +27,9 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 @RequiredArgsConstructor
 public class ProductJpaCustomImpl implements ProductJpaCustom {
     private final JPAQueryFactory queryFactory;

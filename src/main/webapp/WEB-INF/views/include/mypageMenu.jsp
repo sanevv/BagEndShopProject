@@ -35,7 +35,7 @@
 		            </ul>
 		        </div>
 		        
-		        <!-- 1:1 문의 -->
+		        <!-- 1:1 문의
 		        <div class="menu-list">
 		            <h5 class="title">1:1 문의</h5><br>
 		            <ul class="list">
@@ -43,6 +43,7 @@
 		                <li><a href="#">1:1 문의내역</a></li><br>
 		            </ul>
 		        </div>
+		        -->
 		        
 		        <!-- 회원 정보 -->
 		        <div class="menu-list">
@@ -52,7 +53,7 @@
 		            </ul>
 		        </div>
 
-				<button class="btn btn-black" type="button" id="logout" name="logout" onclick="Logout()">로그아웃</button>
+				<button class="btn-outline-dark btn-sm" type="button" id="logout" name="logout" style="border: 1px solid #ddd; color: black; font-size: 14px; margin-top: 50px;" onclick="Logout()">로그아웃</button>
 		    </aside>
 		</div>
 	</div>

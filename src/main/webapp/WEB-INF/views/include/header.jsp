@@ -5,6 +5,10 @@
     boolean isLoginJava = session.getAttribute("loginUser") != null;
 %>
 
+<%
+	String ctxPath = request.getContextPath();
+%>
+
 <script type="text/javascript">
 
     const frm = document.prodRegisterFrm;
@@ -19,7 +23,7 @@
 <html>
 <head>
     <title>시후와아이들</title>
-
+    
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -146,7 +150,8 @@
                             <br>
                             <br>
                             <br>
-                            <li><a class="submenu" href="#" style="font-size: 18px; color: #A3A9AF;">오시는길</a></li>
+                            <br>
+                            <li><a class="storeLocation" href="<%= ctxPath %>/storeLocation.team1" style="font-size: 18px; color: gray;">오시는길</a></li>
 
                         </ul>
                     </div>
