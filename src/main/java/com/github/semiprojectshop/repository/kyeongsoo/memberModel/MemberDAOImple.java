@@ -48,7 +48,7 @@ public class MemberDAOImple implements MemberDAO{
             String sql = " select user_id, email, password, name, phone_number, zip_code, " +
                     "       address, address_details, to_char(register_at, 'yyyy-mm-dd') as register_at, role_id, status  " +
                     " from my_user " +
-                    " where email = ? and password = ? and status = 'NORMAL' ";
+                    " where email = ? and password = ? ";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, paramap.get("userEmail"));
@@ -69,6 +69,7 @@ public class MemberDAOImple implements MemberDAO{
                 member.setAddressDetails(rs.getString("address_details"));
                 member.setRegisterAt(rs.getString("register_at"));
                 member.setRoleId(rs.getInt("role_id"));
+                member.setStatus(rs.getString("status"));
 
             }
 
