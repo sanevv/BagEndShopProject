@@ -69,7 +69,7 @@ function looglogInLocalStorage() {
 
     const frm = document.getElementById('memberLoginFrm');
     if (frm) {
-        console.log($('#loginPwd').val()+"왜안찍힘");
+        // console.log($('#loginPwd').val()+"왜안찍힘");
         requestLogin();
     } else {
         console.error('폼을 찾을 수 없습니다.');

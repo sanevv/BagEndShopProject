@@ -20,6 +20,7 @@ public class MemberVO implements OAuthDtoInterface {
     private String addressDetails;
     private String registerAt;
     private int roleId = 2; // roleId 기본값 2(일반사용자) - 애리
+    private String status;
 
     public static MemberVO fromMyUserEntity(MyUser requestUser) {
         MemberVO memberVO = new MemberVO();

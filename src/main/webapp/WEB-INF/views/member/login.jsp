@@ -49,6 +49,7 @@
         })
 
 
+
     }) // end of $(function (){}
     //소셜로그인 요청 URL 생성
     async function requestAuthUrl(provider) {
@@ -116,6 +117,9 @@
         document.body.appendChild(form);
         form.submit();
     }
+
+
+
 
 </script>
 

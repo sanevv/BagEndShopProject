@@ -114,6 +114,9 @@ public class resetPasswordResponse {
         MyUser myUser = myUserJpa.findByEmailFetchJoin(userEmail);
         String passwordEncrypted = Sha256.encrypt(loginPwd);
         if (myUser == null || !myUser.getPassword().equals(passwordEncrypted)) return false;
+        if(!myUser.isEnabled()){
+            return false;
+        }
 
         MemberVO loginUser = new MemberVO();
         loginUser.setEmail(myUser.getEmail());
