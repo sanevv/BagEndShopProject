@@ -32,5 +32,8 @@ public interface MemberDAO {
     // 로그인한 회원이 내 정보 수정하기
     int memberOneChange(Map<String, String> paramap) throws SQLException;
 
+    // 회원 탈퇴하기시 회원 상태 탈퇴로 업데이트
+	int deleteMember(String email, String password) throws SQLException;
+
 
 }

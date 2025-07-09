@@ -279,7 +279,32 @@ public class MemberDAOImple implements MemberDAO{
         return n;
     }
 
+    
+    // 회원 탈퇴하기시 회원 상태 탈퇴로 업데이트
+    @Override
+    public int deleteMember(String email, String password) throws SQLException {
 
+        int n = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
 
+        try {
+
+            conn = ds.getConnection();
+
+            String sql = "UPDATE my_user SET status = '탈퇴' WHERE email = ? AND password = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, email);
+            pstmt.setString(2, Sha256.encrypt(password));
+            
+            n = pstmt.executeUpdate();
+
+        } finally {
+            close();
+        }
+
+        return n;
+    }
 
 }

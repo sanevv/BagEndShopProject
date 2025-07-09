@@ -426,6 +426,18 @@
 	 	}
 	 	// **** 약관에 동의를 했는지 검사하기 끝 **** //
  	
+	 	// "취소하기" 버튼 클릭시 호출되는 함수
+    function goReset() {
+
+   	document.registerFrm.reset();
+
+       $('span.error').hide();
+       $('#emailCheckResult').html('');
+       $('#email').focus();
+
+       b_emailcheck_click = false;
+   }// end of  function goReset(){}-----------
+   
         // AJAX 요청
         $.ajax({
         	type: 'POST',
@@ -451,11 +463,7 @@
         });
 
     }
-
  
- // Function Declaration
-
-
 </script>
 
 <div class="container mt-5">
@@ -574,7 +582,7 @@
             	<div class="Change-row button-row">
 				    <div class="button-box">
 				        <input type="button" id="update" class="btn btn-success btn-lg" style="background-color: black;" value="수정하기" onclick="goChange()" />
-				        <input type="button" class="btn btn-danger btn-lg" id="cancel" style="background-color: #fff; color: black; border:solid 1px #e9ecef; font-size: 14px;" value="탈퇴하기" onclick="goReset()"/>
+				        <input type="button" class="btn btn-danger btn-lg" id="cancel" style="background-color: #fff; color: black; border:solid 1px #e9ecef; font-size: 14px;" value="취소하기" onclick="goReset()"/>
 				    </div>
 				</div>
             </form>
