@@ -50,7 +50,7 @@ function goDelete(noticeId) {
 						</div>
 					</c:if>
 					<c:if test="${not empty loginUser && loginUser.roleId == 1}">
-						<div class="dropdown custom-dropdown">
+						<div class="dropdown menu-dropdown">
 							<button class="btn btn-light btn-sm dropdown-toggle border-0"type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"aria-expanded="false" title="관리 메뉴">
 								<i class="bi bi-gear-fill"></i>
 							</button>

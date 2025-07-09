@@ -399,7 +399,7 @@ $(function() {
 						        <input type="hidden" name="originThumbnail" value="${thumbnail}" />
 						    </div>
 						</c:if>
-                        <input type="file" name="pimage1" class="infoData img_file" accept="image/*"/>
+                        <input type="file" name="pimage1" class="img_file" accept="image/*"/>
                         <span class="error">필수입력</span>
                     </td>
                 </tr>
