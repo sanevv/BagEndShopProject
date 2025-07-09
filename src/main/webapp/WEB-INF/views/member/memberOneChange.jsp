@@ -2,6 +2,15 @@
 	pageEncoding="UTF-8"%>
 
 <jsp:include page="../include/header.jsp"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:if test="${empty sessionScope.loginUser}">
+    <script>
+        alert("로그인 후 이용해주세요.");
+        location.href = "/login"; // 로그인 페이지로 이동
+    </script>
+</c:if>
+
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/css/member/memberEdit.css" />
 
@@ -213,12 +222,15 @@
         });// end of $('button#zipCodeSearch').click(function(){})---------------
 
 
-        $('input#email').val("${requestScope.loginUser.email}");
-        $('input#name').val("${requestScope.loginUser.name}");
-        $('input#hp1').val("${requestScope.hp1}");
-        $('input#hp2').val("${requestScope.hp2}");
-        $('input#hp3').val("${requestScope.hp3}");
-
+        $('input#email').val("${sessionScope.loginUser.email}");
+        $('input#name').val("${sessionScope.loginUser.name}");
+        $('input#hp1').val("${sessionScope.loginUser.phoneNumber.substring(0,3)}");
+        $('input#hp2').val("${sessionScope.loginUser.phoneNumber.substring(3,7)}");
+        $('input#hp3').val("${sessionScope.loginUser.phoneNumber.substring(7)}");
+        $('input#zipCode').val("${sessionScope.loginUser.zipCode}");
+        $('input#address').val("${sessionScope.loginUser.address}");
+        $('input#addressDetails').val("${sessionScope.loginUser.addressDetails}");
+        
         $('button#update').on('click', function(){
             goChange();
         }); // end of $('button#update').on('click', function(){})-------------------
@@ -284,7 +296,7 @@
 
         // AJAX 요청
         $.ajax({
-            type: 'POST',
+        	type: 'POST',
             url: '/api/member/memberOneChange',
             data: {
                 password: $('#password').val(),
@@ -426,7 +438,7 @@
             	<div class="Change-row button-row">
 				    <div class="button-box">
 				        <input type="button" id="update" class="btn btn-success btn-lg" style="background-color: black;" value="수정하기" onclick="goChange()" />
-				        <input type="reset" class="btn btn-danger btn-lg" id="cancel" style="background-color: #fff; color: black; border:solid 1px #e9ecef; font-size: 14px;" value="취소하기" onclick="goReset()"/>
+				        <input type="button" class="btn btn-danger btn-lg" id="cancel" style="background-color: #fff; color: black; border:solid 1px #e9ecef; font-size: 14px;" value="탈퇴하기" onclick="goReset()"/>
 				    </div>
 				</div>
             </form>

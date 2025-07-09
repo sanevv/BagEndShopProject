@@ -76,22 +76,24 @@ public class resetPasswordResponse {
     }
 
     @PostMapping("/memberOneChange")
-    public boolean memberOneChage(@RequestParam String email,
-                                  @RequestParam String password,
-                                  @RequestParam String name,
-                                  @RequestParam String hp1,
-                                  @RequestParam String hp2,
-                                  @RequestParam String hp3,
-                                  @RequestParam String zipCode,
-                                  @RequestParam String address,
-                                  @RequestParam String addressDetails) throws SQLException {
+    public boolean memberOneChange(HttpSession session,
+                                   @RequestParam String password,
+                                   @RequestParam String name,
+                                   @RequestParam String hp1,
+                                   @RequestParam String hp2,
+                                   @RequestParam String hp3,
+                                   @RequestParam String zipCode,
+                                   @RequestParam String address,
+                                   @RequestParam String addressDetails) throws SQLException {
 
         boolean isUpdated = false;
+
+        String email = ((MemberVO) session.getAttribute("loginUser")).getEmail();
 
         String phoneNumber = hp1 + hp2 + hp3;
 
         Map<String, String> paramap = new HashMap<>();
-        paramap.put("email", email);
+        paramap.put("email", email); // 수정 금지, 조회용으로만 사용
         paramap.put("password", password);
         paramap.put("phoneNumber", phoneNumber);
         paramap.put("name", name);
@@ -100,13 +102,9 @@ public class resetPasswordResponse {
         paramap.put("addressDetails", addressDetails);
 
         int n = memberDAO.memberOneChange(paramap);
-
         if(n == 1){
             isUpdated = true;
         }
-
-
-
 
         return isUpdated;
     }
