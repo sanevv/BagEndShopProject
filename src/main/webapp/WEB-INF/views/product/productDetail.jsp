@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="../include/header.jsp"></jsp:include>
 
-<<script type="text/javascript">
+<script type="text/javascript">
 function goDelete(noticeId) {
     if (confirm("이 상품 삭제해?")) {
 
