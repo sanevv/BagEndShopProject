@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="../include/header.jsp"></jsp:include>
 
-<<script type="text/javascript">
+<script type="text/javascript">
 function goDelete(noticeId) {
     if (confirm("이 상품 삭제해?")) {
 
@@ -58,7 +58,7 @@ function goDelete(noticeId) {
 								<li>		
 									<form method="post" action="${pageContext.request.contextPath}/prod/update">
 										<button class="btn btn-sm" type="submit">수정하기</button>
-										<input type="hidden" name="productId"value="${prdVO.productId}">
+										<input type="hidden" name="productId" value="${prdVO.productId}">
 									</form>
 								</li>
 								<li><a class="dropdown-item text-danger" href="#" data-id="${nvo.notice_id}" onclick="goDelete(this)">삭제하기</a></li>
@@ -107,7 +107,7 @@ function goDelete(noticeId) {
 							</div>
 							<div class="product-buttons">
 								<button type="button" id="btnAddCart" class="btn btn-cart">장바구니 담기</button>
-								<button type="button" id="btnBuy" class="btn btn-buy">바로 구매하기</button>
+								<button type="button" id="btnBuy" class="btn btn-buy" onclick="directOrder(isLogin)">바로 구매하기</button>
 							</div>
 						</div>
 					</form>

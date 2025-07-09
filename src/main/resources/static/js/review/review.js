@@ -48,6 +48,7 @@ reviewSubmit = () => {
             return res.json();
         })
         .then(data => {
+
             alert("리뷰가 등록되었습니다!");
             location.href = `/product/detail/${productId}`;
         })
@@ -57,6 +58,43 @@ reviewSubmit = () => {
         });
 
 
+}
+
+// 리뷰 수정하기
+reviewUpdate = () => {
+
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get("productId");
+
+    if (!confirm('정말 이 리뷰를 수정하시겠습니까?')) return;
+
+
+    const form = document.forms['reviewUpdateForm']; // 폼 요소
+    const formData = new FormData();
+    formData.append("userId", form.userId.value);
+    formData.append("reviewId", form.reviewId.value);
+    formData.append("productId", productId);
+    formData.append("reviewContents", form.reviewContents.value);
+    formData.append("rating", rating.value);
+    formData.append("file", form.reviewImageFile.files[0]);
+
+    fetch('/api/review/update', {
+        method: 'POST',
+        body: formData // Content-Type 설정 → 자동 처리됨
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log("리뷰 수정 성공", data);
+            alert('리뷰가 정상적으로 수정됐습니다!!');
+            location.href = `/product/detail/${productId}`;
+        })
+        .catch(error => {
+            //console.log(error);
+
+            console.error('삭제 중 오류 발생:', error.message);
+            //alert('서버 또는 네트워크 오류입니다.');
+            alert(error.message);
+        });
 }
 
 reviewDelete = (reviewId, productId) => {
@@ -205,7 +243,47 @@ btnDeleteReview.forEach(btn => {
 })
 
 
+reviewImagePreview = () => {
 
+    const fileInput = document.getElementById("reviewImageFile");
+    const previewContainer = document.getElementById("reviewImagePreview");
+
+    //console.log("fileInput.files[0] : ", fileInput.files[0]);
+    const file = fileInput.files[0];
+    if (file) {
+
+        const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+        const fileName = file.name.toLowerCase();
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            alert("jpg, jpeg, png, gif 형식의 이미지 파일만 업로드할 수 있습니다.");
+            fileInput.value = ""; // 잘못된 파일 선택 초기화
+            return;
+        }
+
+        const reader = new FileReader();
+
+        // 미리보기 초기화
+        previewContainer.innerHTML = "";
+
+        reader.onload = function(e) {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.alt = "미리보기";
+            img.style.maxWidth = "400px";
+            img.style.border = "1px solid #ccc";
+            img.style.marginTop = "10px";
+            previewContainer.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+
+    }
+}
+
+if( document.querySelector("#reviewImageFile") )
+    document.querySelector("#reviewImageFile").addEventListener("change", reviewImagePreview);
 
 
 

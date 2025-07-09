@@ -84,7 +84,7 @@
                             <th>첨부된 이미지</th>
                             <td>
                                 <c:if test="${not empty reviewVO.reviewImagePath}">
-                                <img src="${pageContext.request.contextPath}${reviewVO.reviewImagePath}" alt="첨부된 이미지" />
+                                <img src="${pageContext.request.contextPath}${reviewVO.reviewImagePath}" alt="첨부된 이미지"  style="max-width: 400px;" />
                                 </c:if>
                                 <c:if test="${empty reviewVO.reviewImagePath}">
                                     등록된 이미지가 없다!

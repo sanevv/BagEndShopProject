@@ -107,11 +107,12 @@ public class ReviewRestController {
             }
 
             // 구매한 사용자인지 체크하기
-            boolean isBuyUser = rvDAO.getIsBuy(loginUser.getUserId());
+            boolean isBuyUser = rvDAO.getIsBuy(loginUser.getUserId(), reviewVO.getProductId());
 
             // 리뷰를 작성한 사용자인지 체크하기
             boolean isWriteReview = rvDAO.getIsWriteReview(loginUser.getUserId(), reviewVO.getProductId());
 
+            System.out.println("isBuyUser : " + isBuyUser);
             if (!isBuyUser) {
                 throw ForbiddenSanHaeException.fromMessage("리뷰는 구매한 사람만 가능합니다.");
                 //return ResponseEntity.status(403).body("리뷰는 구매한 사람만 가능합니다.");
@@ -135,7 +136,7 @@ public class ReviewRestController {
 
             Map<String, Object> reviewMap = new HashMap<>();
             reviewMap.put("review", insertReview);
-            reviewMap.put("isBuyUser", isBuyUser);
+            //reviewMap.put("isBuyUser", isBuyUser);
             reviewMap.put("isWriteReview", isWriteReview);
 
             return ResponseEntity.ok(reviewMap);
@@ -196,10 +197,10 @@ public class ReviewRestController {
         // ReviewId 로 작성자 userId 조회하기
         String reviewWriteUserId = rvDAO.getReviewWriteUserid(reviewVO.getReviewId());
 
-        System.out.println("reviewVO.getReviewId() : " + reviewVO.getReviewId());
-
-        System.out.println("loginUserId : " + loginUserId);
-        System.out.println("reviewWriteUserId : " + reviewWriteUserId);
+//        System.out.println("reviewVO.getReviewId() : " + reviewVO.getReviewId());
+//
+//        System.out.println("loginUserId : " + loginUserId);
+//        System.out.println("reviewWriteUserId : " + reviewWriteUserId);
 
         // 로그인한 사용자가 리뷰 작성자가 아닐 경우
         if (!loginUserId.equals(reviewWriteUserId)) {

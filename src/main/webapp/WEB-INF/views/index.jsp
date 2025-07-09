@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main/main.css">
+
 <%-- Header --%>
 <jsp:include page="include/header.jsp" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main/main.css">
 
 <!-- main contents -->
 <main id="main">

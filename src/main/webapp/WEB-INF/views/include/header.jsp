@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>시후와아이들</title>
+    <title>가방종결자 BAGEND</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -115,7 +115,7 @@
                     <div class="inner">
                         <ul class="main-menu">
                             <li>
-                                <a href="${pageContext.request.contextPath}/product">ALL</a>
+                                <a href="${pageContext.request.contextPath}/product/list">ALL</a>
                                 <ul class="sub-menu">
                                     <li><a href="${pageContext.request.contextPath}/product/messenger">- MESSENGER</a>
                                     </li>
@@ -199,6 +199,11 @@
         searchBtn.addEventListener("click", function () {
             productPageMovement(searchInput.value);
         })
+
+        document.addEventListener('DOMContentLoaded', function () {
+            showCartCount();
+        })
+
 
         </script>
 <%--        <c:if test="${not empty requestScope.productList}">--%>
