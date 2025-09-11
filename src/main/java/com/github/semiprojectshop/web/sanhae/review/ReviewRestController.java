@@ -31,7 +31,7 @@ public class ReviewRestController {
     private final ReviewDAO rvDAO;
     private final StorageService storageService;
 
-    // 리뷰 조회하기
+    // 리뷰 조회하기!
     @GetMapping("/list")
     public Map<String, Object> getReviewList(@RequestParam("productId") int productId,
                                         @RequestParam(value = "page", defaultValue = "1") int page,
