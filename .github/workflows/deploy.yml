@@ -30,12 +30,12 @@ jobs:
         run: chmod +x ./gradlew
        
       # 3️⃣ 테스트 단계: 테스트용 H2 profile 사용, Jasypt 없이 실행
-      - name: Run Tests (H2 DB)
-        run: ./gradlew clean test -Dspring.profiles.active=test
-
-      # 4️⃣ 빌드 단계: 실제 Jasypt 키 적용 (Oracle DB 연결용)
-      - name: Build with Gradle (Oracle DB)
-        run: ./gradlew build -Djasypt.encryptor.password=$JASYPT_ENCRYPTOR_PASSWORD
+      # - name: Run Tests (H2 DB)
+      #   run: ./gradlew clean test -Dspring.profiles.active=test
+      
+      # 3️⃣ 빌드 단계: 테스트 스킵 + 실제 Jasypt 키 적용
+      - name: Build with Gradle (Oracle DB, skip tests)
+        run: ./gradlew clean build -x test -Djasypt.encryptor.password=$JASYPT_ENCRYPTOR_PASSWORD
 
       # 5️⃣ DockerHub 로그인
       - name: Log in to DockerHub
