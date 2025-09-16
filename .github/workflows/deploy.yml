@@ -52,12 +52,12 @@ jobs:
 
       # 6️⃣ 서버 호스트 등록
       - name: Add known hosts
-        run: ssh-keyscan -t ed25519 3.35.122.179 >> ~/.ssh/known_hosts
+        run: ssh-keyscan -t ed25519 13.125.107.213 >> ~/.ssh/known_hosts
 
       # 7️⃣ 서버 배포
       - name: Deploy on server using DockerHub image
         run: |
-          ssh ubuntu@3.35.122.179 << 'EOF'
+          ssh ubuntu@13.125.107.213 << 'EOF'
             docker stop spring-app || true
             docker rm spring-app || true
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:latest
