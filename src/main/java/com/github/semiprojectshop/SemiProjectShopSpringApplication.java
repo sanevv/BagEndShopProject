@@ -11,6 +11,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @EnableConfigurationProperties(CoolSmsProperties.class)// 프로퍼티스 스캔 야믈의 값 가져오는
 public class SemiProjectShopSpringApplication {
 
+
     public static void main(String[] args) {
         SpringApplication.run(SemiProjectShopSpringApplication.class, args);
     }

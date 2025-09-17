@@ -1,8 +1,8 @@
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
-COPY build/libs/semi-project-shop-0.0.1-SNAPSHOT.jar app.jar
+COPY build/libs/semi-project-shop-0.0.1-SNAPSHOT.war app.war
 EXPOSE 8080
-ENTRYPOINT [ "java","-jar","app.jar" ]
+ENTRYPOINT ["java", "-jar", "app.war"]
 
 #Dockerfile 은 Docker 이미지를 만들기 위한 “설명서(스크립트 파일)” 이다.
 #
