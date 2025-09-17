@@ -29,6 +29,8 @@ configurations {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // H2 테스트용 DB
+    testImplementation 'com.h2database:h2' // 안정화 최신 버전
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // validation
@@ -81,18 +83,14 @@ dependencies {
 //    implementation files('src/main/resources/lib/your-library.jar')
 
 
-
-
     //강사님버전에서 필요
     implementation 'org.json:json:20240303'
     implementation 'commons-codec:commons-codec:1.18.0'
-
-
-
 }
-
+//
 tasks.named('test') {
     useJUnitPlatform()
+    systemProperty "JASYPT_ENCRYPTOR_PASSWORD", "bagend"
 }
 sourceSets {
     main.java.srcDirs += [generatedDir+"/queryDsl"]

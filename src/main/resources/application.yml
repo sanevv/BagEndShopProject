@@ -1,55 +1,29 @@
-jasypt:
-  encryptor:
-    password: ${JASYPT_PASSWORD}
-jwtpassword:
-  source: ENC(Z+m7jtTf9w1/6yd2NAibo0CSCb89JvkPf96SUKdqxQflQwIAGvr781dHGdToS0XvTUCrRADcGTHCVyF1VaF9nh4j8yql3Z1Ubef+BI0d+gQ=)
+# application.yml
 
-coolsms:
-  api-key: ENC(/dfc/hVOB+ZrZLxajUlpwrhRCUcpBXxkLMUJqf5zaAo=)
-  api-secret: ENC(81triyc/kAD+hm1xonupRz65Dunttouv40tfyVk/2zFj8J6ws4jwaf6y/rJN4zYt)
-  domain : https://api.solapi.com
-  phone-number: ENC(z/wRpfredxFKff/lsjozmL+EeOPpcJS0) # 발신번호
-
+# -------------------------------
+# 기본 공통 설정
+# 공통 설정
 spring:
   server:
     port: 8080
-    address: 0.0.0.0   # 모든 IP에서 접속 허용
-  server-url:
-    base: http://localhost:8080
-    https: 구현전
+    address: 0.0.0.0
+    servlet:
+      context-path: /
   mvc:
-    path match:
-      matching-strategy: ant_path_matcher #????????? ???? ???? ???
-      #    jsp??
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
   jpa:
     open-in-view: false
     show-sql: true
-  datasource:
-    username: ENC(tBOBH7aOREOgndD7L9SZOB311JqKHImI)
-    password: ENC(N1H6zRdGq5YiEpqkTKXG5g==)
-    driver-class-name: oracle.jdbc.OracleDriver
-    url: ENC(+DhV7DOWxzX+61BlOCNqYZSrgwEcO8KRl9Rpz5YZHjmR7pv1adD4mzLYWWvTmZEH)
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ENC(IZt11MAiQJTiwic1gfLsKTV1TwEKpdcSrpQ3WJRwKKg=)
-    password: ENC(f6AELtlUmP71YUZkC8hva99HDr/Fbej+gZOIlw4S9MU=)
-    properties:
-      mail:
-        smtp:
-          auth: true
-          timeout: 5000
-          starttls:
-            enable: true
-#              Identity Manager 서버가 SSL을 사용하여 SMTP와 통신하도록 지시합니다.
   servlet:
     multipart:
-      max-file-size: 10MB #기본값 1MB
-      max-request-size: 20MB #기본값 10MB
+      max-file-size: 10MB
+      max-request-size: 20MB
 
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD}  # GitHub Secrets 또는 환경변수
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -61,51 +35,113 @@ file:
   upload:
     directory: /Users/sanhae.kang/semi-upload/
 
-portOne:
-  primary: ENC(4ZLh8TRm7hWGg7SQjUcdN9NNnCb2y+6V)
+coolsms:
+  api-key: ENC(oTfmjNOFGVLc6+GYAT4u+e2OoQ8gRFfyiMc8dkFuZtQ=)
+  api-secret: ENC(aHiqBIrD/SZkQFM2RwlkUppzlp3kkJ9s7jzlryXR7AvdHYPZaDBS4t4Tw2jEAXdM)
+  domain: https://api.solapi.com
+  phone-number: ENC(UPa+k4czKE5VW70lISEXldh8YpIKlQxq)
 
+portOne:
+  primary: ENC(DuqN7uJugxs9IPuvjfNbAgDRSUIGVnbZ)
+
+# -------------------------------
+# Dev(로컬 Oracle) 전용
+---
+spring.config.activate.on-profile: dev
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: ENC(hiM/Gh2OLz/caN/yKGrzvVQxgscFSfN9aK/nHKT+osndOA5jSiwhSimaNu7qh+Yzw+9Pnx9yaCk=)
+    username: ENC(cgFFwFFqStYx9dYci5LPLw==)
+    password: ENC(BSYCLnuQOrqAfVXnIeGMjQ==)
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+# -------------------------------
+# 테스트용 H2 (Oracle 모드)
+---
+spring.config.activate.on-profile: test
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+# -------------------------------
+# 운영 EC2 Oracle
+---
+spring.config.activate.on-profile: prod
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: ENC(hiM/Gh2OLz/caN/yKGrzvVQxgscFSfN9aK/nHKT+osndOA5jSiwhSimaNu7qh+Yzw+9Pnx9yaCk=)
+    username: ENC(cgFFwFFqStYx9dYci5LPLw==)
+    password: ENC(BSYCLnuQOrqAfVXnIeGMjQ==)
+  jpa:
+    open-in-view: false
+    show-sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(fBmczK3Vu8nQtwRbKllvsVmXe8Wzybhh)
+    password: ENC(40bZon9BzqZR9VveAwu+VVOt5mBJv3Lc)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 oauth:
   microsoft:
-    client-id: ENC(LedXUSvMhPFHhVU456L+Eh41G5qoxqtzWIVQ8icVQmnfpmBB0F6rstW7NeWQ5I9K)
-    secret: ENC(HBLUSjzUSImevhuVG4zEFoaOezQDpERHPu96YgqRziuIuMhICibuxOErH1HY6QX6zfqxEo87gJQ=)
+    client-id: dummy-client-id
+    secret: dummy-secret
     url:
-      auth: https://login.microsoftonline.com
-      api: https://graph.microsoft.com
+      auth: https://dummy.microsoft.com/auth
+      api: https://dummy.microsoft.com/api
   twitter:
-    client-id: ENC(73GxRq+PjH6RVC4DEai2kRG5Q2yfEzantYpMzq11wiPFCcKx2aBZLCVCElid9Yev)
-    secret: ENC(+1I3jRKTfpiPReOXOXByPJhJ0eun42n5L523v84pSVKcdc2wcanA1POlV0NURZobg9grI/uom2I7h7TkctUydg==)
+    client-id: dummy-client-id
+    secret: dummy-secret
     url:
-      code: https://x.com
-      api: https://api.x.com
+      code: https://dummy.twitter.com/code
+      api: https://dummy.twitter.com/api
   facebook:
-    client-id: ENC(pibffdzGa+t9+ZL1HK3goDegcSgEJUNDIulbmj/zT84=)
-    secret: ENC(tIcuGtXhBekEHG5FjHMt0F+2zFGe6mliCxlGurf3X4IxHxr2ZzfGy/JEKbRce9zc)
+    client-id: dummy-client-id
+    secret: dummy-secret
     url:
-      code: https://www.facebook.com
-      api: https://graph.facebook.com
+      code: https://dummy.facebook.com/code
+      api: https://dummy.facebook.com/api
   kakao:
-    client-id: ENC(psGppJ2gd4Iam30//UfAPxCA6FC0ssdNfBw6Dn9M2qQTATIbRcxYxfJqPS+e9VGk)
-    secret: ENC(ensnSNHjUnedqhr9BxpEBWpydU7roBdN1lSZbr+gAQSysNwAlWA7RHppjnx07Ttt)
+    client-id: dummy-client-id
+    secret: dummy-secret
     url:
-      auth: https://kauth.kakao.com
-      api: https://kapi.kakao.com
+      auth: https://dummy.kakao.com/auth
+      api: https://dummy.kakao.com/api
   naver:
-    client-id: ENC(VjsjeWjzfBUcmFKA8iMU1+Bu6M/uveAORz+eZrDojfI=)
-    secret: ENC(J9kF6Jp4SbAmFht9zt8zxoLCWnNFVHfs)
-    state: ENC(IlhXZD511qEmHWeBhgp+XlaxTFW06Jqx5uycDGKkmuw=)
+    client-id: dummy-client-id
+    secret: dummy-secret
+    state: dummy-state
     url:
-      auth: https://nid.naver.com
-      api: https://openapi.naver.com
+      auth: https://dummy.naver.com/auth
+      api: https://dummy.naver.com/api
   google:
-    client-id: ENC(zi1y68mAguh2JPdpbfL+5h9a8YvflNAAMlWIka4e1PGYQVcoXgqPcSQdjW1R7QNe0Eia4wRu0xMw28+Sxk0RJfNZGctG971ucRLZwpy/GFumJOO7Gy16+A==)
-    secret: ENC(TQ+L4nJYfNH1C2M6wpcs77GUN9u0q/dGnAu2OZxUVD5XWEXBqxRimiDbxnqdkTtb)
+    client-id: dummy-client-id
+    secret: dummy-secret
     url:
-      code: https://accounts.google.com
-      auth: https://oauth2.googleapis.com
-      api: https://www.googleapis.com
+      code: https://dummy.google.com/code
+      auth: https://dummy.google.com/auth
+      api: https://dummy.google.com/api
   github:
-    client-id: ENC(nuitn7XlNsGuXb+pv3gZ6QS5MUi8qR7vVhCtUcbSbyI=)
-    secret: ENC(HnQ9bKaNeWK7JSPaRE5Rkm5BEB3KYAz7kER4zLrUYIuqaIKfX4sbppjhqUGHgLR77H9HJLnXb7k=)
+    client-id: dummy-client-id
+    secret: dummy-secret
     url:
-      auth: https://github.com
-      api: https://api.github.com
+      auth: https://dummy.github.com/auth
+      api: https://dummy.github.com/api

@@ -1,0 +1,61 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  mail:
+    host: smtp.test.com
+    port: 1025
+    username: test
+    password: test
+
+# Jasypt 암호 (Gradle이나 환경 변수로 주입 가능)
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD}
+
+# 테스트용 더미 OAuth 데이터
+oauth:
+  microsoft:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      auth: https://dummy.microsoft.com/auth
+      api: https://dummy.microsoft.com/api
+  twitter:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      code: https://dummy.twitter.com/code
+      api: https://dummy.twitter.com/api
+  facebook:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      code: https://dummy.facebook.com/code
+      api: https://dummy.facebook.com/api
+  kakao:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      auth: https://dummy.kakao.com/auth
+      api: https://dummy.kakao.com/api
+  naver:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    state: dummy-state
+    url:
+      auth: https://dummy.naver.com/auth
+      api: https://dummy.naver.com/api
+  google:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      code: https://dummy.google.com/code
+      auth: https://dummy.google.com/auth
+      api: https://dummy.google.com/api
+  github:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      auth: https://dummy.github.com/auth
+      api: https://dummy.github.com/api

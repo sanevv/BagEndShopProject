@@ -49,4 +49,3 @@ ENTRYPOINT [ "java","-jar","app.jar" ]
 #
 #여기서는
 #java -jar app.jar 을 실행하여 Spring Boot 애플리케이션을 실행한다.
-
