@@ -66,6 +66,9 @@ dependencies {
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 
+    // FTP
+    implementation 'commons-net:commons-net:3.9.0'
+
     //jsp 내장톰캣 활용
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:11.0.7'
     // JSTL (JSP 태그 라이브러리) 지원

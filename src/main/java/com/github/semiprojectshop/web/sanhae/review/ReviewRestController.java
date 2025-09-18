@@ -4,10 +4,12 @@ import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewCommentVO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
 import com.github.semiprojectshop.repository.sanhae.reviewModel.ReviewDAO;
+import com.github.semiprojectshop.service.sanhae.FtpUploadService;
 import com.github.semiprojectshop.service.sanhae.exeptions.BadSanHaeException;
 import com.github.semiprojectshop.service.sanhae.exeptions.ForbiddenSanHaeException;
 import com.github.semiprojectshop.service.sanhae.exeptions.UnauthorizedSanHaeException;
 import com.github.semiprojectshop.service.sihu.StorageService;
+import com.github.semiprojectshop.web.support.FtpUrlHelper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -21,15 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 @RestController // 포스트맨으로 JSON값을 확인하고 싶을 때
 @RequestMapping("/api/review")
 @RequiredArgsConstructor // final이 붙은 필드를 생성자(Constructor)를 자동으로 생성해줌
 public class ReviewRestController {
 
     private final ReviewDAO rvDAO;
-    private final StorageService storageService;
+    private final FtpUploadService ftpUploadService;
 
     // 리뷰 조회하기!
     @GetMapping("/list")
@@ -109,27 +109,38 @@ public class ReviewRestController {
             // 구매한 사용자인지 체크하기
             boolean isBuyUser = rvDAO.getIsBuy(loginUser.getUserId(), reviewVO.getProductId());
 
-            // 리뷰를 작성한 사용자인지 체크하기
-            boolean isWriteReview = rvDAO.getIsWriteReview(loginUser.getUserId(), reviewVO.getProductId());
-
             System.out.println("isBuyUser : " + isBuyUser);
             if (!isBuyUser) {
                 throw ForbiddenSanHaeException.fromMessage("리뷰는 구매한 사람만 가능합니다.");
                 //return ResponseEntity.status(403).body("리뷰는 구매한 사람만 가능합니다.");
             }
 
+            // 리뷰를 작성한 사용자인지 체크하기
+            boolean isWriteReview = rvDAO.getIsWriteReview(loginUser.getUserId(), reviewVO.getProductId());
             if (isWriteReview) {
                 throw ForbiddenSanHaeException.fromMessage("리뷰는 한 번만 작성 가능합니다.");
                 //return ResponseEntity.status(403).body("리뷰는 한 번만 작성 가능합니다.");
             }
 
+
+//            String remoteDir = "review/" + reviewVO.getUserId() + "/" + reviewVO.getProductId();
             String path = "";
-            Path uploadDir = storageService.createFileDirectory("review",
-                    String.valueOf(reviewVO.getUserId()),
-                    String.valueOf(reviewVO.getProductId()));
 
             if (file != null && !file.isEmpty()) {
-                path = storageService.returnTheFilePathAfterTransfer(file, uploadDir);
+                String subDir = "review/" + loginUser.getUserId() + "/" + reviewVO.getProductId(); // reviewVO 대신 세션 사용자 사용
+                String originalName = file.getOriginalFilename();
+                if (originalName == null || originalName.isBlank()) {
+                    throw BadSanHaeException.fromMessage("파일 이름이 유효하지 않습니다.");
+                }
+                String safeName = originalName.replaceAll("[\\\\/]", "_"); // 경로 탈출 방지
+                try {
+                    path = ftpUploadService.uploadFile(subDir, safeName, file.getInputStream());
+                } catch (Exception e) {
+                    throw BadSanHaeException.fromMessage("이미지 업로드 실패: " + e.getMessage());
+                }
+                if (path == null) {
+                    throw BadSanHaeException.fromMessage("이미지 업로드 실패");
+                }
             }
 
             ReviewVO insertReview = rvDAO.addReview(reviewVO, path);
@@ -208,14 +219,22 @@ public class ReviewRestController {
         }
 
         String reviewImgPath = null;
-
         // 파일이 존재하지 않는 경우
         if (file != null && !file.isEmpty()) {
-            Path uploadDir = storageService.createFileDirectory("review",
-                    String.valueOf(reviewVO.getUserId()),
-                    String.valueOf(reviewVO.getProductId()));
-
-            reviewImgPath = storageService.returnTheFilePathAfterTransfer(file, uploadDir);
+            String subDir = "review/" + loginUser.getUserId() + "/" + reviewVO.getProductId(); // reviewVO 대신 세션 사용자 사용
+            String originalName = file.getOriginalFilename();
+            if (originalName == null || originalName.isBlank()) {
+                throw BadSanHaeException.fromMessage("파일 이름이 유효하지 않습니다.");
+            }
+            String safeName = originalName.replaceAll("[\\\\/]", "_"); // 경로 탈출 방지
+            try {
+                reviewImgPath = ftpUploadService.uploadFile(subDir, safeName, file.getInputStream());
+            } catch (Exception e) {
+                throw BadSanHaeException.fromMessage("이미지 업로드 실패: " + e.getMessage());
+            }
+            if (reviewImgPath == null) {
+                throw BadSanHaeException.fromMessage("이미지 업로드 실패");
+            }
         }
         // 파일이 기존에 존재한 경우
         else {

@@ -250,7 +250,7 @@ window.isLoginCheck = (val, reviewId) => {
     }
     if(!isLogin) {
 
-        if (!confirm("리뷰를 "+msg+"하기 위해선 \n로그인이 필요합니다.\n로그인 하러 가시겠습니까?")) return;
+        if (!confirm("리뷰를 "+msg+"하기 위해선 로그인이 필요합니다.\n로그인 하러 가시겠습니까?")) return;
         location.href = '/test/login.up';
         return;
     }

@@ -2,7 +2,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../include/header.jsp"></jsp:include>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!-- jQuery UI CSS -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
@@ -243,14 +242,12 @@ $(function() {
 		                	  
 		                  },
 		                  error: function(request, status, error){
-		                	   alert("메롱");
+		                	   //alert("메롱");
 		                       alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		                  }
 				       });
 	    	   } 
-	    	  
-	    	   
-    		
+
     	});
     	
     
@@ -351,9 +348,6 @@ $(function() {
                         <span class="error">필수입력</span>
                     </td>
                 </tr>
-
-
-
                 <tr>
                     <td class="prodInputName">제품상세설명</td>
                     <td align="left">

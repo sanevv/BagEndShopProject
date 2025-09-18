@@ -2,7 +2,6 @@ package com.github.semiprojectshop.web.sanhae.comment;
 
 
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewCommentVO;
-import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
 import com.github.semiprojectshop.repository.sanhae.reviewModel.ReviewCommentDAO;
 import com.github.semiprojectshop.service.sanhae.exeptions.BadSanHaeException;
 import com.github.semiprojectshop.service.sanhae.exeptions.InternalServerErrorSanHaeException;
@@ -10,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController // 포스트맨으로 JSON값을 확인하고 싶을 때

@@ -30,6 +30,13 @@ springdoc:
   swagger-ui:
     path: /mvc-docs.html
   version: 1.0.0
+ftp:
+  host: ENC(LlNjr8ro054j8qB6NuE75Vb0S6BWZS4rhaJAZNkeoAc=)
+  port: 21
+  user: ENC(abXUaB/NF0ZkgDF1oZvMSw==)
+  pass: ENC(I9t0KMcK8xpc29+ow8CnPFslz5lAIOGX)
+  base-path: /html/uploads
+  remote-dir: /uploads
 
 file:
   upload:
@@ -42,7 +49,7 @@ coolsms:
   phone-number: ENC(UPa+k4czKE5VW70lISEXldh8YpIKlQxq)
 
 portOne:
-  primary: ENC(DuqN7uJugxs9IPuvjfNbAgDRSUIGVnbZ)
+  primary: ENC(xX3vVMVpUzqVxSpXxIfATWrRsF/L+bkb)
 
 # -------------------------------
 # Dev(로컬 Oracle) 전용

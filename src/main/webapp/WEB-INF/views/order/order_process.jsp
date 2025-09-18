@@ -103,7 +103,7 @@
         } else {
           console.log(rsp);
           // 결제 실패 로직
-          const 좆됐음 = true;
+          const isOrderFail = true;
           (async function(){
             blockParentNavigation = false; // 부모창 이동 방지 플래그 해제
             self.close();

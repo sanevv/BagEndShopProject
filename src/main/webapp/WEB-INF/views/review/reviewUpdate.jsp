@@ -104,7 +104,7 @@
                                 <tr>
                                     <th>첨부된 이미지</th>
                                     <td>
-                                        <img src="${pageContext.request.contextPath}${reviewVO.reviewImagePath}" alt="첨부된 이미지" style="max-width: 400px;" />
+                                        <img src="${ftpHost}${reviewVO.reviewImagePath}" alt="첨부된 이미지" style="max-width: 400px;" />
                                     </td>
                                 </tr>
                             </c:if>
