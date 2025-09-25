@@ -58,7 +58,7 @@ spring.config.activate.on-profile: dev
 spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    url: ENC(hiM/Gh2OLz/caN/yKGrzvVQxgscFSfN9aK/nHKT+osndOA5jSiwhSimaNu7qh+Yzw+9Pnx9yaCk=)
+    url: ENC(HQkVT6k5hShH/dVQMP+HupHqktY5PGzYSUJqeD3M1E4DaAfn4T4gzegqoa0ui+ag)
     username: ENC(cgFFwFFqStYx9dYci5LPLw==)
     password: ENC(BSYCLnuQOrqAfVXnIeGMjQ==)
   jpa:
