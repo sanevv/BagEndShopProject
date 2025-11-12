@@ -6,7 +6,6 @@ import com.github.semiprojectshop.service.sihu.product.ProductService;
 import com.github.semiprojectshop.web.sihu.dto.CustomResponse;
 import com.github.semiprojectshop.web.sihu.dto.PaginationDto;
 import com.github.semiprojectshop.web.sihu.dto.product.*;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,7 +19,10 @@ import java.util.Optional;
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
 public class ProductRestController {
+
     private final ProductService productService;
+
+
     @GetMapping("/main")
     public CustomResponse<List<MainProductResponse>> mainProductList(){
         List<MainProductResponse> mainProductList = productService.getMainProductList();
@@ -67,15 +69,21 @@ public class ProductRestController {
                               @RequestPart("pimage1") MultipartFile mainImage,
                               @RequestPart("files") List<MultipartFile> files,
                               HttpSession session) {
-//        if(session.getAttribute("loginUser") == null)
-//            throw CustomMyException.fromMessage("로그인 후 상품 등록을 이용해주세요.");
-//        MemberVO memberVO = (MemberVO) session.getAttribute("loginUser");
-        long loginUserId = 1L;
-//        long userRole = memberVO.getRoleId();
-//        if (userRole != 1) // 관리자 권한이 아닌 경우
-//            throw CustomMyException.fromMessage("상품 등록은 관리자만 가능합니다.");
-        
 
+        if(session.getAttribute("loginUser") == null) {
+            throw CustomMyException.fromMessage("로그인 후 상품 등록을 이용해주세요.");
+        }
+
+        MemberVO memberVO = (MemberVO) session.getAttribute("loginUser");
+
+        long userRole = memberVO.getRoleId();
+
+        // 관리자 권한이 아닌 경우
+        if (userRole != 1) {
+            throw CustomMyException.fromMessage("상품 등록은 관리자만 가능합니다.");
+        }
+
+        long loginUserId = memberVO.getUserId();
 
         ProductCreateRequest request = ProductCreateRequest.of(
                 categoryId,

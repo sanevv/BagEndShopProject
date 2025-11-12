@@ -119,13 +119,9 @@ public class ReviewRestController {
             boolean isWriteReview = rvDAO.getIsWriteReview(loginUser.getUserId(), reviewVO.getProductId());
             if (isWriteReview) {
                 throw ForbiddenSanHaeException.fromMessage("리뷰는 한 번만 작성 가능합니다.");
-                //return ResponseEntity.status(403).body("리뷰는 한 번만 작성 가능합니다.");
             }
 
-
-//            String remoteDir = "review/" + reviewVO.getUserId() + "/" + reviewVO.getProductId();
             String path = "";
-
             if (file != null && !file.isEmpty()) {
                 String subDir = "review/" + loginUser.getUserId() + "/" + reviewVO.getProductId(); // reviewVO 대신 세션 사용자 사용
                 String originalName = file.getOriginalFilename();

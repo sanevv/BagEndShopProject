@@ -143,7 +143,7 @@
                             <label for="loginPwd" class="form-label mb-0">비밀번호</label>
                         </th>
                         <td class="border-0">
-                            <input id="loginPwd" name="pwd" type="password" class="form-control" placeholder="비밀번호를 입력하세요" />
+                            <input id="loginPwd" name="pwd" type="password" class="form-control" placeholder="비밀번호를 입력하세요" value="qwer1234$" />
                         </td>
                     </tr>
 

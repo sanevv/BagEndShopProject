@@ -70,6 +70,26 @@ public class FtpUploadService {
         }
     }
 
+    public String upload(String subDir, MultipartFile file, String prefix) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("업로드할 파일이 비어있음");
+        }
+        String original = file.getOriginalFilename();
+        String ext = "";
+        if (original != null && original.lastIndexOf('.') != -1) {
+            ext = original.substring(original.lastIndexOf('.'));
+        }
+        String safeName = (prefix != null ? prefix : "")
+                + System.currentTimeMillis()
+                + "_" + Math.abs(original != null ? original.hashCode() : 0)
+                + ext;
+        try (InputStream in = file.getInputStream()) {
+            return uploadFile(subDir, safeName, in); // 기존 low-level 사용
+        } catch (IOException e) {
+            throw new IllegalStateException("파일 읽기 실패: " + e.getMessage(), e);
+        }
+    }
+
 
     private String normalizePath(String base, String sub) {
         String b = base.endsWith("/") ? base.substring(0, base.length()-1) : base;

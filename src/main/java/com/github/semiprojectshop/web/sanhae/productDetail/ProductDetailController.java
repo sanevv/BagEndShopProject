@@ -4,7 +4,9 @@ import com.github.semiprojectshop.repository.kyeongsoo.memberDomain.MemberVO;
 import com.github.semiprojectshop.repository.sanhae.productDetailDomain.ProductDetailVO;
 import com.github.semiprojectshop.repository.sanhae.productModel.ProductDetailDAO;
 import com.github.semiprojectshop.repository.sanhae.reviewDomain.ReviewVO;
+import com.github.semiprojectshop.web.support.FtpUrlHelper;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/product")
 public class ProductDetailController {
 
-    // 생성자, 필드, 메서드 가져오기
-    @Autowired
-    private ProductDetailDAO prdDAO;
+    private final FtpUrlHelper ftpUrlHelper;
+    private final ProductDetailDAO prdDAO;
+
     // GET으로 들어올 때
     // {productId} 는 경로 변수임
     @GetMapping("/detail/{productId}")
@@ -37,16 +40,13 @@ public class ProductDetailController {
         // 상세페이지 정보 가져오기
         ProductDetailVO prdVO = prdDAO.productDetail(productId);
 
+        if(prdVO == null) {
+            // 해당 상품이 없을 경우 메인페이지 이동
+            return "redirect:/";
+        }
+
         // 해당 상품 추가이미지 가져오기
         List<ProductDetailVO> productAddImageList = prdDAO.getProductImageList(productId);
-
-        //System.out.println("productAddImageList.size() : " + productAddImageList.size());
-
-        for (ProductDetailVO productAddImage : productAddImageList) {
-            prdVO.setProductAddImagePath(productAddImage.getProductAddImagePath());
-
-            //System.out.println("setProductAddImagePath : " + prdVO.getProductAddImagePath());
-        }
 
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 

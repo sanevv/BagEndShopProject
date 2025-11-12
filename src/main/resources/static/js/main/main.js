@@ -1,9 +1,3 @@
-window.addEventListener("DOMContentLoaded", function () {
-    setTimeout(() => {
-        mainBanner();
-    }, 500)
-});
-
 fetch("/api/product/main")
     .then(response => {
         if (!response.ok) {
@@ -42,6 +36,7 @@ fetch("/api/product/main")
             });
 
             mainBanner.innerHTML = bannerHTML;
+            mainBannerSlide();
         } else {
             console.warn("상품 배열이 존재하지 않음.");
         }
@@ -50,7 +45,7 @@ fetch("/api/product/main")
         console.error("API 호출 실패:", error);
     });
 
-mainBanner = () => {
+mainBannerSlide = function () {
     new Swiper(".main-banner", {
         slidesPerView: 3,
         spaceBetween: 0,

@@ -11,8 +11,8 @@
 <jsp:include page="../include/header.jsp"></jsp:include>
 
 <script type="text/javascript">
-function goDelete(noticeId) {
-    if (confirm("이 상품 삭제해?")) {
+function goDelete() {
+    if (confirm("이 상품을 삭제하시겠습니까?")) {
 
         $.ajax({
             url: "${pageContext.request.contextPath}/prod/deleteProd",
@@ -128,11 +128,16 @@ function goDelete(noticeId) {
 
 
 			<div class="product-contents">
-				<!-- 상품 이미지 둥록 시 부활 예정 -->
-<%--				<img src="${pageContext.request.contextPath}${prdVO.productContents}" alt="상세설명 이미지" /> --%>
-				<img src="${pageContext.request.contextPath}/images/product/5/content5.png" alt="" >
-				<img src="${pageContext.request.contextPath}/images/product/5/content5-1.png" alt="" >
-				<img src="${pageContext.request.contextPath}/images/product/5/content5-2.png" alt="" >
+				<c:if test="${empty prdVO.productContents}">
+					등록된 상세 이미지가 없습니다.
+				</c:if>
+				<c:if test="${not empty prdVO.productContents}">
+					<img src="${prdVO.productContents}" alt="상세설명 이미지" />
+				</c:if>
+
+<%--				<img src="${pageContext.request.contextPath}/images/product/5/content5.png" alt="" >--%>
+<%--				<img src="${pageContext.request.contextPath}/images/product/5/content5-1.png" alt="" >--%>
+<%--				<img src="${pageContext.request.contextPath}/images/product/5/content5-2.png" alt="" >--%>
 			</div>
 		</div>
 	</div>

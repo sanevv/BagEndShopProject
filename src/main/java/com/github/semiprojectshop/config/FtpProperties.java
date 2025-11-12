@@ -16,5 +16,6 @@ public class FtpProperties {
     private int port;
     private String user;
     private String pass;
+    private String basePath;
     private String remoteDir;
 }

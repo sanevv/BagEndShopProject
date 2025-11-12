@@ -235,7 +235,7 @@ $(function() {
 		                  contentType:false,  // 파일 전송시 설정
 		                  dataType:"json",
 		                  success:function(response){
-		                	  alert("들어왔어");
+		                	  alert("상품 등록을 완료하였습니다.");
 		                		  location.href="${pageContext.request.contextPath}/product/detail/"+response;  
 		                	  
 		                		  
@@ -316,12 +316,11 @@ $(function() {
                 </tr>
 
                 <tr>
-                    <td class="prodInputName" style="padding-bottom: 10px; text-align: left;">추가이미지파일(선택)</td>
+                    <td class="prodInputName" style="padding-bottom: 10px; text-align: left;">추가이미지파일</td>
                     <td>
                         <span style="font-size: 10pt;">파일을 1개씩 마우스로 끌어 오세요</span>
                         <div id="fileDrop" class="fileDrop border border-secondary">
                         </div>
-                       
                     </td>
                 </tr>
 
@@ -351,7 +350,7 @@ $(function() {
                 <tr>
                     <td class="prodInputName">제품상세설명</td>
                     <td align="left">
-                    	<input type="file" name="product_contents" class="infoData img_contents_file" accept="image/*" />
+                    	<input type="file" name="product_contents" class="img_contents_file" accept="image/*" />
                         <span class="error">필수입력</span>
                     </td>
                 </tr>

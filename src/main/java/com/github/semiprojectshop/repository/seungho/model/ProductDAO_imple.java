@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
-import com.github.semiprojectshop.config.oauth.client.GithubApiClient;
 import com.github.semiprojectshop.repository.seungho.domain.ProductVO;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductDAO_imple implements ProductDAO {
 
-	private final GithubApiClient githubApiClient;
 	private final DataSource ds;
 	private Connection conn;
 	private PreparedStatement pstmt;

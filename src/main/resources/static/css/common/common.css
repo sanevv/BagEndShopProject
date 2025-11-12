@@ -14,6 +14,8 @@
    ========================== */
 
 .admin-login {
+    position: fixed;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,7 +23,7 @@
     text-align: center;
     font-size: 20px;
     color: #fff;
-    padding: 14px 0;
+    padding: 6px 20px;
 }
 
 /* ==========================
@@ -390,7 +392,7 @@
 
 #main,
 .container {
-    padding-top: 113px;
+    padding-top: 133px;
 }
 
 #loadingBar {

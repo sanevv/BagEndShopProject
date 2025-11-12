@@ -4,6 +4,9 @@ import com.github.semiprojectshop.repository.sihu.product.Product;
 import com.github.semiprojectshop.repository.sihu.product.ProductImage;
 import com.github.semiprojectshop.repository.sihu.product.ProductJpa;
 import com.github.semiprojectshop.repository.sihu.product.wish.WishJpa;
+import com.github.semiprojectshop.service.sanhae.FtpUploadService;
+import com.github.semiprojectshop.service.sanhae.exeptions.BadSanHaeException;
+import com.github.semiprojectshop.service.sanhae.product.ProductImageService;
 import com.github.semiprojectshop.service.sihu.StorageService;
 import com.github.semiprojectshop.web.sihu.dto.PaginationDto;
 import com.github.semiprojectshop.web.sihu.dto.product.MainProductResponse;
@@ -15,6 +18,7 @@ import com.github.semiprojectshop.web.sihu.dto.product.order.OrderProductRequest
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -27,7 +31,8 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductJpa productJpa;
     private final WishJpa wishJpa;
-    private final StorageService storageService;
+    private final FtpUploadService ftpUploadService;
+    private final ProductImageService productImageService;
 
     @Transactional(readOnly = true)
     public List<MainProductResponse> getMainProductList() {
@@ -53,23 +58,48 @@ public class ProductService {
         return productJpa.findProductInfoForOrder(orderProductRequests);
     }
 
+    // full URL 반환 여부
+    boolean withHost = true;
     @Transactional
     public long createProduct(ProductCreateRequest request, long userId) {
         Product product = Product.fromRequest(request, userId);
         productJpa.save(product);
-        Path path = storageService.createFileDirectory("product", product.getProductId().toString());
-        String mainImageUrl = storageService.returnTheFilePathAfterTransfer(request.getMainImage(), path, "승호메롱_");
-        List<String> imageUrls = request.getFiles()
-                .stream().map(file->storageService.returnTheFilePathAfterTransfer(file, path))
-                .toList();
-        String productContentsUrl = storageService.returnTheFilePathAfterTransfer(request.getProductContents(), path, "승호메롱_");
 
-        List<ProductImage> productImageList = imageUrls.stream()
-                .map(url -> ProductImage.fromProductAndUrl(product, url))
-                .collect(Collectors.toCollection(ArrayList::new));
-        productImageList.add(ProductImage.fromProductAndMainImage(product, mainImageUrl));
+        int productId = product.getProductId().intValue();
 
-        product.addProductImage(productImageList,productContentsUrl);
+        // 메인 이미지
+        String mainImageUrl = uploadOrNull(productId, request.getMainImage(), "main_", withHost);
+
+        // 서브 이미지
+        List<String> subImageUrls = request.getFiles() == null ? List.of() :
+                request.getFiles().stream()
+                        .filter(f -> f != null && !f.isEmpty())
+                        .map(f -> uploadOrNull(productId, f, "sub_", withHost))
+                        .filter(p -> p != null)
+                        .toList();
+
+        // 상세 콘텐츠(설명) 파일
+        String contentsUrl = uploadOrNull(productId, request.getProductContents(), "contents_", withHost);
+
+        // ProductImage 엔티티 목록 구성
+        List<ProductImage> productImageList = new ArrayList<>();
+        for (String url : subImageUrls) {
+            productImageList.add(ProductImage.fromProductAndUrl(product, url));
+        }
+        if (mainImageUrl != null) {
+            productImageList.add(ProductImage.fromProductAndMainImage(product, mainImageUrl));
+        }
+
+        product.addProductImage(productImageList, contentsUrl);
         return product.getProductId();
+    }
+
+    private String uploadOrNull(int productId, MultipartFile file, String prefix, boolean withHost) {
+        try {
+            return productImageService.uploadProductImage(productId, file, prefix, withHost);
+        } catch (Exception e) {
+            // 필요 시 로깅/롤백 전략 조정
+            throw new RuntimeException("파일 업로드 실패: ", e);
+        }
     }
 }

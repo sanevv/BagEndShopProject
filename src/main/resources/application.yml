@@ -58,8 +58,8 @@ spring.config.activate.on-profile: dev
 spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    url: ENC(HQkVT6k5hShH/dVQMP+HupHqktY5PGzYSUJqeD3M1E4DaAfn4T4gzegqoa0ui+ag)
-    username: ENC(cgFFwFFqStYx9dYci5LPLw==)
+    url: ENC(w+GoZ2w9Kh5fycWSNOZllLi7lerl+ics0oXB5YzEd8EnR3omZNr5TC1Ph2iZxjYRpaWVSTacX5c=)
+    username: ENC(/dYuDhDHXgX7EbNT3sfFkRRVv1Rtc/mZ)
     password: ENC(BSYCLnuQOrqAfVXnIeGMjQ==)
   jpa:
     hibernate:
@@ -88,8 +88,8 @@ spring.config.activate.on-profile: prod
 spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    url: ENC(hiM/Gh2OLz/caN/yKGrzvVQxgscFSfN9aK/nHKT+osndOA5jSiwhSimaNu7qh+Yzw+9Pnx9yaCk=)
-    username: ENC(cgFFwFFqStYx9dYci5LPLw==)
+    url: ENC(w+GoZ2w9Kh5fycWSNOZllLi7lerl+ics0oXB5YzEd8EnR3omZNr5TC1Ph2iZxjYRpaWVSTacX5c=)
+    username: ENC(/dYuDhDHXgX7EbNT3sfFkRRVv1Rtc/mZ)
     password: ENC(BSYCLnuQOrqAfVXnIeGMjQ==)
   jpa:
     open-in-view: false
@@ -98,8 +98,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ENC(fBmczK3Vu8nQtwRbKllvsVmXe8Wzybhh)
-    password: ENC(40bZon9BzqZR9VveAwu+VVOt5mBJv3Lc)
+    username: ENC(YrsrpO0z3b97m/G5nTlQ1Jnfd1qXw8FijNAgyTlJGNg=)
+    password: ENC(LGuZLi+A2gcTiKImbJujTlh+4JH6zFGIGHRdxWGJ1Ao=)
     properties:
       mail:
         smtp:

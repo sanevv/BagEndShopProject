@@ -4,3 +4,60 @@ spring:
       enabled: false  # 자동 재시작 비활성화
     livereload:
       enabled: true   # 라이브 리로드는 활성화 (브라우저 자동 새로고침)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(YrsrpO0z3b97m/G5nTlQ1Jnfd1qXw8FijNAgyTlJGNg=)
+    password: ENC(LGuZLi+A2gcTiKImbJujTlh+4JH6zFGIGHRdxWGJ1Ao=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+oauth:
+  microsoft:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      auth: https://dummy.microsoft.com/auth
+      api: https://dummy.microsoft.com/api
+  twitter:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      code: https://dummy.twitter.com/code
+      api: https://dummy.twitter.com/api
+  facebook:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      code: https://dummy.facebook.com/code
+      api: https://dummy.facebook.com/api
+  kakao:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      auth: https://dummy.kakao.com/auth
+      api: https://dummy.kakao.com/api
+  naver:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    state: dummy-state
+    url:
+      auth: https://dummy.naver.com/auth
+      api: https://dummy.naver.com/api
+  google:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      code: https://dummy.google.com/code
+      auth: https://dummy.google.com/auth
+      api: https://dummy.google.com/api
+  github:
+    client-id: dummy-client-id
+    secret: dummy-secret
+    url:
+      auth: https://dummy.github.com/auth
+      api: https://dummy.github.com/api

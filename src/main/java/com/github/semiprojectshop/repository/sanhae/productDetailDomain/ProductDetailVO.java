@@ -15,7 +15,7 @@ public class ProductDetailVO {
     private int userId;         // 사용자번호
     private String productName; // 상품이름
     private String productInfo; // 상품정보
-    private String productContents; // 상품소개
+
     private int price; // 상품가격
     private int stock; // 상품재고
     private String productSize; // 상품규격
@@ -25,8 +25,15 @@ public class ProductDetailVO {
     // my_user 테이블 조인해서 사용할거임
     private String userName;    // 사용자 이름
 
-    // product_image 테이블 조인해서 사용할거임
+
+    // 원본(raw) 그대로 저장하고 게터에서만 변환.
+    @Getter(AccessLevel.NONE)
+    private String productContents; // 상품소개
+
+    @Getter(AccessLevel.NONE)
     private String productImagePath; // 대표이미지 경로
+
+    @Getter(AccessLevel.NONE)
     private String productAddImagePath; // 추가이미지 경로
 
     // review 작성자 이름 가져올거임
@@ -47,4 +54,25 @@ public class ProductDetailVO {
     private int categoryId;       // 카테고리 번호
     private String productStatus; // 상품 상태 : 판매중, 품절, 숨김
 
+    // Lazy 변환 게터
+    public String getProductContents() {
+        return normalizePath(productContents);
+    }
+    public String getProductImagePath() {
+        return normalizePath(productImagePath);
+    }
+    public String getProductAddImagePath() {
+        return normalizePath(productAddImagePath);
+    }
+
+    // 공통 변환 로직
+    private static String normalizePath(String raw) {
+        if (raw == null || raw.isBlank()) return raw;
+        String trimmed = raw.trim();
+        if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+        if (trimmed.startsWith("/html")) {
+            return trimmed.substring(5); // "/html".length() == 5
+        }
+        return trimmed;
+    }
 }
