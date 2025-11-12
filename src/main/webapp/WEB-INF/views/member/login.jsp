@@ -134,7 +134,7 @@
                             <label for="userEmail" class="form-label mb-0">아이디</label>
                         </th>
                         <td class="border-0">
-                            <input id="userEmail" name="userEmail" type="text" class="form-control" placeholder="아이디를 입력하세요" />
+                            <input id="userEmail" name="userEmail" type="text" class="form-control" placeholder="아이디를 입력하세요" value="sanevv@naver.com" />
                         </td>
                     </tr>
 
